@@ -1,11 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react'
 import './App.css';
 import firebase from "firebase/app";
 import "firebase/auth";
 import {StyledFirebaseAuth} from 'react-firebaseui'
+import {CustomerConfig, postGetConfig} from './service/RestApi'
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
   authDomain: "datatoggle-b83b6.firebaseapp.com",
@@ -16,13 +15,8 @@ const firebaseConfig = {
   measurementId: "G-EHS9SKZVVH"
 };
 
-// Configure FirebaseUI.
 const authUiConfig = {
-  // Popup signin flow rather than redirect flow.
-  //signInFlow: 'popup',
-  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/signedIn',
-  // We will display Google and Facebook as auth providers.
+  signInFlow: 'popup',
   signInOptions: [{
     provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
     requireDisplayName: false,
@@ -32,12 +26,55 @@ const authUiConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+enum AppStatus {
+  waitingForLoginStatus,
+  notLoggedIn,
+  waitingForDataSnapshot,
+  loggedIn,
+  loginError
+}
+
+interface AppState {
+  status: AppStatus,
+  config: CustomerConfig | null
+}
+
+
 function App() {
-  return (
-    <div className="App">
-      <StyledFirebaseAuth uiConfig={authUiConfig} firebaseAuth={firebase.auth()} />
-    </div>
-  );
+
+  const [appState, setAppState] = useState<AppState>({status: AppStatus.waitingForLoginStatus, config: null});
+
+  // Listen to the Firebase Auth state and set the local state.
+  useEffect(() => {
+    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: firebase.User | null) => {
+      if (user != null){
+        setAppState({status: AppStatus.waitingForDataSnapshot, config: null})
+        const token = await user.getIdToken()
+        const config = await postGetConfig(token)
+        setAppState({status: AppStatus.loggedIn, config: config.config})
+      } else {
+        setAppState({status: AppStatus.notLoggedIn, config: null})
+      }
+    });
+    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
+  }, []);
+
+
+
+  switch (appState.status) {
+    case AppStatus.waitingForLoginStatus:
+      return <h1>Waiting for loading status</h1>
+    case AppStatus.notLoggedIn:
+      return <StyledFirebaseAuth uiConfig={authUiConfig} firebaseAuth={firebase.auth()} />
+    case AppStatus.waitingForDataSnapshot:
+      return <><h1>Waiting for data snapshot</h1><a onClick={() => firebase.auth().signOut()}>Sign-out</a></>
+    case AppStatus.loggedIn:
+      return <h1>{appState.config?.apiKey}</h1>
+    case AppStatus.loginError:
+      return <h1>login error</h1>
+  }
+
+
 }
 
 export default App;
