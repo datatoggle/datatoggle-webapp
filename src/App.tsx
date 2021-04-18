@@ -69,7 +69,14 @@ function App() {
     case AppStatus.waitingForDataSnapshot:
       return <><h1>Waiting for data snapshot</h1><a onClick={() => firebase.auth().signOut()}>Sign-out</a></>
     case AppStatus.loggedIn:
-      return <h1>{appState.config?.apiKey}</h1>
+      return <>
+        <h1>{appState.config?.apiKey}</h1>
+        {
+          appState.config!.destinations.map(d =>
+            <h2>{d.displayName}</h2>
+          )
+        }
+      </>
     case AppStatus.loginError:
       return <h1>login error</h1>
   }

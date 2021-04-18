@@ -1,9 +1,30 @@
+
 export type PostGetConfigReply = {
   config: CustomerConfig,
 }
 
 export type CustomerConfig = {
-  apiKey: String
+  apiKey: string
+  destinations: [Destination]
+}
+
+export type Destination = {
+  isEnabled: boolean
+  uri: string
+  displayName: string
+  config: [DestinationParam]
+}
+
+export type DestinationParam = {
+  uri: string
+  displayName: string,
+  type: ParamType,
+  value: boolean | string
+}
+
+export enum ParamType {
+  Boolean= "Boolean",
+  String = "String",
 }
 
 // https://create-react-app.dev/docs/adding-custom-environment-variables/
