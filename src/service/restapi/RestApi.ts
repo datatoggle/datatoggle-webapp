@@ -30,7 +30,10 @@ async function doGetRequest(token: string, pathAndParams: string): Promise<any> 
 async function doPostRequest(token: string, path: string, body: any = {}): Promise<any> {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/${path}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
     body: JSON.stringify(body)
   })
   return await response.json()
@@ -39,4 +42,12 @@ async function doPostRequest(token: string, path: string, body: any = {}): Promi
 export async function getProjectSnippets(authToken: string): Promise<ProjectSnippet[]> {
   const result: GetProjectSnippetsReply = await doGetRequest(authToken, 'api/customer/project_snippets')
   return result.projects
+}
+
+export async function createProject(authToken: string, projectName: string): Promise<string>{
+  const body: PostCreateProjectArgs = {
+    projectName: projectName
+  }
+  const result: PostCreateProjectReply = await doPostRequest(authToken, 'api/customer/projects', body)
+  return result.uri
 }

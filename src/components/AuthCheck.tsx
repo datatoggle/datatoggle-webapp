@@ -1,8 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import firebase from "firebase/app"
-import "firebase/auth"
-import {StyledFirebaseAuth} from 'react-firebaseui'
 import LoginPage from '../pages/LoginPage'
+import LoadingPage from '../pages/LoadingPage'
+import firebase from 'firebase/app'
 
 
 
@@ -37,7 +36,7 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
 
 
   if (authState.isLoggedIn == null){
-    return <h1>waiting for is logged in info</h1>
+    return <LoadingPage/>
   } else if (authState.isLoggedIn){
     return <TokenContext.Provider value={authState.token!}>{props.children}</TokenContext.Provider>
   } else {

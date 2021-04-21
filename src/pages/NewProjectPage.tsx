@@ -4,9 +4,14 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import React, {FunctionComponent} from 'react'
+import React, {FunctionComponent, useContext, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
 import {TextField} from '@material-ui/core'
+import {TokenContext} from '../components/AuthCheck'
+import {createProject} from '../service/restapi/RestApi'
+import LoadingPage from './LoadingPage'
+import {Redirect} from 'react-router-dom'
+import {projectUrl} from '../service/urls'
 
 
 
@@ -29,8 +34,30 @@ const useStyles = makeStyles({
   }
 });
 
+type ProjectCreationState = {
+  uri: string | null
+  creating: boolean
+}
+
 const NewProjectPage: FunctionComponent<{ }> = (props) => {
   const classes = useStyles();
+  const token: string = useContext<string>(TokenContext)
+  const [name, setName] = useState<string>('')
+  const [projectCreationState, setProjectCreationState] = useState<ProjectCreationState>({uri: null, creating: false})
+
+  async function onCreateProject() {
+    setProjectCreationState({uri: null, creating: true})
+    const projectUri: string = await createProject(token, name)
+    setProjectCreationState({uri: projectUri, creating: false})
+  }
+
+  if (projectCreationState.creating){
+    return <LoadingPage/>
+  }
+
+  if (projectCreationState.uri !== null){
+    return <Redirect to={projectUrl(projectCreationState.uri)}/>
+  }
 
   return (
     <SmallFormLayout>
@@ -39,10 +66,10 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
           <Typography variant="h6" component="h2" className={classes.title}>
             Choose a name for your project
           </Typography>
-          <TextField id="standard-basic" label="Project name"  className={classes.textField}/>
+          <TextField id="standard-basic" label="Project name"  className={classes.textField} onChange={e => setName(e.target.value)}/>
         </CardContent>
         <CardActions className={classes.actions}>
-          <Button fullWidth variant="contained" color="primary">Create project</Button>
+          <Button fullWidth variant="contained" color="primary" disabled={name === ''} onClick={() => onCreateProject()}>Create project</Button>
         </CardActions>
       </Card>
     </SmallFormLayout>

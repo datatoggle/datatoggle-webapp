@@ -20,10 +20,10 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
       setData(result);
     }
     fetchData()
-  }, [])
+  }, [token])
 
   if (data) {
-    if (data.length == 0){
+    if (data.length === 0){
      return <Redirect to={NEW_PROJECT_URL} />
     } else {
       return <h1>{data!.map(p => p.name)}</h1>

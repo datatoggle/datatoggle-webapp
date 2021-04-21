@@ -1,18 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import React, {FunctionComponent} from 'react'
-import firebase from 'firebase'
-import {StyledFirebaseAuth} from 'react-firebaseui'
 import logo from '../images/logo.png';
-
-const authUiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [{
-    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    requireDisplayName: true,
-  },
-  ]
-}
-
 
 const useStyles = makeStyles({
   page: {
@@ -43,7 +31,7 @@ const LoginPage: FunctionComponent<Props> = (props) => {
   return (
     <div className={classes.page}>
       <div className={classes.column}>
-        <img className={classes.logo} src={logo}/>
+        <img className={classes.logo} src={logo} alt={'Data Toggle'}/>
         {props.children}
       </div>
     </div>
