@@ -7,9 +7,9 @@ type Props = OwnProps;
 
 const ProjectPage: FunctionComponent<Props> = (props) => {
 
-  const uri: string = useParams();
+  const {uri} = useParams<{uri: string}>();
 
-  return  (<h1>PROJECT: {uri}</h1>);
+  return  (<h1>{uri}</h1>);
 };
 
 export default ProjectPage;

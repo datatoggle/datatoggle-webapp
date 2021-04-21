@@ -35,11 +35,11 @@ function App() {
           <Route path={NEW_PROJECT_URL}>
             <NewProjectPage />
           </Route>
-          <Route path={HOME_URL}>
-            <ProjectListPage />
-          </Route>
           <Route path="/project/:uri">
             <ProjectPage />
+          </Route>
+          <Route path={HOME_URL}>
+            <ProjectListPage />
           </Route>
         </Switch>
       </div>
