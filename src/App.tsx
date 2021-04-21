@@ -11,6 +11,7 @@ import ProjectListPage from './pages/ProjectListPage'
 import ProjectDashboard from './pages/ProjectDashboard'
 import firebase from 'firebase'
 import AuthCheck from './components/AuthCheck'
+import {HOME_URL, NEW_PROJECT_URL} from './service/urls'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -31,10 +32,10 @@ function App() {
       <div>
         <AuthCheck>
         <Switch>
-          <Route path="/new-project">
+          <Route path={NEW_PROJECT_URL}>
             <NewProjectPage />
           </Route>
-          <Route path="/">
+          <Route path={HOME_URL}>
             <ProjectListPage />
           </Route>
           <Route path="/project">

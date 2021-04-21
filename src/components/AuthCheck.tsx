@@ -2,15 +2,9 @@ import React, {FunctionComponent, useEffect, useState} from 'react'
 import firebase from "firebase/app"
 import "firebase/auth"
 import {StyledFirebaseAuth} from 'react-firebaseui'
+import LoginPage from '../pages/LoginPage'
 
-const authUiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [{
-    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    requireDisplayName: false,
-  }
-  ]
-}
+
 
 interface AuthState {
   isLoggedIn: boolean | null,
@@ -47,7 +41,7 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
   } else if (authState.isLoggedIn){
     return <TokenContext.Provider value={authState.token!}>{props.children}</TokenContext.Provider>
   } else {
-    return <StyledFirebaseAuth uiConfig={authUiConfig} firebaseAuth={firebase.auth()}/>
+    return <LoginPage/>
   }
 
 }
