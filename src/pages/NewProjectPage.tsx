@@ -10,38 +10,39 @@ import {TextField} from '@material-ui/core'
 
 
 
+// those properties make it consistent with StyledFirebaseAuth
 const useStyles = makeStyles({
   card: {
-    width: 400,
+    width: 256,
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  actions: {
+    padding: '8px 24px 24px 24px'
+  },
+  cardContent: {
+    padding: '24px 24px 24px 24px'
+  },
+  textField: {
+    width: '100%'
   },
   title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
+    paddingBottom: '24px'
+  }
 });
 
 const NewProjectPage: FunctionComponent<{ }> = (props) => {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
 
   return (
     <SmallFormLayout>
       <Card className={classes.card}>
-        <CardContent>
-          <Typography variant="h5" component="h2">
-            Choose a name for your project:
+        <CardContent className={classes.cardContent}>
+          <Typography variant="h6" component="h2" className={classes.title}>
+            Choose a name for your project
           </Typography>
-          <TextField id="standard-basic" label="My awesome project" />
+          <TextField id="standard-basic" label="Project name"  className={classes.textField}/>
         </CardContent>
-        <CardActions>
-          <Button  variant="contained" color="primary">Create project</Button>
+        <CardActions className={classes.actions}>
+          <Button fullWidth variant="contained" color="primary">Create project</Button>
         </CardActions>
       </Card>
     </SmallFormLayout>

@@ -12,8 +12,6 @@ const authUiConfig = {
   ]
 }
 
-
-
 const LoginPage: FunctionComponent<{}> = (props) => {
   return (
     <SmallFormLayout>

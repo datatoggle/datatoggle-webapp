@@ -12,6 +12,7 @@ import ProjectDashboard from './pages/ProjectDashboard'
 import firebase from 'firebase'
 import AuthCheck from './components/AuthCheck'
 import {HOME_URL, NEW_PROJECT_URL} from './service/urls'
+import LoginPage from './pages/LoginPage'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -30,19 +31,23 @@ function App() {
     <CssBaseline/>
     <BrowserRouter>
       <div>
-        <AuthCheck>
         <Switch>
           <Route path={NEW_PROJECT_URL}>
+            <AuthCheck>
             <NewProjectPage />
+            </AuthCheck>
           </Route>
           <Route path={HOME_URL}>
+            <AuthCheck>
             <ProjectListPage />
+            </AuthCheck>
           </Route>
           <Route path="/project">
+            <AuthCheck>
             <ProjectDashboard />
+            </AuthCheck>
           </Route>
         </Switch>
-        </AuthCheck>
       </div>
     </BrowserRouter>
   </>
