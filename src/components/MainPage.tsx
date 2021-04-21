@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import './MainPage.css';
-import firebase from "firebase/app";
-import "firebase/auth";
+import './MainPage.css'
+import firebase from "firebase/app"
+import "firebase/auth"
 import {StyledFirebaseAuth} from 'react-firebaseui'
 import {CustomerConfig, postGetConfig} from '../service/RestApi'
-import Button from '@material-ui/core/Button';
+import Dashboard from './Dashboard'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -14,7 +14,7 @@ const firebaseConfig = {
   messagingSenderId: "771767793475",
   appId: "1:771767793475:web:2300917ead156fc80921f6",
   measurementId: "G-EHS9SKZVVH"
-};
+}
 
 const authUiConfig = {
   signInFlow: 'popup',
@@ -23,9 +23,9 @@ const authUiConfig = {
     requireDisplayName: false,
   }
   ]
-};
+}
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig)
 
 enum AppStatus {
   waitingForLoginStatus,
@@ -43,12 +43,12 @@ interface AppState {
 
 function MainPage() {
 
-  const [appState, setAppState] = useState<AppState>({status: AppStatus.waitingForLoginStatus, config: null});
+  const [appState, setAppState] = useState<AppState>({status: AppStatus.waitingForLoginStatus, config: null})
 
   // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: firebase.User | null) => {
-      if (user != null){
+      if (user != null) {
         setAppState({status: AppStatus.waitingForDataSnapshot, config: null})
         const token = await user.getIdToken()
         const config = await postGetConfig(token)
@@ -56,31 +56,20 @@ function MainPage() {
       } else {
         setAppState({status: AppStatus.notLoggedIn, config: null})
       }
-    });
-    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-  }, []);
-
+    })
+    return () => unregisterAuthObserver() // Make sure we un-register Firebase observers when the component unmounts.
+  }, [])
 
 
   switch (appState.status) {
     case AppStatus.waitingForLoginStatus:
       return <h1>Waiting for loading status</h1>
     case AppStatus.notLoggedIn:
-      return <StyledFirebaseAuth uiConfig={authUiConfig} firebaseAuth={firebase.auth()} />
+      return <StyledFirebaseAuth uiConfig={authUiConfig} firebaseAuth={firebase.auth()}/>
     case AppStatus.waitingForDataSnapshot:
       return <><h1>Waiting for data snapshot</h1><a onClick={() => firebase.auth().signOut()}>Sign-out</a></>
     case AppStatus.loggedIn:
-      return <>
-        <h1>{appState.config?.apiKey}</h1>
-        {
-          appState.config!.destinations.map(d =>
-            <h2>{d.displayName}</h2>
-          )
-        }
-        <Button variant="contained" color="primary">
-          Hello World
-        </Button>
-      </>
+      return <Dashboard config={appState.config!}/>
     case AppStatus.loginError:
       return <h1>login error</h1>
   }
@@ -88,4 +77,4 @@ function MainPage() {
 
 }
 
-export default MainPage;
+export default MainPage
