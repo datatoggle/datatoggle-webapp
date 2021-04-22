@@ -8,8 +8,8 @@ import {makeStyles} from '@material-ui/core/styles'
 import MyAppBar from '../components/MyAppBar'
 import {Card, Link} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
+import LoadingPage from './LoadingPage'
 
 const useStyles = makeStyles({
   centerColumnContainer: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  projectCard: {
+  card: {
     width: '512px',
     height: '128px',
     borderRadius: '16px',
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     width: '100%',
     textTransform: 'none',
   },
-  headerProjects: {
+  header: {
     width: '512px',
     display: 'flex',
     paddingTop: '64px',
@@ -66,42 +66,42 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
 
   const classes = useStyles()
 
-  if (projects) {
-    if (projects.length === 0) {
-      return <Redirect to={NEW_PROJECT_URL}/>
-    } else {
-      return <>
-        <MyAppBar/>
-        <div className={classes.cardContainer}>
+  if (projects == null) {
+    return <LoadingPage/>
+  }
 
-          <div className={classes.headerProjects}>
-          <Typography variant="h5" component="h2">
-            Your projects
-          </Typography>
-            <div className={classes.grow}/>
-            <Link href={NEW_PROJECT_URL} underline={'none'}>
-            <Button variant="contained" color={'primary'}>New project</Button>
-            </Link>
-          </div>
-          <>
-            {projects.map((p: ProjectSnippet) => (
-              <Card className={classes.projectCard} onClick={() => null}>
-                <Link href={projectUrl(p.uri)} underline={'none'}>
-                  <Button className={classes.button}>
-                    <div className={classes.centerColumnContainer}>
-                      <Typography variant="h6" component="h2">
-                        {p.name}
-                      </Typography>
-                    </div>
-                  </Button>
-                </Link>
-              </Card>))}
-          </>
-        </div>
-      </>
-    }
+  if (projects.length === 0) {
+    return <Redirect to={NEW_PROJECT_URL}/>
   } else {
-    return <h1>LOADING PROJECTS</h1>
+    return <>
+      <MyAppBar/>
+      <div className={classes.cardContainer}>
+
+        <div className={classes.header}>
+        <Typography variant="h5" component="h2">
+          Your projects
+        </Typography>
+          <div className={classes.grow}/>
+          <Link href={NEW_PROJECT_URL} underline={'none'}>
+          <Button variant="contained" color={'primary'}>New project</Button>
+          </Link>
+        </div>
+        <>
+          {projects.map((p: ProjectSnippet) => (
+            <Card className={classes.card} onClick={() => null}>
+              <Link href={projectUrl(p.uri)} underline={'none'}>
+                <Button className={classes.button}>
+                  <div className={classes.centerColumnContainer}>
+                    <Typography variant="h6" component="h2">
+                      {p.name}
+                    </Typography>
+                  </div>
+                </Button>
+              </Link>
+            </Card>))}
+        </>
+      </div>
+    </>
   }
 }
 
