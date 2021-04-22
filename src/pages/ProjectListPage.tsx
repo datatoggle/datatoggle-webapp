@@ -11,8 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import AddIcon from '@material-ui/icons/Add'
 import Button from '@material-ui/core/Button'
 
-const useStyles = makeStyles(theme => ({
-  offset: theme.mixins.toolbar,
+const useStyles = makeStyles({
   centerColumnContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -23,11 +22,11 @@ const useStyles = makeStyles(theme => ({
   cardContainer: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   projectCard: {
-    width: '292px',
-    height: '196px',
+    width: '512px',
+    height: '128px',
     borderRadius: '16px',
     margin: '16px'
   },
@@ -35,8 +34,17 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     textTransform: 'none',
-  }
-}))
+  },
+  headerProjects: {
+    width: '512px',
+    display: 'flex',
+    paddingTop: '64px',
+    paddingBottom: '16px',
+  },
+  grow: {
+    flexGrow: 1,
+  },
+})
 
 
 interface OwnProps {
@@ -65,18 +73,16 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
       return <>
         <MyAppBar/>
         <div className={classes.cardContainer}>
-          <Card className={classes.projectCard} onClick={() => null}>
+
+          <div className={classes.headerProjects}>
+          <Typography variant="h5" component="h2">
+            Your projects
+          </Typography>
+            <div className={classes.grow}/>
             <Link href={NEW_PROJECT_URL} underline={'none'}>
-            <Button className={classes.button}>
-              <div className={classes.centerColumnContainer}>
-                <AddIcon color={'primary'}/>
-                <Typography variant="h6" component="h2" color={'primary'}>
-                  Create new project
-                </Typography>
-              </div>
-            </Button>
+            <Button variant="contained" color={'primary'}>New project</Button>
             </Link>
-          </Card>
+          </div>
           <>
             {projects.map((p: ProjectSnippet) => (
               <Card className={classes.projectCard} onClick={() => null}>
