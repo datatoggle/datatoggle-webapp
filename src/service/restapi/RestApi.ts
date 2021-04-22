@@ -11,9 +11,12 @@ type PostCreateProjectReply= {
   uri: string
 }
 
+
 type GetProjectReply = {
   project: Project
 }
+
+
 
 // https://create-react-app.dev/docs/adding-custom-environment-variables/
 async function doGetRequest(token: string, pathAndParams: string): Promise<any> {
@@ -57,5 +60,10 @@ export class RestApi {
     }
     const result: PostCreateProjectReply = await doPostRequest(this.authToken, 'api/customer/projects', body)
     return result.uri
+  }
+
+  async getProject(uri: string): Promise<Project>{
+    const result: GetProjectReply = await doGetRequest(this.authToken, `api/customer/project/${uri}`)
+    return result.project
   }
 }
