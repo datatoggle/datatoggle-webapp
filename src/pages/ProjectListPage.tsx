@@ -4,6 +4,13 @@ import {userContext} from '../components/AuthCheck'
 import {ProjectSnippet} from '../service/restapi/data'
 import {NEW_PROJECT_URL} from '../service/urls'
 import {UserContext} from '../service/UserContext'
+import {makeStyles} from '@material-ui/core/styles'
+import MyAppBar from '../components/MyAppBar'
+
+const useStyles = makeStyles(theme => ({
+  offset: theme.mixins.toolbar,
+}))
+
 
 interface OwnProps {}
 
@@ -15,18 +22,20 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
   const [data, setData] = useState<ProjectSnippet[] | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result: ProjectSnippet[] = await ctx.api.getProjectSnippets()
-      setData(result);
-    }
-    fetchData()
+    ctx.api.getProjectSnippets().then((result: ProjectSnippet[]) => {setData(result)})
   }, [ctx])
+
+  const classes = useStyles();
 
   if (data) {
     if (data.length === 0){
      return <Redirect to={NEW_PROJECT_URL} />
     } else {
-      return <h1>{data!.map(p => p.name)}</h1>
+      return <>
+        <MyAppBar/>
+        <h1>PROJECT LIST PAGE</h1>
+        <h1>{ctx.email}</h1>
+      </>
     }
   } else {
     return <h1>LOADING PROJECTS</h1>
