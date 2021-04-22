@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import React, {FunctionComponent, useContext, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
 import {TextField} from '@material-ui/core'
-import {TokenContext} from '../components/AuthCheck'
-import {createProject} from '../service/restapi/RestApi'
 import LoadingPage from './LoadingPage'
 import {Redirect} from 'react-router-dom'
 import {projectUrl} from '../service/urls'
+import {userContext} from '../components/AuthCheck'
+import {UserContext} from '../service/UserContext'
 
 
 
@@ -41,13 +41,13 @@ type ProjectCreationState = {
 
 const NewProjectPage: FunctionComponent<{ }> = (props) => {
   const classes = useStyles();
-  const token: string = useContext<string>(TokenContext)
+  const ctx: UserContext = useContext(userContext)
   const [name, setName] = useState<string>('')
   const [projectCreationState, setProjectCreationState] = useState<ProjectCreationState>({uri: null, creating: false})
 
   async function onCreateProject() {
     setProjectCreationState({uri: null, creating: true})
-    const projectUri: string = await createProject(token, name)
+    const projectUri: string = await ctx.api.createProject(name)
     setProjectCreationState({uri: projectUri, creating: false})
   }
 

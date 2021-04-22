@@ -1,9 +1,9 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import { Redirect } from 'react-router-dom';
-import {TokenContext} from '../components/AuthCheck'
+import {userContext} from '../components/AuthCheck'
 import {ProjectSnippet} from '../service/restapi/data'
-import {getProjectSnippets} from '../service/restapi/RestApi'
 import {NEW_PROJECT_URL} from '../service/urls'
+import {UserContext} from '../service/UserContext'
 
 interface OwnProps {}
 
@@ -11,16 +11,16 @@ type Props = OwnProps;
 
 const ProjectListPage: FunctionComponent<Props> = (props) => {
 
-  const token: string = useContext<string>(TokenContext)
+  const ctx: UserContext = useContext(userContext)
   const [data, setData] = useState<ProjectSnippet[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result: ProjectSnippet[] = await getProjectSnippets(token)
+      const result: ProjectSnippet[] = await ctx.api.getProjectSnippets()
       setData(result);
     }
     fetchData()
-  }, [token])
+  }, [ctx])
 
   if (data) {
     if (data.length === 0){

@@ -39,15 +39,23 @@ async function doPostRequest(token: string, path: string, body: any = {}): Promi
   return await response.json()
 }
 
-export async function getProjectSnippets(authToken: string): Promise<ProjectSnippet[]> {
-  const result: GetProjectSnippetsReply = await doGetRequest(authToken, 'api/customer/project_snippets')
-  return result.projects
-}
+export class RestApi {
 
-export async function createProject(authToken: string, projectName: string): Promise<string>{
-  const body: PostCreateProjectArgs = {
-    projectName: projectName
+  private readonly authToken: string
+  constructor(authToken: string) {
+    this.authToken = authToken
   }
-  const result: PostCreateProjectReply = await doPostRequest(authToken, 'api/customer/projects', body)
-  return result.uri
+
+  async getProjectSnippets(): Promise<ProjectSnippet[]> {
+    const result: GetProjectSnippetsReply = await doGetRequest(this.authToken, 'api/customer/project_snippets')
+    return result.projects
+  }
+
+  async createProject(projectName: string): Promise<string>{
+    const body: PostCreateProjectArgs = {
+      projectName: projectName
+    }
+    const result: PostCreateProjectReply = await doPostRequest(this.authToken, 'api/customer/projects', body)
+    return result.uri
+  }
 }
