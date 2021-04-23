@@ -74,7 +74,7 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
     return <Redirect to={NEW_PROJECT_URL}/>
   } else {
     return <>
-      <MyAppBar/>
+      <MyAppBar drawerDisplayed={false}/>
       <div className={classes.cardContainer}>
 
         <div className={classes.header}>

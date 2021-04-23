@@ -20,7 +20,7 @@ interface OwnProps {}
 
 type Props = OwnProps;
 
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,7 +63,7 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
           <img src={logo} alt="Logo" className={classes.logo}/>
         </Link>
       </div>
-      <Divider />
+
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>

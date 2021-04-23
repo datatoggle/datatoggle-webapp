@@ -7,6 +7,8 @@ import {HOME_URL} from '../service/urls'
 import {UserContext} from '../service/UserContext'
 import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
+import {drawerWidth} from '../pages/projectpage/MenuDrawer'
+import Typography from '@material-ui/core/Typography'
 
 
 const useStyles = makeStyles({
@@ -20,7 +22,10 @@ const useStyles = makeStyles({
 
 // TODO: Logo should redirect to home
 
-interface OwnProps {}
+interface OwnProps {
+  drawerDisplayed: boolean
+  projectName?: string
+}
 
 type Props = OwnProps;
 
@@ -45,11 +50,18 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
     await firebase.auth().signOut()
   };
 
-  return (<AppBar position="static" style={{background: 'transparent', boxShadow: 'none'}}>
+  return (<AppBar position="static" style={{background: 'transparent', boxShadow: 'none', paddingLeft: props.drawerDisplayed ? drawerWidth : 0}}>
     <Toolbar>
-      <Link href={HOME_URL}>
-        <img src={logo} alt="Logo" className={classes.logo}/>
-      </Link>
+      {
+        props.drawerDisplayed ? <></> : <Link href={HOME_URL}>
+          <img src={logo} alt="Logo" className={classes.logo}/>
+        </Link>
+      }
+      {
+        props.projectName && (<Typography color={'textPrimary'} variant="h6" component="h2">
+          {props.projectName}
+        </Typography>)
+      }
       <div className={classes.grow} />
       <IconButton
         aria-controls="simple-menu"
