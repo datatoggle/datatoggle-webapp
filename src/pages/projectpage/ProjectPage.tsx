@@ -38,7 +38,7 @@ const ProjectPage: FunctionComponent = () => {
 
     return (<>
       <MyAppBar drawerDisplayed={true} projectName={project.name}/>
-      <MenuDrawer/>
+      <MenuDrawer project={project}/>
       <div className={classes.root}>
       <OverviewPanel project={project}/>
       </div>

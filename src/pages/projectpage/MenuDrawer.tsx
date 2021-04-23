@@ -15,8 +15,13 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
+import HomeIcon from '@material-ui/icons/Home';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import {Destination, Project} from '../../service/restapi/data'
 
-interface OwnProps {}
+interface OwnProps {
+  project: Project
+}
 
 type Props = OwnProps;
 
@@ -65,21 +70,22 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
       </div>
 
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button key='project_overview'>
+          <ListItemIcon><HomeIcon/></ListItemIcon>
+          <ListItemText primary='Project overview' primaryTypographyProps={{ variant: "h6" }}/>
+        </ListItem>
+        <ListItem key='destinations'>
+          <ListItemIcon><ArrowForwardIcon /></ListItemIcon>
+          <ListItemText primary='Destinations' primaryTypographyProps={{ variant: "h6" }}/>
+        </ListItem>
+
+        {
+          props.project.destinations.map((d: Destination) => (
+            <ListItem button key={d.uri}>
+              <ListItemText inset primary={d.name}/>
+            </ListItem>
+          ))
+        }
       </List>
     </Drawer>)
 };

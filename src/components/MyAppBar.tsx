@@ -58,7 +58,7 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
         </Link>
       }
       {
-        props.projectName && (<Typography color={'textPrimary'} variant="h6" component="h2">
+        props.projectName && (<Typography color={'textPrimary'} variant="h6">
           {props.projectName}
         </Typography>)
       }
