@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import NewProjectPage from './pages/NewProjectPage'
 import ProjectListPage from './pages/ProjectListPage'
-import ProjectPage from './pages/ProjectPage'
+import ProjectPage from './pages/projectpage/ProjectPage'
 import firebase from 'firebase/app';
 import AuthCheck from './components/AuthCheck'
 import {HOME_URL, NEW_PROJECT_URL} from './service/urls'
