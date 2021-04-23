@@ -6,6 +6,7 @@ import {Project} from '../../service/restapi/data'
 import {useParams} from 'react-router-dom'
 import LoadingPage from '../LoadingPage'
 import OverviewPanel from './OverviewPanel'
+import MenuDrawer from './MenuDrawer'
 
 
 const ProjectPage: FunctionComponent = () => {
@@ -26,6 +27,7 @@ const ProjectPage: FunctionComponent = () => {
 
     return (<>
       <MyAppBar/>
+      <MenuDrawer/>
       <OverviewPanel project={project}/>
     </>)
 };
