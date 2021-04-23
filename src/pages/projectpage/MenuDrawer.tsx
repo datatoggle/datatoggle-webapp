@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import {
   createStyles,
-  Divider,
   Drawer,
   Link,
   List,
@@ -11,8 +10,6 @@ import {
   Theme,
 } from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
 import HomeIcon from '@material-ui/icons/Home';
@@ -20,7 +17,9 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import {Destination, Project} from '../../service/restapi/data'
 
 interface OwnProps {
-  project: Project
+  project: Project,
+  onDestinationClick: (d: Destination) => void
+  onProjectClick: () => void
 }
 
 type Props = OwnProps;
@@ -70,7 +69,7 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
       </div>
 
       <List>
-        <ListItem button key='project_overview'>
+        <ListItem button key='project_overview' onClick={props.onProjectClick}>
           <ListItemIcon><HomeIcon/></ListItemIcon>
           <ListItemText primary='Project overview' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
@@ -81,7 +80,7 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
         {
           props.project.destinations.map((d: Destination) => (
-            <ListItem button key={d.uri}>
+            <ListItem button key={d.uri} onClick={() => props.onDestinationClick(d)}>
               <ListItemText inset primary={d.name}/>
             </ListItem>
           ))
