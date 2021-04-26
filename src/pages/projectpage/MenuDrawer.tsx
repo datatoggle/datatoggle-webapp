@@ -13,7 +13,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
 import HomeIcon from '@material-ui/icons/Home';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
 import {Destination, Project} from '../../service/restapi/data'
 
 interface OwnProps {
@@ -45,9 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: 16,
       ...theme.mixins.toolbar
     },
-  }),
-);
-
+  })
+)
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {
 
@@ -74,7 +73,7 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
           <ListItemText primary='Project overview' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
         <ListItem key='destinations'>
-          <ListItemIcon><ArrowForwardIcon /></ListItemIcon>
+          <ListItemIcon><PlayForWorkIcon /></ListItemIcon>
           <ListItemText primary='Destinations' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
 

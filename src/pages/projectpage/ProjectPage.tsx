@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
+import React, {Component, FunctionComponent, useContext, useEffect, useState} from 'react'
 import MyAppBar from '../../components/MyAppBar'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
