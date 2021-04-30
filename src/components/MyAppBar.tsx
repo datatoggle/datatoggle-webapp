@@ -64,7 +64,7 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
       }
       <div className={classes.grow} />
       <IconButton
-        aria-controls="simple-menu"
+        aria-controls="login-menu"
         edge="end"
         aria-label="account of current user"
         aria-haspopup="true"
@@ -73,13 +73,13 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
         <AccountCircle />
       </IconButton>
       <Menu
-        id="simple-menu"
+        id="login-menu"
         anchorEl={anchorEl}
         keepMounted
         open={anchorEl !== null}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => null}>{ctx.fullName}</MenuItem>
+        <MenuItem onClick={() => null}>{ctx.user!!.displayName}</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
 

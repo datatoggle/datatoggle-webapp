@@ -1,22 +1,20 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import LoginPage from '../pages/LoginPage'
 import LoadingPage from '../pages/LoadingPage'
 import firebase from 'firebase/app'
 import {UserContext} from '../service/UserContext'
-
-
+import {LOGIN_URL} from '../service/urls'
+import {Redirect} from 'react-router-dom'
 
 interface AuthState {
   isLoggedIn: boolean | null,
   userContext: UserContext | null
 }
 
-
 interface OwnProps {
   children: React.ReactNode;
 }
 
-export const userContext = React.createContext<UserContext>(new UserContext('', '', ''));
+export const userContext = React.createContext<UserContext>(new UserContext(null));
 
 const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
 
@@ -26,15 +24,13 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: firebase.User | null) => {
       if (user != null) {
-        const token = await user.getIdToken()
-        setAuthState({isLoggedIn: true, userContext: new UserContext(token, user.displayName!, user.email!)})
+        setAuthState({isLoggedIn: true, userContext: new UserContext(user)})
       } else {
         setAuthState({isLoggedIn: false, userContext: null})
       }
     })
     return () => unregisterAuthObserver() // Make sure we un-register Firebase observers when the component unmounts.
   }, [])
-
 
   if (authState.isLoggedIn == null){
     return <LoadingPage/>
