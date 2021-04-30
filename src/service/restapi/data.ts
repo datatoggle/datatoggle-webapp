@@ -8,14 +8,24 @@ export type Project = {
   uri: string
   apiKey: string
   name: string
-  destinations: Destination[]
+  destinations: DestinationConfigWithInfo[]
 }
 
-export type Destination = {
+export type DestinationConfig = {
+  destinationUri: string,
+  isEnabled: boolean,
+  config: Object // it's a map, need to be converted with new Map(Object.entries(config))
+}
+
+export type DestinationConfigWithInfo = {
+  config: DestinationConfig,
+  paramErrors: Object, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
+}
+
+export type DestinationDef = {
   uri: string
-  isEnabled: boolean
   name: string
-  config: DestinationParam[]
+  paramDefs: DestinationParamDef[]
 }
 
 export enum ParamType {
@@ -23,9 +33,9 @@ export enum ParamType {
   String = "String",
 }
 
-export type DestinationParam = {
+export type DestinationParamDef = {
   uri: string
   name: string,
   type: ParamType,
-  value: boolean | string
+  defaultValue: boolean | string
 }

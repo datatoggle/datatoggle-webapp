@@ -1,10 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@material-ui/core/Typography'
-import {Card, createStyles, Link, Theme} from '@material-ui/core'
-import {NEW_PROJECT_URL, projectUrl} from '../../service/urls'
+import {Card, createStyles, Link, Menu, MenuItem, Theme} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
-import {Project, ProjectSnippet} from '../../service/restapi/data'
+import {DestinationDef, Project} from '../../service/restapi/data'
 import {makeStyles} from '@material-ui/core/styles'
+import {MyDestination} from './ProjectPage'
+import {UserContext} from '../../service/UserContext'
+import {userContext} from '../../components/AuthCheck'
+import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,7 +50,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 interface OwnProps {
-  project: Project
+  project: Project,
+  myDestinations: MyDestination[],
+  destinationDefs: DestinationDef[],
+  onMyDestinationClick: (myDestination: MyDestination) => void
+  onNewDestinationCreated: (destinationUri: string) => void
 }
 
 type Props = OwnProps;
@@ -56,6 +63,35 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
 
   const project = props.project
   const classes = useStyles();
+  const ctx: UserContext = useContext(userContext)
+
+
+  const [destinationMenuAnchorEl, setDestinationMenuAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleNewDestinationClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setDestinationMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleDestinationMenuClose = () => {
+    setDestinationMenuAnchorEl(null);
+  };
+
+  const onCreateNewDestination = async (destinationDef: DestinationDef) => {
+    const myDest = props.myDestinations.find(m => m.definition.uri === destinationDef.uri)
+    if (myDest) {
+      props.onMyDestinationClick(myDest)
+    } else {
+      const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(project.uri, {
+        destinationUri: destinationDef.uri,
+        isEnabled: false,
+        config: new Map()
+      })
+      if (result.saved){
+        props.onNewDestinationCreated(destinationDef.uri)
+      }
+    }
+  }
+
 
   return (     <div className={classes.cardContainer}>
 
@@ -72,27 +108,38 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
 
     <div className={classes.header}>
       <Typography variant="h5" component="h2">
-        Your destinations
+        My destinations
       </Typography>
       <div className={classes.grow}/>
-      <Link href={NEW_PROJECT_URL} underline={'none'}>
-        <Button variant="contained" color={'primary'}>New destination</Button>
-      </Link>
+        <Button variant="contained" color={'primary'} onClick={handleNewDestinationClick}>New destination</Button>
     </div>
     <>
-      {project.destinations.map((p: ProjectSnippet) => (
-        <Card className={classes.card} onClick={() => null}>
-          <Link href={projectUrl(p.uri)} underline={'none'}>
+      {props.myDestinations.map((d: MyDestination) => (
+        <Card className={classes.card} onClick={() => props.onMyDestinationClick(d)}>
+          <Link underline={'none'}>
             <Button className={classes.button}>
               <div className={classes.centerColumnContainer}>
                 <Typography variant="h6" component="h2">
-                  {p.name}
+                  {d.definition.name}
                 </Typography>
               </div>
             </Button>
           </Link>
         </Card>))}
     </>
+    <Menu
+      id="destinations-menu"
+      anchorEl={destinationMenuAnchorEl}
+      keepMounted
+      open={destinationMenuAnchorEl !== null}
+      onClose={handleDestinationMenuClose}
+    >
+      {
+        props.destinationDefs.map((d: DestinationDef) => (
+          <MenuItem onClick={() => onCreateNewDestination(d)}>{d.name}</MenuItem>
+        ))
+      }
+    </Menu>
   </div>);
 };
 

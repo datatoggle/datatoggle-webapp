@@ -1,14 +1,13 @@
 import {RestApi} from './restapi/RestApi'
+import firebase from 'firebase/app'
 
 export class UserContext {
-  readonly fullName: string
-  readonly email: string
+  readonly user: firebase.User | null
   readonly api: RestApi
 
-  constructor(authToken: string, fullName: string, email: string) {
-    this.fullName = fullName
-    this.email = email
-    this.api = new RestApi(authToken)
+  constructor(user: firebase.User | null) {
+    this.user = user
+    this.api = new RestApi(user)
   }
 
 }

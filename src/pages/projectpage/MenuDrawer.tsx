@@ -14,12 +14,12 @@ import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
 import HomeIcon from '@material-ui/icons/Home';
 import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
-import {Destination, Project} from '../../service/restapi/data'
+import {MyDestination} from './ProjectPage'
 
 interface OwnProps {
-  project: Project,
-  onDestinationClick: (d: Destination) => void
-  onProjectClick: () => void
+  myDestinations: MyDestination[],
+  onMyDestinationClick: (dest: MyDestination) => void
+  onProjectOverviewClick: () => void
 }
 
 type Props = OwnProps;
@@ -68,19 +68,19 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
       </div>
 
       <List>
-        <ListItem button key='project_overview' onClick={props.onProjectClick}>
+        <ListItem button key='project_overview' onClick={props.onProjectOverviewClick}>
           <ListItemIcon><HomeIcon/></ListItemIcon>
           <ListItemText primary='Project overview' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
-        <ListItem key='destinations'>
+        <ListItem key='My destinations'>
           <ListItemIcon><PlayForWorkIcon /></ListItemIcon>
           <ListItemText primary='Destinations' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
 
         {
-          props.project.destinations.map((d: Destination) => (
-            <ListItem button key={d.uri} onClick={() => props.onDestinationClick(d)}>
-              <ListItemText inset primary={d.name}/>
+          props.myDestinations.map((d: MyDestination) => (
+            <ListItem button key={d.definition.uri} onClick={() => props.onMyDestinationClick(d)}>
+              <ListItemText inset primary={d.definition.name}/>
             </ListItem>
           ))
         }

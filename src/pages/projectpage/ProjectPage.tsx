@@ -1,8 +1,8 @@
-import React, {Component, FunctionComponent, useContext, useEffect, useState} from 'react'
+import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import MyAppBar from '../../components/MyAppBar'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
-import {Destination, Project} from '../../service/restapi/data'
+import {DestinationConfigWithInfo, DestinationDef, Project} from '../../service/restapi/data'
 import {useParams} from 'react-router-dom'
 import LoadingPage from '../LoadingPage'
 import OverviewPanel from './OverviewPanel'
@@ -26,7 +26,12 @@ enum PanelType {
 
 interface Panel {
   type: PanelType
-  data: Destination | null
+  myDestination: MyDestination | null
+}
+
+export type MyDestination = {
+  definition: DestinationDef
+  config: DestinationConfigWithInfo
 }
 
 const ProjectPage: FunctionComponent = () => {
@@ -34,38 +39,59 @@ const ProjectPage: FunctionComponent = () => {
   let { uri } = useParams<{uri: string}>();
   const ctx: UserContext = useContext(userContext)
   const [project, setProject] = useState<Project | null>(null)
-  const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, data: null})
-
-
+  const [newDestinationUri, setNewDestinationUri] = useState<string | null>(null)
+  const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
+  const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, myDestination: null})
   const classes = useStyles();
+
 
   useEffect(() => {
     ctx.api.getProject(uri).then((result: Project) => {
       setProject(result)
     })
-  }, [ctx, uri])
+  }, [ctx, uri, newDestinationUri])
 
-  if (project == null) {
+  useEffect(() => {
+    ctx.api.getDestinationDefs().then((destinationDefs: DestinationDef[]) => {
+      setDestinationDefs(destinationDefs)
+    })
+  }, [ctx])
+
+  if (project == null || destinationDefs == null) {
     return <LoadingPage/>
   }
+
+  const myDests: MyDestination[] = project.destinations.map(c => { return  {
+    definition: destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
+    config: c
+  }})
 
   let panelComp;
   switch (panel.type) {
     case PanelType.ProjectOverview:
-      panelComp = <OverviewPanel project={project}/>
+      panelComp = <OverviewPanel
+        project={project}
+        myDestinations={myDests}
+        destinationDefs={destinationDefs}
+        onNewDestinationCreated={(uri: string) => setNewDestinationUri(uri)}
+        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, myDestination: d})}/>
       break;
     case PanelType.Destination:
-      panelComp = <DestinationPanel destination={panel.data as Destination}/>
+      panelComp = <DestinationPanel
+        myDestination={panel.myDestination as MyDestination}
+        saved={false}
+      />
       break;
 
   }
 
     return (<>
       <MyAppBar drawerDisplayed={true} projectName={project.name}/>
-      <MenuDrawer project={project}
-                  onProjectClick={() => setPanel({type: PanelType.ProjectOverview, data: null})}
-                  onDestinationClick={(d) => setPanel({type: PanelType.Destination, data: d})}
-      />
+      <MenuDrawer
+        myDestinations={myDests}
+        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, myDestination: d})}
+        onProjectOverviewClick={() => setPanel({type: PanelType.ProjectOverview, myDestination: null})}
+        />
       <div className={classes.root}>
         {
           panelComp
