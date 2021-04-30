@@ -5,6 +5,7 @@ import SmallFormLayout from '../components/SmallFormLayout'
 
 const authUiConfig = {
   signInFlow: 'popup',
+  signInSuccessUrl: '/',
   signInOptions: [{
     provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
     requireDisplayName: true,

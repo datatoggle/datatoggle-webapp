@@ -37,7 +37,7 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
   } else if (authState.isLoggedIn){
     return <userContext.Provider value={authState.userContext!}>{props.children}</userContext.Provider>
   } else {
-    return <LoginPage/>
+    return <Redirect push to={LOGIN_URL}/>
   }
 
 }
