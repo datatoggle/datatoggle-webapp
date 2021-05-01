@@ -14,12 +14,12 @@ export type Project = {
 export type DestinationConfig = {
   destinationUri: string,
   isEnabled: boolean,
-  config: Object // it's a map, need to be converted with new Map(Object.entries(config))
+  destinationSpecificConfig: Map<string, string | boolean | null> // it's a map, need to be converted with new Map(Object.entries(configWithInfo))
 }
 
 export type DestinationConfigWithInfo = {
   config: DestinationConfig,
-  paramErrors: Object, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
+  paramErrors: Map<string, string>, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
 }
 
 export type DestinationDef = {
