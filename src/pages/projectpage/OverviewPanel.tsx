@@ -84,7 +84,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
       const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(project.uri, {
         destinationUri: destinationDef.uri,
         isEnabled: false,
-        config: new Map()
+        destinationSpecificConfig: new Map()
       })
       if (result.saved){
         props.onNewDestinationCreated(destinationDef.uri)

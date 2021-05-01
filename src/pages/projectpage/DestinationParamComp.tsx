@@ -16,6 +16,7 @@ interface OwnProps {
   paramDef: DestinationParamDef
   error: string | null
   value: string | boolean | null
+  onValueChanged: (value: string | boolean) => void
 }
 
 type Props = OwnProps;
@@ -31,7 +32,8 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
         control={
           <Checkbox
             color="primary"
-
+            checked={props.value as boolean}
+            onClick={() => props.onValueChanged(!(props.value as boolean))}
           />
         }
         style={{marginLeft: 0}}
@@ -40,7 +42,13 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
       />
       break;
     case ParamType.String:
-      paramValueComp = <TextField  variant={'outlined'} fullWidth id={props.paramDef.uri}  label={props.paramDef.name}/>
+      paramValueComp = <TextField
+        variant={'outlined'}
+        fullWidth id={props.paramDef.uri}
+        label={props.paramDef.name}
+        value={props.value as string}
+        onChange={(event) => props.onValueChanged(event.target.value)}
+      />
       break;
 
   }

@@ -31,7 +31,7 @@ interface Panel {
 
 export type MyDestination = {
   definition: DestinationDef
-  config: DestinationConfigWithInfo
+  configWithInfo: DestinationConfigWithInfo
 }
 
 const ProjectPage: FunctionComponent = () => {
@@ -39,7 +39,7 @@ const ProjectPage: FunctionComponent = () => {
   let { uri } = useParams<{uri: string}>();
   const ctx: UserContext = useContext(userContext)
   const [project, setProject] = useState<Project | null>(null)
-  const [newDestinationUri, setNewDestinationUri] = useState<string | null>(null)
+  const [lastModifiedDestinationUri, setLastModifiedDestinationUri] = useState<string | null>(null)
   const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
   const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, myDestination: null})
   const classes = useStyles();
@@ -49,7 +49,7 @@ const ProjectPage: FunctionComponent = () => {
     ctx.api.getProject(uri).then((result: Project) => {
       setProject(result)
     })
-  }, [ctx, uri, newDestinationUri])
+  }, [ctx, uri, lastModifiedDestinationUri])
 
   useEffect(() => {
     ctx.api.getDestinationDefs().then((destinationDefs: DestinationDef[]) => {
@@ -63,7 +63,7 @@ const ProjectPage: FunctionComponent = () => {
 
   const myDests: MyDestination[] = project.destinations.map(c => { return  {
     definition: destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
-    config: c
+    configWithInfo: c
   }})
 
   let panelComp;
@@ -73,13 +73,15 @@ const ProjectPage: FunctionComponent = () => {
         project={project}
         myDestinations={myDests}
         destinationDefs={destinationDefs}
-        onNewDestinationCreated={(uri: string) => setNewDestinationUri(uri)}
+        onNewDestinationCreated={(uri: string) => setLastModifiedDestinationUri(uri)}
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, myDestination: d})}/>
       break;
     case PanelType.Destination:
       panelComp = <DestinationPanel
+        projectUri={uri}
         myDestination={panel.myDestination as MyDestination}
         saved={false}
+        onDestinationModified={(uri: string) => setLastModifiedDestinationUri(uri)}
       />
       break;
 

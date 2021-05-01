@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useContext} from 'react'
+import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import {Card, createStyles, Divider, FormControlLabel, Switch, Theme} from '@material-ui/core'
@@ -6,7 +6,7 @@ import DestinationParamComp from './DestinationParamComp'
 import Button from '@material-ui/core/Button'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import {DestinationParamDef} from '../../service/restapi/data'
+import {DestinationConfig, DestinationParamDef, Project} from '../../service/restapi/data'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {MyDestination} from './ProjectPage'
@@ -50,8 +50,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 interface OwnProps {
+  projectUri: string
   myDestination: MyDestination
   saved: boolean | null // null if displayed from project and not after post destination request
+  onDestinationModified: (destinationUri: string) => void
 }
 
 type Props = OwnProps;
@@ -61,9 +63,18 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
   const classes = useStyles();
   const ctx: UserContext = useContext(userContext)
 
-  const currentConfig = new Map(Object.entries(props.myDestination.config.config.config))
-  const errors = new Map(Object.entries(props.myDestination.config.paramErrors))
   const paramDefs = props.myDestination.definition.paramDefs
+
+  const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(props.myDestination.configWithInfo.config)
+  const [modifiedErrors, setModifiedErrors] = useState<Map<string, string>>(props.myDestination.configWithInfo.paramErrors)
+
+  useEffect(() => {
+    setModifiedConfig(props.myDestination.configWithInfo.config)
+  }, [props.myDestination.configWithInfo.config])
+
+  useEffect(() => {
+    setModifiedErrors(props.myDestination.configWithInfo.paramErrors)
+  }, [props.myDestination.configWithInfo.paramErrors])
 
   return (
     <div className={classes.columnContainer}>
@@ -80,8 +91,10 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={props.myDestination.config.config.isEnabled}
-                onChange={() => null}
+                checked={modifiedConfig.isEnabled}
+                onChange={(event, checked) => setModifiedConfig(prevState => {
+                  return {...prevState, isEnabled: checked}
+                })}
                 name="checkedB"
                 color="primary"
               />
@@ -93,12 +106,28 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           <Divider className={classes.separator}/>
         {
           paramDefs.map((p: DestinationParamDef) => (
-            <DestinationParamComp paramDef={p} error={errors.get(p.uri) || null} value={currentConfig.get(p.uri) || null} key={p.uri}/>
+            <DestinationParamComp
+              paramDef={p} error={modifiedErrors.get(p.uri) || null}
+              value={modifiedConfig.destinationSpecificConfig.get(p.uri) || null}
+              onValueChanged={(value) => setModifiedConfig(prevState => {
+                return {
+                  ...prevState,
+                  config: new Map(prevState.destinationSpecificConfig.set(p.uri, value))
+                }
+              })}
+              key={p.uri}/>
           ))
         }
         </CardContent>
         <CardActions className={classes.actions}>
-        <Button variant="contained" color="primary" onClick={() => null}>Save settings</Button>
+        <Button variant="contained" color="primary" onClick={async () => {
+          const reply = await ctx.api.postDestinationConfig(props.projectUri, modifiedConfig)
+          setModifiedErrors(reply.configWithInfo.paramErrors)
+          setModifiedConfig(reply.configWithInfo.config)
+          if (reply.saved){
+            props.onDestinationModified(props.myDestination.definition.uri)
+          }
+        }}>Save settings</Button>
         </CardActions>
       </Card>
 
