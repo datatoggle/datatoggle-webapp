@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface OwnProps {
   paramDef: DestinationParamDef
-  error: string | null
   value: string | boolean | null
   onValueChanged: (value: string | boolean) => void
 }

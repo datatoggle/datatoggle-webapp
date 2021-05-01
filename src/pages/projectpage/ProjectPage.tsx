@@ -26,7 +26,7 @@ enum PanelType {
 
 interface Panel {
   type: PanelType
-  myDestination: MyDestination | null
+  currentDestinationUri: string | null
 }
 
 export type MyDestination = {
@@ -39,9 +39,9 @@ const ProjectPage: FunctionComponent = () => {
   let { uri } = useParams<{uri: string}>();
   const ctx: UserContext = useContext(userContext)
   const [project, setProject] = useState<Project | null>(null)
-  const [lastModifiedDestinationUri, setLastModifiedDestinationUri] = useState<string | null>(null)
+  const [countModifiedDestination, setCountModifiedDestination] = useState<number>(0)
   const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
-  const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, myDestination: null})
+  const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, currentDestinationUri: null})
   const classes = useStyles();
 
 
@@ -49,7 +49,7 @@ const ProjectPage: FunctionComponent = () => {
     ctx.api.getProject(uri).then((result: Project) => {
       setProject(result)
     })
-  }, [ctx, uri, lastModifiedDestinationUri])
+  }, [ctx, uri, countModifiedDestination])
 
   useEffect(() => {
     ctx.api.getDestinationDefs().then((destinationDefs: DestinationDef[]) => {
@@ -73,15 +73,15 @@ const ProjectPage: FunctionComponent = () => {
         project={project}
         myDestinations={myDests}
         destinationDefs={destinationDefs}
-        onNewDestinationCreated={(uri: string) => setLastModifiedDestinationUri(uri)}
-        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, myDestination: d})}/>
+        onNewDestinationCreated={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
+        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}/>
       break;
     case PanelType.Destination:
       panelComp = <DestinationPanel
         projectUri={uri}
-        myDestination={panel.myDestination as MyDestination}
+        myDestination={myDests.find((d) => d.definition.uri == panel.currentDestinationUri)!!}
         saved={false}
-        onDestinationModified={(uri: string) => setLastModifiedDestinationUri(uri)}
+        onDestinationModified={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
       />
       break;
 
@@ -91,8 +91,8 @@ const ProjectPage: FunctionComponent = () => {
       <MyAppBar drawerDisplayed={true} projectName={project.name}/>
       <MenuDrawer
         myDestinations={myDests}
-        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, myDestination: d})}
-        onProjectOverviewClick={() => setPanel({type: PanelType.ProjectOverview, myDestination: null})}
+        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
+        onProjectOverviewClick={() => setPanel({type: PanelType.ProjectOverview, currentDestinationUri: null})}
         />
       <div className={classes.root}>
         {
