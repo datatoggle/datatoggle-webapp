@@ -4,12 +4,12 @@ import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {DestinationConfigWithInfo, DestinationDef, Project} from '../../service/restapi/data'
 import {useParams} from 'react-router-dom'
-import LoadingPage from '../LoadingPage'
 import OverviewPanel from './OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
 import {makeStyles} from '@material-ui/core/styles'
 import {createStyles, Theme} from '@material-ui/core'
 import DestinationPanel from './DestinationPanel'
+import LoadingProgress from '../../components/LoadingProgress'
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,7 +58,7 @@ const ProjectPage: FunctionComponent = () => {
   }, [ctx])
 
   if (project == null || destinationDefs == null) {
-    return <LoadingPage/>
+    return <LoadingProgress/>
   }
 
   const myDests: MyDestination[] = project.destinations.map(c => { return  {
@@ -79,7 +79,7 @@ const ProjectPage: FunctionComponent = () => {
     case PanelType.Destination:
       panelComp = <DestinationPanel
         projectUri={uri}
-        myDestination={myDests.find((d) => d.definition.uri == panel.currentDestinationUri)!!}
+        myDestination={myDests.find((d) => d.definition.uri === panel.currentDestinationUri)!!}
         saved={false}
         onDestinationModified={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
       />

@@ -9,7 +9,7 @@ import MyAppBar from '../components/MyAppBar'
 import {Card, Link} from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import LoadingPage from './LoadingPage'
+import LoadingProgress from '../components/LoadingProgress'
 
 const useStyles = makeStyles({
   centerColumnContainer: {
@@ -67,7 +67,7 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
   const classes = useStyles()
 
   if (projects == null) {
-    return <LoadingPage/>
+    return <LoadingProgress/>
   }
 
   if (projects.length === 0) {

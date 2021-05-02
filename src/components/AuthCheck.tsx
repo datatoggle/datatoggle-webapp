@@ -1,9 +1,9 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import LoadingPage from '../pages/LoadingPage'
 import firebase from 'firebase/app'
 import {UserContext} from '../service/UserContext'
 import {LOGIN_URL} from '../service/urls'
 import {Redirect} from 'react-router-dom'
+import LoadingProgress from './LoadingProgress'
 
 interface AuthState {
   isLoggedIn: boolean | null,
@@ -33,7 +33,7 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
   }, [])
 
   if (authState.isLoggedIn == null){
-    return <LoadingPage/>
+    return <LoadingProgress/>
   } else if (authState.isLoggedIn){
     return <userContext.Provider value={authState.userContext!}>{props.children}</userContext.Provider>
   } else {

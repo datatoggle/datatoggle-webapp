@@ -7,11 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import React, {FunctionComponent, useContext, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
 import {TextField} from '@material-ui/core'
-import LoadingPage from './LoadingPage'
 import {Redirect} from 'react-router-dom'
 import {projectUrl} from '../service/urls'
 import {userContext} from '../components/AuthCheck'
 import {UserContext} from '../service/UserContext'
+import LoadingProgress from '../components/LoadingProgress'
 
 
 
@@ -52,7 +52,7 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
   }
 
   if (projectCreationState.creating){
-    return <LoadingPage/>
+    return <LoadingProgress/>
   }
 
   if (projectCreationState.uri !== null){
