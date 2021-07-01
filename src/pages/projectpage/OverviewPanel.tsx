@@ -115,7 +115,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     </div>
     <>
       {props.myDestinations.map((d: MyDestination) => (
-        <Card className={classes.card} onClick={() => props.onMyDestinationClick(d)}>
+        <Card key={d.definition.uri} className={classes.card} onClick={() => props.onMyDestinationClick(d)}>
           <Link underline={'none'}>
             <Button className={classes.button}>
               <div className={classes.centerColumnContainer}>

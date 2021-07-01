@@ -88,7 +88,7 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
         </div>
         <>
           {projects.map((p: ProjectSnippet) => (
-            <Card className={classes.card} onClick={() => null}>
+            <Card key={p.uri} className={classes.card} onClick={() => null}>
               <Link href={projectUrl(p.uri)} underline={'none'}>
                 <Button className={classes.button}>
                   <div className={classes.centerColumnContainer}>
