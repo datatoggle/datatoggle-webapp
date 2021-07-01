@@ -4,6 +4,7 @@ import {UserContext} from '../service/UserContext'
 import {LOGIN_URL} from '../service/urls'
 import {Redirect} from 'react-router-dom'
 import LoadingProgress from './LoadingProgress'
+import datatoggle from 'datatoggle-sdk'
 
 interface AuthState {
   isLoggedIn: boolean | null,
@@ -24,11 +25,15 @@ const AuthCheck: FunctionComponent<OwnProps> = (props) =>{
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user: firebase.User | null) => {
       if (user != null) {
+        datatoggle.identify(user.uid, {
+          email: user.email || undefined
+        })
         setAuthState({isLoggedIn: true, userContext: new UserContext(user)})
       } else {
         setAuthState({isLoggedIn: false, userContext: null})
       }
     })
+
     return () => unregisterAuthObserver() // Make sure we un-register Firebase observers when the component unmounts.
   }, [])
 
