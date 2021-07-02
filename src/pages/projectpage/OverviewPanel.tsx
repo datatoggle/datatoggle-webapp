@@ -136,7 +136,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     >
       {
         props.destinationDefs.map((d: DestinationDef) => (
-          <MenuItem onClick={() => onCreateNewDestination(d)}>{d.name}</MenuItem>
+          <MenuItem key={d.uri} onClick={() => onCreateNewDestination(d)}>{d.name}</MenuItem>
         ))
       }
     </Menu>
