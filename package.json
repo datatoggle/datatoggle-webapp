@@ -29,7 +29,8 @@
     "start-prod": "REACT_APP_API_URL=https://server-65x5eusaga-ew.a.run.app react-scripts start",
     "build": "REACT_APP_API_URL=https://server-65x5eusaga-ew.a.run.app react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "chrome": "open -n -a /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security"
   },
   "eslintConfig": {
     "extends": [
