@@ -12,6 +12,7 @@ import {projectUrl} from '../service/urls'
 import {userContext} from '../components/AuthCheck'
 import {UserContext} from '../service/UserContext'
 import LoadingProgress from '../components/LoadingProgress'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
 
 
@@ -48,6 +49,10 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
   async function onCreateProject() {
     setProjectCreationState({uri: null, creating: true})
     const projectUri: string = await ctx.api.createProject(name)
+    datatoggle.track("create_project", {
+      project_name: name,
+      project_uri: projectUri
+    })
     setProjectCreationState({uri: projectUri, creating: false})
   }
 

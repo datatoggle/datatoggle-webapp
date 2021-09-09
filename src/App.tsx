@@ -13,7 +13,7 @@ import firebase from 'firebase/app';
 import AuthCheck from './components/AuthCheck'
 import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL} from './service/urls'
 import LoginPage from './pages/LoginPage'
-import datatoggle from 'datatoggle-sdk'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",

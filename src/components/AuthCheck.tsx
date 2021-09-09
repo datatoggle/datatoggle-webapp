@@ -4,7 +4,7 @@ import {UserContext} from '../service/UserContext'
 import {LOGIN_URL} from '../service/urls'
 import {Redirect} from 'react-router-dom'
 import LoadingProgress from './LoadingProgress'
-import datatoggle from 'datatoggle-sdk'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
 interface AuthState {
   isLoggedIn: boolean | null,
