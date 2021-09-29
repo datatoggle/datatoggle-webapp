@@ -26,7 +26,7 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
-datatoggle.init("d7fd4558-fbf6-4cc4-a002-61a45a2a8a69")
+datatoggle.init(process.env.REACT_APP_DATATOGGLE_API_KEY as string)
 
 function App() {
   return <>
