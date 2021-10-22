@@ -84,12 +84,6 @@ export class RestApi {
 
   async getProject(uri: string): Promise<Project>{
     const result: GetProjectReply = await this.doGetRequest(`api/customer/project/${uri}`)
-
-    result.project.destinations.forEach((d: DestinationConfigWithInfo) => {
-      d.config.destinationSpecificConfig = new Map(Object.entries(d.config.destinationSpecificConfig))
-      d.paramErrors = new Map(Object.entries(d.paramErrors))
-    })
-
     return result.project
   }
 
@@ -99,21 +93,11 @@ export class RestApi {
   }
 
   async postDestinationConfig(projectUri: string, config: DestinationConfig): Promise<PostDestinationConfigReply>{
-    const objectConfig: DestinationConfig = {
-      ...config,
-      // @ts-ignore
-      destinationSpecificConfig: Object.fromEntries(config.destinationSpecificConfig.entries())
-    }
-
     const body: PostDestinationConfigArgs = {
       projectUri: projectUri,
-      config: objectConfig,
+      config: config,
     }
-    const result: PostDestinationConfigReply = await this.doPostRequest('api/customer/destination-configs', body)
-
-    result.configWithInfo.config.destinationSpecificConfig = new Map(Object.entries(result.configWithInfo.config.destinationSpecificConfig))
-    result.configWithInfo.paramErrors = new Map(Object.entries(result.configWithInfo.paramErrors))
-    return result
+    return await this.doPostRequest('api/customer/destination-configs', body)
   }
 
 }

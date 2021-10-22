@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@material-ui/core/Typography'
-import {Card, createStyles, Link, Menu, MenuItem, Theme} from '@material-ui/core'
+import {Card, createStyles, Link, Menu, MenuItem} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import {DestinationDef, Project} from '../../service/restapi/data'
 import {makeStyles} from '@material-ui/core/styles'
@@ -8,9 +8,10 @@ import {MyDestination} from './ProjectPage'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     centerColumnContainer: {
       display: 'flex',
@@ -84,10 +85,14 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
       const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(project.uri, {
         destinationUri: destinationDef.uri,
         isEnabled: false,
-        destinationSpecificConfig: new Map()
+        destinationSpecificConfig: {}
       })
       if (result.saved){
         props.onNewDestinationCreated(destinationDef.uri)
+        datatoggle.track("create_destination", {
+          project_uri: props.project.uri,
+          destination_uri: destinationDef.uri
+        })
       }
     }
   }

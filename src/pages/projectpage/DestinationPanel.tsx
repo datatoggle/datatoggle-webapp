@@ -1,17 +1,18 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
-import {Card, createStyles, Divider, FormControlLabel, Switch, Theme} from '@material-ui/core'
+import {Card, createStyles, Divider, FormControlLabel, Switch} from '@material-ui/core'
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@material-ui/core/Button'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import {DestinationConfig, DestinationParamDef} from '../../service/restapi/data'
+import {DestinationConfig, DestinationParam, DestinationParamDef} from '../../service/restapi/data'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {MyDestination} from './ProjectPage'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     columnContainer: {
       display: 'flex',
@@ -66,7 +67,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
   const paramDefs = props.myDestination.definition.paramDefs
 
   const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(props.myDestination.configWithInfo.config)
-
+  // init modifiedConfig with the passed in props
   useEffect(() => {
     setModifiedConfig(props.myDestination.configWithInfo.config)
   }, [props.myDestination.configWithInfo.config])
@@ -100,17 +101,21 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           </div>
           <Divider className={classes.separator}/>
         {
-          paramDefs.map((p: DestinationParamDef) => (
+          paramDefs.map((paramDef: DestinationParamDef) => (
             <DestinationParamComp
-              paramDef={p}
-              value={modifiedConfig.destinationSpecificConfig.get(p.uri) || null}
-              onValueChanged={(value) => setModifiedConfig(prevState => {
-                return {
-                  ...prevState,
-                  destinationSpecificConfig: new Map(prevState.destinationSpecificConfig).set(p.uri, value)
+              paramDef={paramDef}
+              initialValue={props.myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
+              onValueChanged={(value: DestinationParam) => {
+                let newSpecificConfig = {
+                  ...modifiedConfig.destinationSpecificConfig
                 }
-              })}
-              key={p.uri}/>
+                newSpecificConfig[paramDef.uri] = value
+                setModifiedConfig((prevState: DestinationConfig) => { return {
+                  ...prevState,
+                  destinationSpecificConfig: newSpecificConfig
+                }})
+              }}
+              key={paramDef.uri}/>
           ))
         }
         </CardContent>
@@ -123,12 +128,14 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           const reply = await ctx.api.postDestinationConfig(props.projectUri, modifiedConfig)
           if (reply.saved){
             props.onDestinationModified(props.myDestination.definition.uri)
+            datatoggle.track("save_destination_config", {
+              project_uri: props.projectUri,
+              destination_uri: props.myDestination.definition.uri
+            })
           }
         }}>{props.myDestination.configWithInfo.config === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
         </CardActions>
       </Card>
-
-
     </div>
   ) // SAVE BUTTON UPDATE PARAMS
 };

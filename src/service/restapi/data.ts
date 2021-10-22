@@ -14,12 +14,12 @@ export type Project = {
 export type DestinationConfig = {
   destinationUri: string,
   isEnabled: boolean,
-  destinationSpecificConfig: Map<string, string | boolean | null> // it's a map, need to be converted with new Map(Object.entries(configWithInfo))
+  destinationSpecificConfig: DestinationSpecificConfig
 }
 
 export type DestinationConfigWithInfo = {
   config: DestinationConfig,
-  paramErrors: Map<string, string>, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
+  paramErrors: Object, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
 }
 
 export type DestinationDef = {
@@ -28,14 +28,31 @@ export type DestinationDef = {
   paramDefs: DestinationParamDef[]
 }
 
+export type DestinationSpecificConfig = {
+  [key: string]: DestinationParam
+}
+
+export type ParamDict = {
+  [key: string]: AtomicType
+}
+
+export type AtomicType = boolean | string | number
+
+export type DestinationParam = AtomicType | ParamDict
+
 export enum ParamType {
+  Int = "Int",
+  Float = "Float",
   Boolean= "Boolean",
   String = "String",
+  Dict = "Dict"
 }
 
 export type DestinationParamDef = {
   uri: string
   name: string,
   type: ParamType,
-  defaultValue: boolean | string
+  defaultValue: DestinationParam
 }
+
+
