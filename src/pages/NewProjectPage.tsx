@@ -50,7 +50,6 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
     setProjectCreationState({uri: null, creating: true})
     const projectUri: string = await ctx.api.createProject(name)
     datatoggle.track("create_project", {
-      project_name: name,
       project_uri: projectUri
     })
     setProjectCreationState({uri: projectUri, creating: false})
