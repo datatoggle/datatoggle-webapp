@@ -29,6 +29,11 @@ type ModifiableParamValue = AtomicType | [String,AtomicType][]
 
 type Props = OwnProps;
 
+function getInitialModified(initialValue: DestinationParam, paramDef: DestinationParamDef): ModifiableParamValue {
+  return paramDef.type === ParamType.Dict ?
+    Object.entries(initialValue as ParamDict) : (initialValue as AtomicType)
+}
+
 const DestinationParamComp: FunctionComponent<Props> = (props) => {
 
   const classes = useStyles();
@@ -43,12 +48,8 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
     props.onValueChanged(Object.fromEntries(pairs))
   }
 
-  const getInitialModified = (): ModifiableParamValue => props.paramDef.type === ParamType.Dict ?
-    Object.entries(props.initialValue as ParamDict) : (props.initialValue as ModifiableParamValue)
-
-  const [modifiedParam, setModifiedParam] = useState<ModifiableParamValue>(getInitialModified())
-  useEffect(() => setModifiedParam(getInitialModified()), [props.initialValue])
-
+  const [modifiedParam, setModifiedParam] = useState<ModifiableParamValue>(getInitialModified(props.initialValue, props.paramDef))
+  useEffect(() => setModifiedParam(getInitialModified(props.initialValue, props.paramDef)), [props.initialValue, props.paramDef])
 
   let paramValueComp
   switch (props.paramDef.type) {
