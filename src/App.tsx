@@ -3,18 +3,12 @@ import "firebase/auth"
 import {CssBaseline} from '@material-ui/core'
 import {
   BrowserRouter,
-  Switch,
-  Route
-} from 'react-router-dom';
-import NewProjectPage from './pages/NewProjectPage'
-import ProjectListPage from './pages/ProjectListPage'
-import ProjectPage from './pages/projectpage/ProjectPage'
+  Switch
+} from 'react-router-dom'
 import firebase from 'firebase/app';
-import AuthCheck from './components/AuthCheck'
-import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL} from './service/urls'
-import LoginPage from './pages/LoginPage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {Options} from '@datatoggle/datatoggle-sdk/'
+import Routes from './routes'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -33,36 +27,11 @@ function App() {
   return <>
     <CssBaseline/>
     <BrowserRouter>
-      <div>
         <Switch>
-          <Route exact path={NEW_PROJECT_URL}>
-            <AuthCheck>
-              <NewProjectPage />
-            </AuthCheck>
-          </Route>
-          <Route exact path="/project/:uri">
-            <AuthCheck>
-            <ProjectPage />
-            </AuthCheck>
-          </Route>
-          <Route exact path={LOGIN_URL}>
-            <LoginPage />
-          </Route>
-          <Route exact path={HOME_URL}>
-            <AuthCheck>
-            <ProjectListPage />
-            </AuthCheck>
-          </Route>
+          <Routes/>
         </Switch>
-      </div>
     </BrowserRouter>
   </>
 }
 
 export default App
-
-// list of screens:
-// * login, affiche le login, redirige vers liste de projets si loggé
-// list of projects, affiche la liste de projets, redirige sur new project si zero
-// new project
-// project dashboard

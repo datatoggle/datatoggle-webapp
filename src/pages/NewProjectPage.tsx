@@ -52,6 +52,7 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
     datatoggle.track("create_project", {
       project_uri: projectUri
     })
+
     setProjectCreationState({uri: projectUri, creating: false})
   }
 

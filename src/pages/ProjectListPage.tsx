@@ -64,6 +64,7 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
     })
   }, [ctx])
 
+
   const classes = useStyles()
 
   if (projects == null) {
