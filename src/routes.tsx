@@ -7,10 +7,11 @@ import NewProjectPage from './pages/NewProjectPage'
 import ProjectListPage from './pages/ProjectListPage'
 import ProjectPage from './pages/projectpage/ProjectPage'
 import AuthCheck from './components/AuthCheck'
-import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL} from './service/urls'
+import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL, SIGNUP_URL} from './service/urls'
 import LoginPage from './pages/LoginPage'
 import {useEffect} from 'react'
 import datatoggle from '@datatoggle/datatoggle-sdk'
+import SignupPage from './pages/SignupPage'
 
 function Routes() {
 
@@ -34,6 +35,9 @@ function Routes() {
         <Route exact path={LOGIN_URL}>
           <LoginPage />
         </Route>
+      <Route exact path={SIGNUP_URL}>
+        <SignupPage />
+      </Route>
         <Route exact path={HOME_URL}>
           <AuthCheck>
             <ProjectListPage />

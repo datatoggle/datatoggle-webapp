@@ -5,19 +5,26 @@ import logo from '../images/logo.png';
 const useStyles = makeStyles({
   page: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
     height: '100%',
-    marginTop: 64
+    padding: 32+16+8,
+    paddingTop: 16+8,
+    alignItems: 'center'
   },
   column: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    maxWidth: 480,
+    width: '100%'
+  },
+  logoBar: {
+    width: '100%',
+    paddingBottom: 32+8
   },
   logo: {
-    alignSelf: 'center',
-    width: 256,
-    marginBottom: 64
+    width: 128+32,
   }
 });
 
@@ -30,8 +37,10 @@ const LoginPage: FunctionComponent<Props> = (props) => {
 
   return (
     <div className={classes.page}>
+      <div className={classes.logoBar}>
+        <img className={classes.logo} src={logo} alt={'DataToggle'}/>
+      </div>
       <div className={classes.column}>
-        <img className={classes.logo} src={logo} alt={'Data Toggle'}/>
         {props.children}
       </div>
     </div>
