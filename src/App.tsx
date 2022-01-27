@@ -1,6 +1,7 @@
 import './App.css'
 import "firebase/auth"
-import {CssBaseline} from '@material-ui/core'
+import {createMuiTheme, CssBaseline} from '@material-ui/core'
+import {ThemeProvider} from '@material-ui/core/styles'
 import {
   BrowserRouter,
   Switch
@@ -34,15 +35,19 @@ datatoggle.init(process.env.REACT_APP_DATATOGGLE_API_KEY as string, new Options(
 //   },
 // });
 
+const theme = createMuiTheme();
+
 
 function App() {
   return <>
+    <ThemeProvider theme={theme}>
     <CssBaseline/>
     <BrowserRouter>
         <Switch>
           <Routes/>
         </Switch>
     </BrowserRouter>
+    </ThemeProvider>
   </>
 }
 
