@@ -24,19 +24,22 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 datatoggle.init(process.env.REACT_APP_DATATOGGLE_API_KEY as string, new Options(true))
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#4E12C5',
-//     },
-//     secondary: {
-//       main: '#89c512',
-//     },
-//   },
-// });
-
-const theme = createTheme();
-
+/*
+following https://bareynol.github.io/mui-theme-creator/
+and
+https://material.io/inline-tools/color/
+with complementary color
+ */
+const theme: Theme = createTheme({
+  palette: {
+    primary: {
+      main: '#4E12C5',
+    },
+    secondary: {
+      main: '#89c512',
+    },
+  },
+});
 
 function App() {
   return <>
