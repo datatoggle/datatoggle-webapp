@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Drawer, Link, List, ListItem, ListItemIcon, ListItemText, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
+import { Drawer, Link, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
@@ -18,8 +17,7 @@ type Props = OwnProps;
 
 export const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles({
     logo: {
       height: 48
     },
@@ -34,10 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerToolbar: {
       display: 'flex',
       alignItems: 'center',
-      marginLeft: 16,
-      ...theme.mixins.toolbar
+      marginLeft: 16
     },
-  })
+  }
 )
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {

@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import { Checkbox, FormControlLabel, TextField, Theme } from '@mui/material';
+import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../service/restapi/data'
 import makeStyles from '@mui/styles/makeStyles';
 import Typography from '@mui/material/Typography'
