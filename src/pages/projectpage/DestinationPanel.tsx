@@ -2,7 +2,6 @@ import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import Typography from '@mui/material/Typography'
 import makeStyles from '@mui/styles/makeStyles';
 import { Card, Divider, FormControlLabel, Switch } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@mui/material/Button'
 import CardActions from '@mui/material/CardActions'
@@ -13,8 +12,7 @@ import {userContext} from '../../components/AuthCheck'
 import {MyDestination} from './ProjectPage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 
-const useStyles = makeStyles(() =>
-  createStyles({
+const useStyles = makeStyles({
     columnContainer: {
       display: 'flex',
       flexDirection: 'column',
@@ -48,7 +46,7 @@ const useStyles = makeStyles(() =>
       marginTop: '24px',
       marginBottom: '24px'
     }
-  }))
+  })
 
 
 interface OwnProps {

@@ -1,7 +1,6 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@mui/material/Typography'
 import { Card, Link, Menu, MenuItem } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
 import Button from '@mui/material/Button'
 import {DestinationDef, Project} from '../../service/restapi/data'
 import makeStyles from '@mui/styles/makeStyles';
@@ -12,8 +11,7 @@ import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 
 
-const useStyles = makeStyles(() =>
-  createStyles({
+const useStyles = makeStyles({
     centerColumnContainer: {
       display: 'flex',
       justifyContent: 'center',
@@ -46,7 +44,7 @@ const useStyles = makeStyles(() =>
     grow: {
       flexGrow: 1,
     },
-  }),
+  }
 );
 
 

@@ -1,14 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
 import { Checkbox, FormControlLabel, TextField, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
 import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../service/restapi/data'
 import makeStyles from '@mui/styles/makeStyles';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import DestinationParamDictEntry from './DestinationParamDictEntry'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles({
     root: {
       paddingTop: 8,
       paddingBottom: 8
@@ -16,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     keyValuePair: {
 
     }
-  }))
+  })
 
 
 interface OwnProps {
