@@ -1,12 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import makeStyles from '@mui/styles/makeStyles';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import React, {FunctionComponent, useContext, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
-import {TextField} from '@material-ui/core'
+import {TextField} from '@mui/material'
 import {Redirect} from 'react-router-dom'
 import {projectUrl} from '../service/urls'
 import {userContext} from '../components/AuthCheck'

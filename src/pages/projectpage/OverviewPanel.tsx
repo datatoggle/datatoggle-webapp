@@ -1,9 +1,10 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
-import Typography from '@material-ui/core/Typography'
-import {Card, createStyles, Link, Menu, MenuItem} from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import Typography from '@mui/material/Typography'
+import { Card, Link, Menu, MenuItem } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import Button from '@mui/material/Button'
 import {DestinationDef, Project} from '../../service/restapi/data'
-import {makeStyles} from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import {MyDestination} from './ProjectPage'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'

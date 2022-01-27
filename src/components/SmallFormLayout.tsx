@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import React, {FunctionComponent} from 'react'
 import logo from '../images/logo.png';
 

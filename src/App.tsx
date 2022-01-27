@@ -1,7 +1,7 @@
 import './App.css'
 import "firebase/auth"
-import {createMuiTheme, CssBaseline} from '@material-ui/core'
-import {ThemeProvider} from '@material-ui/core/styles'
+import {createTheme, CssBaseline} from '@mui/material'
+import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material/styles';
 import {
   BrowserRouter,
   Switch
@@ -10,6 +10,13 @@ import firebase from 'firebase/app';
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {Options} from '@datatoggle/datatoggle-sdk/'
 import Routes from './routes'
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -35,20 +42,22 @@ datatoggle.init(process.env.REACT_APP_DATATOGGLE_API_KEY as string, new Options(
 //   },
 // });
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 
 function App() {
   return <>
-    <ThemeProvider theme={theme}>
-    <CssBaseline/>
-    <BrowserRouter>
-        <Switch>
-          <Routes/>
-        </Switch>
-    </BrowserRouter>
-    </ThemeProvider>
-  </>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+      <CssBaseline/>
+      <BrowserRouter>
+          <Switch>
+            <Routes/>
+          </Switch>
+      </BrowserRouter>
+      </ThemeProvider>
+    </StyledEngineProvider>
+  </>;
 }
 
 export default App

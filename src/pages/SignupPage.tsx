@@ -1,9 +1,9 @@
 import React, {FunctionComponent, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
-import {TextField} from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import {makeStyles} from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
+import {TextField} from '@mui/material'
+import Typography from '@mui/material/Typography'
+import makeStyles from '@mui/styles/makeStyles';
+import Button from '@mui/material/Button'
 import './firebaseui-auth.css'
 
 const authUiConfig = {

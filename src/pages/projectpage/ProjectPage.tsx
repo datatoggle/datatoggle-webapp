@@ -6,8 +6,9 @@ import {DestinationConfigWithInfo, DestinationDef, Project} from '../../service/
 import {useParams} from 'react-router-dom'
 import OverviewPanel from './OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
-import {makeStyles} from '@material-ui/core/styles'
-import {createStyles, Theme} from '@material-ui/core'
+import makeStyles from '@mui/styles/makeStyles';
+import { Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
 import DestinationPanel from './DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
 

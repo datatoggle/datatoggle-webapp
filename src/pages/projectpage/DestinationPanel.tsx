@@ -1,11 +1,12 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
-import Typography from '@material-ui/core/Typography'
-import {makeStyles} from '@material-ui/core/styles'
-import {Card, createStyles, Divider, FormControlLabel, Switch} from '@material-ui/core'
+import Typography from '@mui/material/Typography'
+import makeStyles from '@mui/styles/makeStyles';
+import { Card, Divider, FormControlLabel, Switch } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
 import DestinationParamComp from './DestinationParamComp'
-import Button from '@material-ui/core/Button'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
+import Button from '@mui/material/Button'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
 import {DestinationConfig, DestinationParam, DestinationParamDef} from '../../service/restapi/data'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'

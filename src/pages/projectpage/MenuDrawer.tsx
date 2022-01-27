@@ -1,19 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import {
-  createStyles,
-  Drawer,
-  Link,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Theme,
-} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
+import { Drawer, Link, List, ListItem, ListItemIcon, ListItemText, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
-import HomeIcon from '@material-ui/icons/Home';
-import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+import HomeIcon from '@mui/icons-material/Home';
+import PlayForWorkIcon from '@mui/icons-material/PlayForWork';
 import {MyDestination} from './ProjectPage'
 
 interface OwnProps {

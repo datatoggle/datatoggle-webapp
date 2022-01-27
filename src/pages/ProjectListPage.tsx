@@ -4,11 +4,11 @@ import {userContext} from '../components/AuthCheck'
 import {ProjectSnippet} from '../service/restapi/data'
 import { NEW_PROJECT_URL, projectUrl} from '../service/urls'
 import {UserContext} from '../service/UserContext'
-import {makeStyles} from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import MyAppBar from '../components/MyAppBar'
-import {Card, Link} from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import {Card, Link} from '@mui/material'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 import LoadingProgress from '../components/LoadingProgress'
 
 const useStyles = makeStyles({
