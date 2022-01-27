@@ -1,50 +1,40 @@
-import makeStyles from '@mui/styles/makeStyles';
 import React, {FunctionComponent} from 'react'
 import logo from '../images/logo.png';
-
-const useStyles = makeStyles({
-  page: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    padding: 32+16+8,
-    paddingTop: 16+8,
-    alignItems: 'center'
-  },
-  column: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: 480,
-    width: '100%'
-  },
-  logoBar: {
-    width: '100%',
-    paddingBottom: 32+8
-  },
-  logo: {
-    width: 128+32,
-  }
-});
+import {Box} from '@mui/material'
 
 interface Props {
   children: React.ReactNode;
 }
 
-const LoginPage: FunctionComponent<Props> = (props) => {
-  const classes = useStyles();
+const SmallFormLayout: FunctionComponent<Props> = (props) => {
 
   return (
-    <div className={classes.page}>
-      <div className={classes.logoBar}>
-        <img className={classes.logo} src={logo} alt={'DataToggle'}/>
-      </div>
-      <div className={classes.column}>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      padding: 7,
+      paddingTop: 3,
+      alignItems: 'center'
+    }}>
+      <Box sx={{
+        width: '100%',
+        paddingBottom: 5
+      }}>
+        <Box component="img" sx={{width: 128+32}} src={logo} alt={'DataToggle'}/>
+      </Box>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: 480,
+        width: '100%'}}
+      >
         {props.children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
-export default LoginPage
+export default SmallFormLayout

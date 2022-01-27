@@ -6,16 +6,9 @@ import {DestinationConfigWithInfo, DestinationDef, Project} from '../../service/
 import {useParams} from 'react-router-dom'
 import OverviewPanel from './OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
-import makeStyles from '@mui/styles/makeStyles';
 import DestinationPanel from './DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
-
-
-const useStyles = makeStyles({
-    root: {
-      marginLeft: drawerWidth
-    }
-  })
+import {Box} from '@mui/material'
 
 enum PanelType {
   ProjectOverview,
@@ -40,8 +33,6 @@ const ProjectPage: FunctionComponent = () => {
   const [countModifiedDestination, setCountModifiedDestination] = useState<number>(0)
   const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
   const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, currentDestinationUri: null})
-  const classes = useStyles();
-
 
   useEffect(() => {
     ctx.api.getProject(uri).then((result: Project) => {
@@ -92,11 +83,11 @@ const ProjectPage: FunctionComponent = () => {
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
         onProjectOverviewClick={() => setPanel({type: PanelType.ProjectOverview, currentDestinationUri: null})}
         />
-      <div className={classes.root}>
+      <Box sx={{marginLeft: drawerWidth}}>
         {
           panelComp
         }
-      </div>
+      </Box>
     </>)
 };
 

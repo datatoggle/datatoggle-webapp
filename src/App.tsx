@@ -10,6 +10,7 @@ import firebase from 'firebase/app';
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {Options} from '@datatoggle/datatoggle-sdk/'
 import Routes from './routes'
+import "@mui/styles"
 
 
 declare module '@mui/styles/defaultTheme' {

@@ -1,7 +1,6 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
-import {AppBar, IconButton, Link, Menu, MenuItem, Toolbar} from '@mui/material'
+import {AppBar, Box, IconButton, Link, Menu, MenuItem, Toolbar} from '@mui/material'
 import logo from '../images/logo.png'
-import makeStyles from '@mui/styles/makeStyles';
 import {AccountCircle} from '@mui/icons-material'
 import {HOME_URL} from '../service/urls'
 import {UserContext} from '../service/UserContext'
@@ -9,18 +8,6 @@ import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
 import {drawerWidth} from '../pages/projectpage/MenuDrawer'
 import Typography from '@mui/material/Typography'
-
-
-const useStyles = makeStyles({
-  grow: {
-    flexGrow: 1,
-  },
-  logo: {
-    height: 48
-  }
-});
-
-// TODO: Logo should redirect to home
 
 interface OwnProps {
   drawerDisplayed: boolean
@@ -30,7 +17,6 @@ interface OwnProps {
 type Props = OwnProps;
 
 const MyAppBar: FunctionComponent<Props> = (props) => {
-  const classes = useStyles();
 
   const ctx = useContext<UserContext>(userContext)
 
@@ -51,11 +37,11 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <AppBar position="static" style={{background: 'transparent', boxShadow: 'none', paddingLeft: props.drawerDisplayed ? drawerWidth : 0}}>
+    <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: props.drawerDisplayed ? drawerWidth : 0}}>
       <Toolbar>
         {
           props.drawerDisplayed ? <></> : <Link href={HOME_URL}>
-            <img src={logo} alt="Logo" className={classes.logo}/>
+            <Box component="img" src={logo} alt="Logo" sx={{height: '48px'}}/>
           </Link>
         }
         {
@@ -63,14 +49,16 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
             {props.projectName}
           </Typography>)
         }
-        <div className={classes.grow} />
+        <Box sx={{flexGrow: 1}} />
         <IconButton
           aria-controls="login-menu"
           edge="end"
           aria-label="account of current user"
           aria-haspopup="true"
           onClick={handleClick}
-          size="large">
+          size="large"
+          sx={{height: '48px'}}
+        >
           <AccountCircle />
         </IconButton>
         <Menu

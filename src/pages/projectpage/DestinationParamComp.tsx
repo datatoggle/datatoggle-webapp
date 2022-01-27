@@ -1,21 +1,9 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import { Checkbox, FormControlLabel, TextField } from '@mui/material';
+import {Box, Checkbox, FormControlLabel, TextField} from '@mui/material'
 import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../service/restapi/data'
-import makeStyles from '@mui/styles/makeStyles';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import DestinationParamDictEntry from './DestinationParamDictEntry'
-
-const useStyles = makeStyles({
-    root: {
-      paddingTop: 8,
-      paddingBottom: 8
-    },
-    keyValuePair: {
-
-    }
-  })
-
 
 interface OwnProps {
   paramDef: DestinationParamDef
@@ -34,8 +22,6 @@ function getInitialModified(initialValue: DestinationParam, paramDef: Destinatio
 }
 
 const DestinationParamComp: FunctionComponent<Props> = (props) => {
-
-  const classes = useStyles();
 
   let updateNoDictValue = (value: AtomicType) => {
     setModifiedParam(value)
@@ -121,11 +107,13 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
   }
 
   return (
-    <div className={classes.root}>
+    <Box sx={{
+      paddingTop: 1,
+      paddingBottom: 1}}>
       {
         paramValueComp
       }
-    </div>
+    </Box>
   );
 };
 

@@ -1,53 +1,13 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@mui/material/Typography'
-import { Card, Link, Menu, MenuItem } from '@mui/material';
+import {Box, Card, Link, Menu, MenuItem} from '@mui/material'
 import Button from '@mui/material/Button'
 import {DestinationDef, Project} from '../../service/restapi/data'
-import makeStyles from '@mui/styles/makeStyles';
 import {MyDestination} from './ProjectPage'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
 import datatoggle from '@datatoggle/datatoggle-sdk'
-
-
-const useStyles = makeStyles({
-    centerColumnContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%'
-    },
-    cardContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    card: {
-      width: '512px',
-      height: '128px',
-      borderRadius: '16px',
-      margin: '16px'
-    },
-    button: {
-      height: '100%',
-      width: '100%',
-      textTransform: 'none',
-    },
-    header: {
-      width: '512px',
-      display: 'flex',
-      paddingTop: '64px',
-      paddingBottom: '16px',
-    },
-    grow: {
-      flexGrow: 1,
-    },
-  }
-);
-
-
 
 interface OwnProps {
   project: Project,
@@ -62,7 +22,6 @@ type Props = OwnProps;
 const OverviewPanel: FunctionComponent<Props> = (props) => {
 
   const project = props.project
-  const classes = useStyles();
   const ctx: UserContext = useContext(userContext)
 
 
@@ -97,36 +56,53 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
   }
 
 
-  return (     <div className={classes.cardContainer}>
+  return (     <Box sx={{      display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'}}>
 
-    <div className={classes.header}>
+    <Box sx={{      width: '512px',
+      display: 'flex',
+      paddingTop: '64px',
+      paddingBottom: '16px',}}>
       <Typography variant="h5" component="h2">
         Your API key
       </Typography>
-    </div>
+    </Box>
 
     <Typography variant="body1" component="h2">
       {project.apiKey}
     </Typography>
 
 
-    <div className={classes.header}>
+    <Box sx={{      width: '512px',
+      display: 'flex',
+      paddingTop: '64px',
+      paddingBottom: '16px',}}>
       <Typography variant="h5" component="h2">
         My destinations
       </Typography>
-      <div className={classes.grow}/>
+      <Box sx={{flexGrow: 1}}/>
         <Button variant="contained" color={'primary'} onClick={handleNewDestinationClick}>New destination</Button>
-    </div>
+    </Box>
     <>
       {props.myDestinations.map((d: MyDestination) => (
-        <Card key={d.definition.uri} className={classes.card} onClick={() => props.onMyDestinationClick(d)}>
+        <Card key={d.definition.uri} sx={{      width: '512px',
+          height: '128px',
+          borderRadius: '16px',
+          margin: '16px'}} onClick={() => props.onMyDestinationClick(d)}>
           <Link underline={'none'}>
-            <Button className={classes.button}>
-              <div className={classes.centerColumnContainer}>
+            <Button sx={{      height: '100%',
+              width: '100%',
+              textTransform: 'none',}}>
+              <Box sx={{      display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%'}}>
                 <Typography variant="h6" component="h2">
                   {d.definition.name}
                 </Typography>
-              </div>
+              </Box>
             </Button>
           </Link>
         </Card>))}
@@ -144,7 +120,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
         ))
       }
     </Menu>
-  </div>);
+  </Box>);
 };
 
 export default OverviewPanel;

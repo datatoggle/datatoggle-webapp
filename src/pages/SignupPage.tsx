@@ -1,8 +1,7 @@
 import React, {FunctionComponent, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
-import {TextField} from '@mui/material'
+import {Box, TextField} from '@mui/material'
 import Typography from '@mui/material/Typography'
-import makeStyles from '@mui/styles/makeStyles';
 import Button from '@mui/material/Button'
 import './firebaseui-auth.css'
 
@@ -16,34 +15,18 @@ const authUiConfig = {
   ]
 }
 
-const useStyles = makeStyles({
-  title: {
-    paddingBottom: 48,
-  },
-  textbox: {
-    paddingBottom: 16+8
-  },
-  conditionsAndLogin: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 8
-  },
-})
-
 const SignupPage: FunctionComponent<{}> = (props) => {
 
-  const classes = useStyles();
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   return (
     <SmallFormLayout>
-      <Typography variant="h4" component="h2" className={classes.title}>
+      <Typography variant="h4" component="h2" sx={{paddingBottom: '48px'}}>
         Welcome to DataToggle
       </Typography>
       <TextField
-        className={classes.textbox}
+        sx={{paddingBottom: '24px'}}
         variant={'outlined'}
         fullWidth
         id='Email'
@@ -52,7 +35,7 @@ const SignupPage: FunctionComponent<{}> = (props) => {
         onChange={(event) => setEmail(event.target.value)}
       />
       <TextField
-        className={classes.textbox}
+        sx={{paddingBottom: '24px'}}
         error={true}
         variant={'outlined'}
         fullWidth
@@ -65,14 +48,19 @@ const SignupPage: FunctionComponent<{}> = (props) => {
       <Button
         fullWidth variant="contained" color="primary" disabled={false} onClick={() => {}} size='large'>Sign Up
       </Button>
-      <div className={classes.conditionsAndLogin}>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: '8px'
+      }}>
         <Typography variant="body2">
           I agree to <a href='https://google.com'>Datatoggle's Terms of Service</a>
         </Typography>
         <Typography variant="body2">
           <a href='https://google.com'>Already have an account?</a>
         </Typography>
-      </div>
+      </Box>
     </SmallFormLayout>
   );
 }

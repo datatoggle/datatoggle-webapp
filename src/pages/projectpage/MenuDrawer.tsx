@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Drawer, Link, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Box, Drawer, Link, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
 import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
 import HomeIcon from '@mui/icons-material/Home';
@@ -15,46 +14,24 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-export const drawerWidth = 240;
-
-const useStyles = makeStyles({
-    logo: {
-      height: 48
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    // necessary for content to be below app bar
-    drawerToolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      marginLeft: 16
-    },
-  }
-)
+export const drawerWidth = '240px';
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {
 
-  const classes = useStyles();
-
   return (
   <Drawer
-      className={classes.drawer}
+      sx={{      width: drawerWidth,
+        flexShrink: 0,}}
       variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
       anchor="left"
     >
-      <div className={classes.drawerToolbar}>
+      <Box sx={{      display: 'flex',
+        alignItems: 'center',
+        marginLeft: '16px'}}>
         <Link href={HOME_URL}>
-          <img src={logo} alt="Logo" className={classes.logo}/>
+          <Box component="img" src={logo} alt="Logo" height='48px'/>
         </Link>
-      </div>
+      </Box>
 
       <List>
         <ListItem button key='project_overview' onClick={props.onProjectOverviewClick}>

@@ -1,7 +1,6 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import Typography from '@mui/material/Typography'
-import makeStyles from '@mui/styles/makeStyles';
-import { Card, Divider, FormControlLabel, Switch } from '@mui/material';
+import {Box, Card, Divider, FormControlLabel, Switch} from '@mui/material'
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@mui/material/Button'
 import CardActions from '@mui/material/CardActions'
@@ -11,43 +10,6 @@ import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {MyDestination} from './ProjectPage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
-
-const useStyles = makeStyles({
-    columnContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    header: {
-      width: '512px',
-      display: 'flex',
-      paddingTop: '64px',
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    card: {
-      width: '512px',
-      borderRadius: '16px',
-      padding: '24px'
-    },
-    actions: {
-      padding: '0',
-      display: 'flex',
-      flexDirection: 'row-reverse'
-    },
-    cardContent: {
-      padding: '0'//24px 24px 24px 24px'
-    },
-    enabledDiv: {
-      display: 'flex'
-    },
-    separator: {
-      marginTop: '24px',
-      marginBottom: '24px'
-    }
-  })
-
 
 interface OwnProps {
   projectUri: string
@@ -60,7 +22,6 @@ type Props = OwnProps;
 
 const DestinationPanel: FunctionComponent<Props> = (props) => {
 
-  const classes = useStyles();
   const ctx: UserContext = useContext(userContext)
 
   const paramDefs = props.myDestination.definition.paramDefs
@@ -72,17 +33,28 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
   }, [props.myDestination.configWithInfo.config])
 
   return (
-    <div className={classes.columnContainer}>
-    <div className={classes.header}>
-
-    </div>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
-          <div className={classes.enabledDiv}>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}>
+    <Box sx={{
+      width: '512px',
+      display: 'flex',
+      paddingTop: '64px',
+    }}>
+    </Box>
+      <Card sx={{
+        width: '512px',
+        borderRadius: '16px',
+        padding: '24px'
+      }}>
+        <CardContent sx={{padding: '0'}}>
+          <Box sx={{display: 'flex'}}>
             <Typography variant="h5" component="h2">
               {props.myDestination.definition.name}
             </Typography>
-            <div className={classes.grow}/>
+            <Box flexGrow={1}/>
           <FormControlLabel
             control={
               <Switch
@@ -97,8 +69,11 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
             style={ {marginRight: 0}}
             label="Enabled"
           />
-          </div>
-          <Divider className={classes.separator}/>
+          </Box>
+          <Divider sx={{
+            marginTop: '24px',
+            marginBottom: '24px'
+          }}/>
         {
           paramDefs.map((paramDef: DestinationParamDef) => (
             <DestinationParamComp
@@ -118,7 +93,10 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           ))
         }
         </CardContent>
-        <CardActions className={classes.actions}>
+        <CardActions sx={{
+          padding: '0',
+          display: 'flex',
+          flexDirection: 'row-reverse'}}>
         <Button
           variant="contained"
           color="primary"
@@ -135,7 +113,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         }}>{props.myDestination.configWithInfo.config === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
         </CardActions>
       </Card>
-    </div>
+    </Box>
   ) // SAVE BUTTON UPDATE PARAMS
 };
 

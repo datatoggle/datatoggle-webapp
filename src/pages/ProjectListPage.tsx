@@ -4,48 +4,11 @@ import {userContext} from '../components/AuthCheck'
 import {ProjectSnippet} from '../service/restapi/data'
 import { NEW_PROJECT_URL, projectUrl} from '../service/urls'
 import {UserContext} from '../service/UserContext'
-import makeStyles from '@mui/styles/makeStyles';
 import MyAppBar from '../components/MyAppBar'
-import {Card, Link} from '@mui/material'
+import {Box, Card, Link} from '@mui/material'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import LoadingProgress from '../components/LoadingProgress'
-
-const useStyles = makeStyles({
-  centerColumnContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%'
-  },
-  cardContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  card: {
-    width: '512px',
-    height: '128px',
-    borderRadius: '16px',
-    margin: '16px'
-  },
-  button: {
-    height: '100%',
-    width: '100%',
-    textTransform: 'none',
-  },
-  header: {
-    width: '512px',
-    display: 'flex',
-    paddingTop: '64px',
-    paddingBottom: '16px',
-  },
-  grow: {
-    flexGrow: 1,
-  },
-})
-
 
 interface OwnProps {
 }
@@ -64,9 +27,6 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
     })
   }, [ctx])
 
-
-  const classes = useStyles()
-
   if (projects == null) {
     return <LoadingProgress/>
   }
@@ -76,32 +36,45 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
   } else {
     return <>
       <MyAppBar drawerDisplayed={false}/>
-      <div className={classes.cardContainer}>
+      <Box sx={{    display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'}}>
 
-        <div className={classes.header}>
+        <Box sx={{    width: '512px',
+          display: 'flex',
+          paddingTop: '64px',
+          paddingBottom: '16px',}}>
         <Typography variant="h5" component="h2">
           Your projects
         </Typography>
-          <div className={classes.grow}/>
+          <Box flexGrow={1}/>
           <Link href={NEW_PROJECT_URL} underline={'none'}>
           <Button variant="contained" color={'primary'}>New project</Button>
           </Link>
-        </div>
+        </Box>
         <>
           {projects.map((p: ProjectSnippet) => (
-            <Card key={p.uri} className={classes.card} onClick={() => null}>
+            <Card key={p.uri} sx={{    display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',}} onClick={() => null}>
               <Link href={projectUrl(p.uri)} underline={'none'}>
-                <Button className={classes.button}>
-                  <div className={classes.centerColumnContainer}>
+                <Button sx={{    height: '100%',
+                  width: '100%',
+                  textTransform: 'none',}}>
+                  <Box sx={{    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%'}}>
                     <Typography variant="h6" component="h2">
                       {p.name}
                     </Typography>
-                  </div>
+                  </Box>
                 </Button>
               </Link>
             </Card>))}
         </>
-      </div>
+      </Box>
     </>
   }
 }

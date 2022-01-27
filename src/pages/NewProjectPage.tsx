@@ -1,4 +1,3 @@
-import makeStyles from '@mui/styles/makeStyles';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -16,32 +15,12 @@ import datatoggle from '@datatoggle/datatoggle-sdk'
 
 
 
-// those properties make it consistent with StyledFirebaseAuth
-const useStyles = makeStyles({
-  card: {
-    width: 256,
-  },
-  actions: {
-    padding: '8px 24px 24px 24px'
-  },
-  cardContent: {
-    padding: '24px 24px 24px 24px'
-  },
-  textField: {
-    width: '100%'
-  },
-  title: {
-    paddingBottom: '24px'
-  }
-});
-
 type ProjectCreationState = {
   uri: string | null
   creating: boolean
 }
 
 const NewProjectPage: FunctionComponent<{ }> = (props) => {
-  const classes = useStyles();
   const ctx: UserContext = useContext(userContext)
   const [name, setName] = useState<string>('')
   const [projectCreationState, setProjectCreationState] = useState<ProjectCreationState>({uri: null, creating: false})
@@ -66,14 +45,14 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
 
   return (
     <SmallFormLayout>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
-          <Typography variant="h6" component="h2" className={classes.title}>
+      <Card sx={{width: '256px'}}>
+        <CardContent sx={{padding: '24px'}}>
+          <Typography variant="h6" component="h2" sx={{paddingBottom: '24px'}}>
             Choose a name for your project
           </Typography>
-          <TextField id="standard-basic" label="Project name"  className={classes.textField} onChange={e => setName(e.target.value)}/>
+          <TextField id="standard-basic" label="Project name"  sx={{width: '100%'}} onChange={e => setName(e.target.value)}/>
         </CardContent>
-        <CardActions className={classes.actions}>
+        <CardActions sx={{padding: '8px 24px 24px 24px'}}>
           <Button fullWidth variant="contained" color="primary" disabled={name === ''} onClick={() => onCreateProject()}>Create project</Button>
         </CardActions>
       </Card>
