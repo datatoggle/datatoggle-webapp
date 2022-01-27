@@ -10,14 +10,6 @@ import firebase from 'firebase/app';
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {Options} from '@datatoggle/datatoggle-sdk/'
 import Routes from './routes'
-import "@mui/styles"
-
-
-declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
