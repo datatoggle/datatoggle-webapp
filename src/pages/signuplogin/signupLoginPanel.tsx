@@ -1,9 +1,10 @@
 import React, {FunctionComponent, useState} from 'react'
 import SmallFormLayout from '../../components/SmallFormLayout'
-import {Box, TextField} from '@mui/material'
+import {Box, IconButton, InputAdornment, TextField} from '@mui/material'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import '../firebaseui-auth.css'
+import {Visibility, VisibilityOff} from '@mui/icons-material'
 
 
 interface OwnProps {
@@ -25,6 +26,7 @@ const SignupLoginPanel: FunctionComponent<Props> = (props) => {
 
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   return (
     <SmallFormLayout>
@@ -52,6 +54,21 @@ const SignupLoginPanel: FunctionComponent<Props> = (props) => {
   value={password}
   onChange={(event) => setPassword(event.target.value)}
   helperText={props.passwordErrorMessage || (props.passwordHelper ? "At least 6 characters long" : null)}
+  type={showPassword ? 'text' : 'password'}
+  // https://stackoverflow.com/questions/51694149/add-element-inside-textfield-component-material-ui?rq=1
+  InputProps={{
+  endAdornment:(
+    <InputAdornment position="end">
+      <IconButton
+        aria-label="toggle password visibility"
+        onClick={() => {setShowPassword(!showPassword)}}
+        onMouseDown={(event) => {event.preventDefault()}}
+        edge="end"
+      >
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+    </InputAdornment>
+  )}}
     />
     <Button
       fullWidth
