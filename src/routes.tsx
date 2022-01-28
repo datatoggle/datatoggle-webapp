@@ -8,10 +8,10 @@ import ProjectListPage from './pages/ProjectListPage'
 import ProjectPage from './pages/projectpage/ProjectPage'
 import AuthCheck from './components/AuthCheck'
 import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL, SIGNUP_URL} from './service/urls'
-import LoginPage from './pages/LoginPage'
 import {useEffect} from 'react'
 import datatoggle from '@datatoggle/datatoggle-sdk'
-import SignupPage from './pages/SignupPage'
+import SignupPage from './pages/signuplogin/SignupPage'
+import LoginPage from './pages/signuplogin/LoginPage'
 
 function Routes() {
 
@@ -33,10 +33,14 @@ function Routes() {
           </AuthCheck>
         </Route>
         <Route exact path={LOGIN_URL}>
-          <LoginPage />
+          <AuthCheck preventRedirect={true}>
+            <LoginPage />
+          </AuthCheck>
         </Route>
       <Route exact path={SIGNUP_URL}>
-        <SignupPage />
+        <AuthCheck preventRedirect={true}>
+          <SignupPage />
+        </AuthCheck>
       </Route>
         <Route exact path={HOME_URL}>
           <AuthCheck>
