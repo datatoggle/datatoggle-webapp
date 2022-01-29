@@ -7,32 +7,34 @@ import {HOME_URL} from '../../service/urls'
 import {UserContext} from '../../service/UserContext'
 import {maybeUserContext} from '../../components/AuthCheck'
 
-const SignUpPage: FunctionComponent<{  }> = (props) => {
+const LoginPage: FunctionComponent<{  }> = (props) => {
 
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
 
-  const trySignUp = async (email: string, password: string) => {
+  const tryLogIn = async (email: string, password: string) => {
     try {
       setEmailError(null)
       setPasswordError(null)
-      if (password.length < 8){
-        setPasswordError("At least 8 characters long")
+      if (password.length < 6){
+        setPasswordError("Password must be at least 6 characters long")
         return
       }
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await firebase.auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
       switch (error.code) {
-        // see error codes in createUserWithEmailAndPassword comments
+        // see error codes in signInWithEmailAndPassword comments
         case 'auth/invalid-email':
           setEmailError('Invalid email')
           break
-        case 'auth/email-already-in-use':
-          setEmailError('This email is already in use')
+        case 'auth/user-disabled':
+          setEmailError('Email not found')
           break
-        case 'auth/weak-password':
-          console.log(error)
-          setPasswordError('Invalid password: ' + error)
+        case 'auth/user-not-found':
+          setEmailError('Email not found')
+          break
+        case 'auth/wrong-password':
+          setPasswordError('Invalid password')
           break
       }
     }
@@ -47,24 +49,24 @@ const SignUpPage: FunctionComponent<{  }> = (props) => {
 
   return (
     <SignupLoginPanel
-      onClick={((email, password) => trySignUp(email, password))}
-      title='Welcome to DataToggle'
-      buttonText='Sign Up'
+      onClick={((email, password) => tryLogIn(email, password))}
+      title='Log Into My Account'
+      buttonText='Log In'
       underButtonLeft={
         <Typography variant="body2">
-          I agree to <a href='https://google.com'>Datatoggle's Terms of Service</a>
+          <a href='https://google.com'>Create an account</a>
         </Typography>
       }
       underButtonRight={
         <Typography variant="body2">
-          <a href='https://google.com'>Already have an account?</a>
+          <a href='https://google.com'>Forgot your password?</a>
         </Typography>
       }
       emailErrorMessage={emailError}
       passwordErrorMessage={passwordError}
-      passwordHelper={true}
-    />
+      passwordHelper={false}
+      />
   );
 }
 
-export default SignUpPage
+export default LoginPage

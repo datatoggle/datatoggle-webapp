@@ -53,7 +53,7 @@ const SignupLoginPanel: FunctionComponent<Props> = (props) => {
   label='Password'
   value={password}
   onChange={(event) => setPassword(event.target.value)}
-  helperText={props.passwordErrorMessage || (props.passwordHelper ? "At least 6 characters long" : null)}
+  helperText={props.passwordErrorMessage || (props.passwordHelper ? "At least 8 characters long" : null)}
   type={showPassword ? 'text' : 'password'}
   // https://stackoverflow.com/questions/51694149/add-element-inside-textfield-component-material-ui?rq=1
   InputProps={{
