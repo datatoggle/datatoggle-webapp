@@ -3,9 +3,10 @@ import Typography from '@mui/material/Typography'
 import SignupLoginPanel from './signupLoginPanel'
 import firebase from 'firebase/app'
 import {Redirect} from 'react-router-dom'
-import {HOME_URL} from '../../service/urls'
+import {HOME_URL, LOGIN_URL, SIGNUP_URL} from '../../service/urls'
 import {UserContext} from '../../service/UserContext'
 import {maybeUserContext} from '../../components/AuthCheck'
+import {Button, Link} from '@mui/material'
 
 const SignUpPage: FunctionComponent<{  }> = (props) => {
 
@@ -56,9 +57,9 @@ const SignUpPage: FunctionComponent<{  }> = (props) => {
         </Typography>
       }
       underButtonRight={
-        <Typography variant="body2">
-          <a href='https://google.com'>Already have an account?</a>
-        </Typography>
+        <Link href={LOGIN_URL} underline={'none'}>
+          <Button variant="text" size="small">Already have an account?</Button>
+        </Link>
       }
       emailErrorMessage={emailError}
       passwordErrorMessage={passwordError}

@@ -3,14 +3,16 @@ import Typography from '@mui/material/Typography'
 import SignupLoginPanel from './signupLoginPanel'
 import firebase from 'firebase/app'
 import {Redirect} from 'react-router-dom'
-import {HOME_URL} from '../../service/urls'
+import {HOME_URL, NEW_PROJECT_URL, SIGNUP_URL} from '../../service/urls'
 import {UserContext} from '../../service/UserContext'
 import {maybeUserContext} from '../../components/AuthCheck'
+import {Button, Dialog, DialogActions, DialogTitle, Link} from '@mui/material'
 
 const LoginPage: FunctionComponent<{  }> = (props) => {
 
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
+  const [resetPassword, setResetPassword] = useState<boolean>(false)
 
   const tryLogIn = async (email: string, password: string) => {
     try {
@@ -46,26 +48,42 @@ const LoginPage: FunctionComponent<{  }> = (props) => {
     return <Redirect push to={HOME_URL}/>
   }
 
-
   return (
+    <>
     <SignupLoginPanel
       onClick={((email, password) => tryLogIn(email, password))}
       title='Log Into My Account'
       buttonText='Log In'
       underButtonLeft={
-        <Typography variant="body2">
-          <a href='https://google.com'>Create an account</a>
-        </Typography>
+        <Link href={SIGNUP_URL} underline={'none'}>
+          <Button variant="text" size="small">Create an account</Button>
+        </Link>
       }
       underButtonRight={
-        <Typography variant="body2">
-          <a href='https://google.com'>Forgot your password?</a>
-        </Typography>
+        <Button
+          variant="text"
+          onClick={() => {setResetPassword(true)}}
+          size="small"
+        >
+          Forgot your password?
+        </Button>
       }
       emailErrorMessage={emailError}
       passwordErrorMessage={passwordError}
       passwordHelper={false}
       />
+  <Dialog
+    open={resetPassword}>
+    <DialogTitle id="alert-dialog-title">
+      {"Please send an email to support@datatoggle.com"}
+    </DialogTitle>
+    <DialogActions>
+      <Button onClick={() => {setResetPassword(false)}} autoFocus>
+        Ok
+      </Button>
+    </DialogActions>
+  </Dialog>
+      </>
   );
 }
 
