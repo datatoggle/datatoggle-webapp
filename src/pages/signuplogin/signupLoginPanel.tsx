@@ -16,6 +16,7 @@ interface OwnProps {
   emailErrorMessage: string | null
   passwordErrorMessage: string | null
   passwordHelper: boolean
+  bottomMessage?: React.ReactNode
 }
 
 
@@ -70,6 +71,10 @@ const SignupLoginPanel: FunctionComponent<Props> = (props) => {
     </InputAdornment>
   )}}
     />
+      {props.bottomMessage &&
+      <Box sx={{paddingBottom: 1}}>
+        {props.bottomMessage}
+      </Box>}
     <Button
       fullWidth
       variant="contained"
@@ -88,6 +93,7 @@ const SignupLoginPanel: FunctionComponent<Props> = (props) => {
     {props.underButtonLeft}
     {props.underButtonRight}
     </Box>
+
     </SmallFormLayout>
 );
 }

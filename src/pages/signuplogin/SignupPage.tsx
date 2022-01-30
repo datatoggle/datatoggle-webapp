@@ -52,15 +52,16 @@ const SignUpPage: FunctionComponent<{  }> = (props) => {
       title='Welcome to DataToggle'
       buttonText='Sign Up'
       underButtonLeft={
-        <Typography variant="body2">
-          I agree to <a href='https://google.com'>Datatoggle's Terms of Service</a>
-        </Typography>
+        <div/>
       }
       underButtonRight={
         <Link href={LOGIN_URL} underline={'none'}>
           <Button variant="text" size="small">Already have an account?</Button>
         </Link>
       }
+      bottomMessage={        <Typography variant="caption">
+        By Signing up, you agree to <a href='https://google.com'>Datatoggle's Terms of Service</a>
+      </Typography>}
       emailErrorMessage={emailError}
       passwordErrorMessage={passwordError}
       passwordHelper={true}
