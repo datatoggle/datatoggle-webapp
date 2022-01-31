@@ -3,7 +3,6 @@ import SmallFormLayout from '../../components/SmallFormLayout'
 import {Box, IconButton, InputAdornment, TextField} from '@mui/material'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import '../firebaseui-auth.css'
 import {Visibility, VisibilityOff} from '@mui/icons-material'
 
 
