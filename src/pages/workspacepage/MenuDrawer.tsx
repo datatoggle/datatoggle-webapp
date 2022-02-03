@@ -4,12 +4,12 @@ import {HOME_URL} from '../../service/urls'
 import logo from '../../images/logo.png'
 import HomeIcon from '@mui/icons-material/Home';
 import PlayForWorkIcon from '@mui/icons-material/PlayForWork';
-import {MyDestination} from './ProjectPage'
+import {MyDestination} from './WorkspacePage'
 
 interface OwnProps {
   myDestinations: MyDestination[],
   onMyDestinationClick: (dest: MyDestination) => void
-  onProjectOverviewClick: () => void
+  onWorkspaceOverviewClick: () => void
 }
 
 type Props = OwnProps;
@@ -34,9 +34,9 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
       </Box>
 
       <List>
-        <ListItem button key='project_overview' onClick={props.onProjectOverviewClick}>
+        <ListItem button key='workspace_overview' onClick={props.onWorkspaceOverviewClick}>
           <ListItemIcon><HomeIcon/></ListItemIcon>
-          <ListItemText primary='Project overview' primaryTypographyProps={{ variant: "h6" }}/>
+          <ListItemText primary='Workspace overview' primaryTypographyProps={{ variant: "h6" }}/>
         </ListItem>
         <ListItem key='My destinations'>
           <ListItemIcon><PlayForWorkIcon /></ListItemIcon>

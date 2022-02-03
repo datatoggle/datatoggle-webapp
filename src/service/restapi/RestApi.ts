@@ -1,19 +1,19 @@
-import {DestinationConfig, DestinationConfigWithInfo, DestinationDef, Project, ProjectSnippet} from './data'
+import {DestinationConfig, DestinationConfigWithInfo, DestinationDef, Workspace, WorkspaceSnippet} from './data'
 import firebase from 'firebase/app'
 
-type GetProjectSnippetsReply = {
-  projects: ProjectSnippet[]
+type GetWorkspaceSnippetsReply = {
+  workspaces: WorkspaceSnippet[]
 }
 
-type PostCreateProjectArgs = {
-  projectName: string
+type PostCreateWorkspaceArgs = {
+  workspaceName: string
 }
-type PostCreateProjectReply= {
+type PostCreateWorkspaceReply = {
   uri: string
 }
 
-type GetProjectReply = {
-  project: Project
+type GetWorkspaceReply = {
+  workspace: Workspace
 }
 
 type GetDestinationDefsReply = {
@@ -21,7 +21,7 @@ type GetDestinationDefsReply = {
 }
 
 type PostDestinationConfigArgs = {
-  projectUri: string,
+  workspaceUri: string,
   config: DestinationConfig
 }
 
@@ -69,22 +69,22 @@ export class RestApi {
 
 
 
-  async getProjectSnippets(): Promise<ProjectSnippet[]> {
-    const result: GetProjectSnippetsReply = await this.doGetRequest('api/customer/project-snippets')
-    return result.projects
+  async getWorkspaceSnippets(): Promise<WorkspaceSnippet[]> {
+    const result: GetWorkspaceSnippetsReply = await this.doGetRequest('api/customer/workspace-snippets')
+    return result.workspaces
   }
 
-  async createProject(projectName: string): Promise<string>{
-    const body: PostCreateProjectArgs = {
-      projectName: projectName
+  async createWorkspace(workspaceName: string): Promise<string>{
+    const body: PostCreateWorkspaceArgs = {
+      workspaceName: workspaceName
     }
-    const result: PostCreateProjectReply = await this.doPostRequest('api/customer/projects', body)
+    const result: PostCreateWorkspaceReply = await this.doPostRequest('api/customer/workspaces', body)
     return result.uri
   }
 
-  async getProject(uri: string): Promise<Project>{
-    const result: GetProjectReply = await this.doGetRequest(`api/customer/project/${uri}`)
-    return result.project
+  async getWorkspace(uri: string): Promise<Workspace>{
+    const result: GetWorkspaceReply = await this.doGetRequest(`api/customer/workspace/${uri}`)
+    return result.workspace
   }
 
   async getDestinationDefs(): Promise<DestinationDef[]>{
@@ -92,9 +92,9 @@ export class RestApi {
     return result.destinationDefs
   }
 
-  async postDestinationConfig(projectUri: string, config: DestinationConfig): Promise<PostDestinationConfigReply>{
+  async postDestinationConfig(workspaceUri: string, config: DestinationConfig): Promise<PostDestinationConfigReply>{
     const body: PostDestinationConfigArgs = {
-      projectUri: projectUri,
+      workspaceUri: workspaceUri,
       config: config,
     }
     return await this.doPostRequest('api/customer/destination-configs', body)

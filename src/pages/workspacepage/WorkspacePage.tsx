@@ -2,7 +2,7 @@ import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import MyAppBar from '../../components/MyAppBar'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
-import {DestinationConfigWithInfo, DestinationDef, Project} from '../../service/restapi/data'
+import {DestinationConfigWithInfo, DestinationDef, Workspace} from '../../service/restapi/data'
 import {useParams} from 'react-router-dom'
 import OverviewPanel from './OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
@@ -11,7 +11,7 @@ import LoadingProgress from '../../components/LoadingProgress'
 import {Box} from '@mui/material'
 
 enum PanelType {
-  ProjectOverview,
+  WorkspaceOverview,
   Destination
 }
 
@@ -25,18 +25,18 @@ export type MyDestination = {
   configWithInfo: DestinationConfigWithInfo
 }
 
-const ProjectPage: FunctionComponent = () => {
+const WorkspacePage: FunctionComponent = () => {
 
   let { uri } = useParams<{uri: string}>();
   const ctx: UserContext = useContext(userContext)
-  const [project, setProject] = useState<Project | null>(null)
+  const [workspace, setWorkspace] = useState<Workspace | null>(null)
   const [countModifiedDestination, setCountModifiedDestination] = useState<number>(0)
   const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
-  const [panel, setPanel] = useState<Panel>({type: PanelType.ProjectOverview, currentDestinationUri: null})
+  const [panel, setPanel] = useState<Panel>({type: PanelType.WorkspaceOverview, currentDestinationUri: null})
 
   useEffect(() => {
-    ctx.api.getProject(uri).then((result: Project) => {
-      setProject(result)
+    ctx.api.getWorkspace(uri).then((result: Workspace) => {
+      setWorkspace(result)
     })
   }, [ctx, uri, countModifiedDestination])
 
@@ -46,20 +46,20 @@ const ProjectPage: FunctionComponent = () => {
     })
   }, [ctx])
 
-  if (project == null || destinationDefs == null) {
+  if (workspace == null || destinationDefs == null) {
     return <LoadingProgress/>
   }
 
-  const myDests: MyDestination[] = project.destinations.map(c => { return  {
+  const myDests: MyDestination[] = workspace.destinations.map(c => { return  {
     definition: destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
     configWithInfo: c
   }})
 
   let panelComp;
   switch (panel.type) {
-    case PanelType.ProjectOverview:
+    case PanelType.WorkspaceOverview:
       panelComp = <OverviewPanel
-        project={project}
+        workspace={workspace}
         myDestinations={myDests}
         destinationDefs={destinationDefs}
         onNewDestinationCreated={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
@@ -67,7 +67,7 @@ const ProjectPage: FunctionComponent = () => {
       break;
     case PanelType.Destination:
       panelComp = <DestinationPanel
-        projectUri={uri}
+        workspaceUri={uri}
         myDestination={myDests.find((d) => d.definition.uri === panel.currentDestinationUri)!!}
         saved={false}
         onDestinationModified={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
@@ -77,11 +77,11 @@ const ProjectPage: FunctionComponent = () => {
   }
 
     return (<>
-      <MyAppBar drawerDisplayed={true} projectName={project.name}/>
+      <MyAppBar drawerDisplayed={true} workspaceName={workspace.name}/>
       <MenuDrawer
         myDestinations={myDests}
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
-        onProjectOverviewClick={() => setPanel({type: PanelType.ProjectOverview, currentDestinationUri: null})}
+        onWorkspaceOverviewClick={() => setPanel({type: PanelType.WorkspaceOverview, currentDestinationUri: null})}
         />
       <Box sx={{marginLeft: drawerWidth}}>
         {
@@ -91,4 +91,4 @@ const ProjectPage: FunctionComponent = () => {
     </>)
 };
 
-export default ProjectPage
+export default WorkspacePage

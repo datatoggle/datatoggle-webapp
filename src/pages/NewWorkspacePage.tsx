@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import React, {FunctionComponent, useContext, useState} from 'react'
 import SmallFormLayout from '../components/SmallFormLayout'
 import {Redirect} from 'react-router-dom'
-import {projectUrl} from '../service/urls'
+import {workspaceUrl} from '../service/urls'
 import {userContext} from '../components/AuthCheck'
 import {UserContext} from '../service/UserContext'
 import LoadingProgress from '../components/LoadingProgress'
@@ -12,52 +12,52 @@ import {TextField} from '@mui/material'
 
 
 
-type ProjectCreationState = {
+type WorkspaceCreationState = {
   uri: string | null
   creating: boolean
 }
 
-const NewProjectPage: FunctionComponent<{ }> = (props) => {
+const NewWorkspacePage: FunctionComponent<{ }> = (props) => {
   const ctx: UserContext = useContext(userContext)
   const [name, setName] = useState<string>('')
   const [nameErrorMessage, setNameErrorMessage] = useState<string | null>(null)
-  const [projectCreationState, setProjectCreationState] = useState<ProjectCreationState>({uri: null, creating: false})
+  const [workspaceCreationState, setWorkspaceCreationState] = useState<WorkspaceCreationState>({uri: null, creating: false})
 
-  async function onCreateProject() {
+  async function onCreateWorkspace() {
     setNameErrorMessage(null)
     if (!name){
-      setNameErrorMessage('Project name should not be empty')
+      setNameErrorMessage('Workspace name should not be empty')
       return
     }
 
-    setProjectCreationState({uri: null, creating: true})
-    const projectUri: string = await ctx.api.createProject(name)
-    datatoggle.track("create_project", {
-      project_uri: projectUri
+    setWorkspaceCreationState({uri: null, creating: true})
+    const workspaceUri: string = await ctx.api.createWorkspace(name)
+    datatoggle.track("create_workspace", {
+      workspace_uri: workspaceUri
     })
 
-    setProjectCreationState({uri: projectUri, creating: false})
+    setWorkspaceCreationState({uri: workspaceUri, creating: false})
   }
 
-  if (projectCreationState.creating){
+  if (workspaceCreationState.creating){
     return <LoadingProgress/>
   }
 
-  if (projectCreationState.uri !== null){
-    return <Redirect to={projectUrl(projectCreationState.uri)}/>
+  if (workspaceCreationState.uri !== null){
+    return <Redirect to={workspaceUrl(workspaceCreationState.uri)}/>
   }
 
   return (
     <SmallFormLayout>
       <Typography variant="h4" component="h2" sx={{paddingBottom: '48px'}}>
-        Choose a name for your project
+        Choose a name for your workspace
       </Typography>
       <TextField
         sx={{paddingBottom: '24px'}}
         variant={'outlined'}
         fullWidth
-        id='Project Name'
-        label='Project Name'
+        id='Workspace Name'
+        label='Workspace Name'
         value={name}
         error={nameErrorMessage != null}
         helperText={nameErrorMessage}
@@ -68,12 +68,12 @@ const NewProjectPage: FunctionComponent<{ }> = (props) => {
         variant="contained"
         color="primary"
         disabled={false}
-        onClick={() => onCreateProject()}
+        onClick={() => onCreateWorkspace()}
         size='large'>
-        Create Project
+        Create Workspace
       </Button>
     </SmallFormLayout>
   );
 }
 
-export default NewProjectPage
+export default NewWorkspacePage

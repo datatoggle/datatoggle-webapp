@@ -8,13 +8,13 @@ import CardContent from '@mui/material/CardContent'
 import {DestinationConfig, DestinationParam, DestinationParamDef} from '../../service/restapi/data'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
-import {MyDestination} from './ProjectPage'
+import {MyDestination} from './WorkspacePage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 
 interface OwnProps {
-  projectUri: string
+  workspaceUri: string
   myDestination: MyDestination
-  saved: boolean | null // null if displayed from project and not after post destination request
+  saved: boolean | null // null if displayed from workspace and not after post destination request
   onDestinationModified: (destinationUri: string) => void
 }
 
@@ -102,11 +102,11 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           color="primary"
           disabled={props.myDestination.configWithInfo.config === modifiedConfig}
           onClick={async () => {
-          const reply = await ctx.api.postDestinationConfig(props.projectUri, modifiedConfig)
+          const reply = await ctx.api.postDestinationConfig(props.workspaceUri, modifiedConfig)
           if (reply.saved){
             props.onDestinationModified(props.myDestination.definition.uri)
             datatoggle.track("save_destination_config", {
-              project_uri: props.projectUri,
+              workspace_uri: props.workspaceUri,
               destination_uri: props.myDestination.definition.uri
             })
           }

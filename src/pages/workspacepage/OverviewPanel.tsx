@@ -2,15 +2,15 @@ import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@mui/material/Typography'
 import {Box, Card, Link, Menu, MenuItem} from '@mui/material'
 import Button from '@mui/material/Button'
-import {DestinationDef, Project} from '../../service/restapi/data'
-import {MyDestination} from './ProjectPage'
+import {DestinationDef, Workspace} from '../../service/restapi/data'
+import {MyDestination} from './WorkspacePage'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 
 interface OwnProps {
-  project: Project,
+  workspace: Workspace,
   myDestinations: MyDestination[],
   destinationDefs: DestinationDef[],
   onMyDestinationClick: (myDestination: MyDestination) => void
@@ -21,7 +21,7 @@ type Props = OwnProps;
 
 const OverviewPanel: FunctionComponent<Props> = (props) => {
 
-  const project = props.project
+  const workspace = props.workspace
   const ctx: UserContext = useContext(userContext)
 
 
@@ -40,7 +40,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     if (myDest) {
       props.onMyDestinationClick(myDest)
     } else {
-      const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(project.uri, {
+      const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(workspace.uri, {
         destinationUri: destinationDef.uri,
         isEnabled: false,
         destinationSpecificConfig: {}
@@ -48,7 +48,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
       if (result.saved){
         props.onNewDestinationCreated(destinationDef.uri)
         datatoggle.track("create_destination", {
-          project_uri: props.project.uri,
+          workspace_uri: props.workspace.uri,
           destination_uri: destinationDef.uri
         })
       }
@@ -70,7 +70,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     </Box>
 
     <Typography variant="body1" component="h2">
-      {project.apiKey}
+      {workspace.apiKey}
     </Typography>
 
 

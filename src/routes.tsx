@@ -3,11 +3,11 @@ import "firebase/auth"
 import {
   Route, useLocation
 } from 'react-router-dom'
-import NewProjectPage from './pages/NewProjectPage'
-import ProjectListPage from './pages/ProjectListPage'
-import ProjectPage from './pages/projectpage/ProjectPage'
+import NewWorkspacePage from './pages/NewWorkspacePage'
+import WorkspaceListPage from './pages/WorkspaceListPage'
+import WorkspacePage from './pages/workspacepage/WorkspacePage'
 import AuthCheck from './components/AuthCheck'
-import {HOME_URL, LOGIN_URL, NEW_PROJECT_URL, SIGNUP_URL} from './service/urls'
+import {HOME_URL, LOGIN_URL, NEW_WORKSPACE_URL, SIGNUP_URL} from './service/urls'
 import {useEffect} from 'react'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import SignupPage from './pages/signuplogin/SignupPage'
@@ -22,14 +22,14 @@ function Routes() {
   },[location])
 
   return <>
-        <Route exact path={NEW_PROJECT_URL}>
+        <Route exact path={NEW_WORKSPACE_URL}>
           <AuthCheck>
-            <NewProjectPage />
+            <NewWorkspacePage />
           </AuthCheck>
         </Route>
-        <Route exact path="/project/:uri">
+        <Route exact path="/workspace/:uri">
           <AuthCheck>
-            <ProjectPage />
+            <WorkspacePage />
           </AuthCheck>
         </Route>
         <Route exact path={LOGIN_URL}>
@@ -44,7 +44,7 @@ function Routes() {
       </Route>
         <Route exact path={HOME_URL}>
           <AuthCheck>
-            <ProjectListPage />
+            <WorkspaceListPage />
           </AuthCheck>
         </Route>
   </>
@@ -54,7 +54,7 @@ export default Routes
 
 // list of screens:
 // * login, affiche le login, redirige vers liste de projets si loggé
-// list of projects, affiche la liste de projets, redirige sur new project si zero
-// new project
-// project dashboard
+// list of workspaces, affiche la liste de projets, redirige sur new workspace si zero
+// new workspace
+// workspace dashboard
 

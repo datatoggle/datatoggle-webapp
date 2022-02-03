@@ -6,12 +6,12 @@ import {HOME_URL} from '../service/urls'
 import {UserContext} from '../service/UserContext'
 import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
-import {drawerWidth} from '../pages/projectpage/MenuDrawer'
+import {drawerWidth} from '../pages/workspacepage/MenuDrawer'
 import Typography from '@mui/material/Typography'
 
 interface OwnProps {
   drawerDisplayed: boolean
-  projectName?: string
+  workspaceName?: string
 }
 
 type Props = OwnProps;
@@ -45,8 +45,8 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
           </Link>
         }
         {
-          props.projectName && (<Typography color={'textPrimary'} variant="h6">
-            {props.projectName}
+          props.workspaceName && (<Typography color={'textPrimary'} variant="h6">
+            {props.workspaceName}
           </Typography>)
         }
         <Box sx={{flexGrow: 1}} />

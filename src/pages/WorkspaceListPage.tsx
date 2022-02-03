@@ -1,8 +1,8 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import {Redirect} from 'react-router-dom'
 import {userContext} from '../components/AuthCheck'
-import {ProjectSnippet} from '../service/restapi/data'
-import { NEW_PROJECT_URL, projectUrl} from '../service/urls'
+import {WorkspaceSnippet} from '../service/restapi/data'
+import { NEW_WORKSPACE_URL, workspaceUrl} from '../service/urls'
 import {UserContext} from '../service/UserContext'
 import MyAppBar from '../components/MyAppBar'
 import {Box, Card, Link} from '@mui/material'
@@ -16,23 +16,23 @@ interface OwnProps {
 type Props = OwnProps;
 
 
-const ProjectListPage: FunctionComponent<Props> = (props) => {
+const WorkspaceListPage: FunctionComponent<Props> = (props) => {
 
   const ctx: UserContext = useContext(userContext)
-  const [projects, setProjects] = useState<ProjectSnippet[] | null>(null)
+  const [workspaces, setWorkspaces] = useState<WorkspaceSnippet[] | null>(null)
 
   useEffect(() => {
-    ctx.api.getProjectSnippets().then((result: ProjectSnippet[]) => {
-      setProjects(result)
+    ctx.api.getWorkspaceSnippets().then((result: WorkspaceSnippet[]) => {
+      setWorkspaces(result)
     })
   }, [ctx])
 
-  if (projects == null) {
+  if (workspaces == null) {
     return <LoadingProgress/>
   }
 
-  if (projects.length === 0) {
-    return <Redirect to={NEW_PROJECT_URL}/>
+  if (workspaces.length === 0) {
+    return <Redirect to={NEW_WORKSPACE_URL}/>
   } else {
     return <>
       <MyAppBar drawerDisplayed={false}/>
@@ -45,19 +45,19 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
           paddingTop: '64px',
           paddingBottom: '16px',}}>
         <Typography variant="h5" component="h2">
-          Your projects
+          Your workspaces
         </Typography>
           <Box flexGrow={1}/>
-          <Link href={NEW_PROJECT_URL} underline={'none'}>
-          <Button variant="contained" color={'primary'}>New project</Button>
+          <Link href={NEW_WORKSPACE_URL} underline={'none'}>
+          <Button variant="contained" color={'primary'}>New workspace</Button>
           </Link>
         </Box>
         <>
-          {projects.map((p: ProjectSnippet) => (
+          {workspaces.map((p: WorkspaceSnippet) => (
             <Card key={p.uri} sx={{    display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',}} onClick={() => null}>
-              <Link href={projectUrl(p.uri)} underline={'none'}>
+              <Link href={workspaceUrl(p.uri)} underline={'none'}>
                 <Button sx={{    height: '100%',
                   width: '100%',
                   textTransform: 'none',}}>
@@ -79,4 +79,4 @@ const ProjectListPage: FunctionComponent<Props> = (props) => {
   }
 }
 
-export default ProjectListPage
+export default WorkspaceListPage

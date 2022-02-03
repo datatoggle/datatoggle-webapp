@@ -1,10 +1,10 @@
 
-export type ProjectSnippet = {
+export type WorkspaceSnippet = {
   uri: string
   name: string
 }
 
-export type Project = {
+export type Workspace = {
   uri: string
   apiKey: string
   name: string
