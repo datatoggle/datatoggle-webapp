@@ -50,14 +50,14 @@ const NewWorkspacePage: FunctionComponent<{ }> = (props) => {
   return (
     <SmallFormLayout>
       <Typography variant="h4" component="h2" sx={{paddingBottom: '48px'}}>
-        Choose a name for your workspace
+        Create my workspace
       </Typography>
       <TextField
         sx={{paddingBottom: '24px'}}
         variant={'outlined'}
         fullWidth
-        id='Workspace Name'
-        label='Workspace Name'
+        id='My Company Name'
+        label='My Company Name'
         value={name}
         error={nameErrorMessage != null}
         helperText={nameErrorMessage}
