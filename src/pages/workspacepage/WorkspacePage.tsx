@@ -77,8 +77,9 @@ const WorkspacePage: FunctionComponent = () => {
   }
 
     return (<>
-      <MyAppBar drawerDisplayed={true} workspaceName={workspace.name}/>
+      <MyAppBar/>
       <MenuDrawer
+        workspaceName={workspace.name}
         myDestinations={myDests}
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
         onWorkspaceOverviewClick={() => setPanel({type: PanelType.WorkspaceOverview, currentDestinationUri: null})}

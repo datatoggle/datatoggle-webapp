@@ -10,8 +10,6 @@ import {drawerWidth} from '../pages/workspacepage/MenuDrawer'
 import Typography from '@mui/material/Typography'
 
 interface OwnProps {
-  drawerDisplayed: boolean
-  workspaceName?: string
 }
 
 type Props = OwnProps;
@@ -37,18 +35,8 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: props.drawerDisplayed ? drawerWidth : 0}}>
+    <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: drawerWidth }}>
       <Toolbar>
-        {
-          props.drawerDisplayed ? <></> : <Link href={HOME_URL}>
-            <Box component="img" src={logo} alt="Logo" sx={{height: '48px'}}/>
-          </Link>
-        }
-        {
-          props.workspaceName && (<Typography color={'textPrimary'} variant="h6">
-            {props.workspaceName}
-          </Typography>)
-        }
         <Box sx={{flexGrow: 1}} />
         <IconButton
           aria-controls="login-menu"

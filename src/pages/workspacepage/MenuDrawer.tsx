@@ -7,10 +7,12 @@ import PlayForWorkIcon from '@mui/icons-material/PlayForWork';
 import {MyDestination} from './WorkspacePage'
 
 interface OwnProps {
+  workspaceName: string
   myDestinations: MyDestination[],
   onMyDestinationClick: (dest: MyDestination) => void
   onWorkspaceOverviewClick: () => void
 }
+
 
 type Props = OwnProps;
 
@@ -20,27 +22,41 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
   return (
   <Drawer
-      sx={{      width: drawerWidth,
-        flexShrink: 0,}}
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiPaper-root': {
+          borderRight: '0px'
+        }
+      }}
       variant="permanent"
       anchor="left"
     >
       <Box sx={{      display: 'flex',
         alignItems: 'center',
-        marginLeft: '16px'}}>
-        <Link href={HOME_URL}>
-          <Box component="img" src={logo} alt="Logo" height='48px'/>
-        </Link>
+        margin: '16px', marginTop: '20px', paddingBottom: '24px'}}>
+
+          <Box component="img" src={icon} alt="Logo" height='24px' paddingRight='24px'/>
+
+        <Box sx={{      display: 'flex',
+          alignItems: 'center'}}>{props.workspaceName}</Box>
+
       </Box>
 
-      <List>
+      <List dense={true}>
+
+        <ListItem key='quick_start'>
+          <ListItemIcon><DoubleArrowIcon /></ListItemIcon>
+          <ListItemText primary='Quick Start' primaryTypographyProps={{ variant: "subtitle2" }}/>
+        </ListItem>
+
         <ListItem button key='workspace_overview' onClick={props.onWorkspaceOverviewClick}>
           <ListItemIcon><HomeIcon/></ListItemIcon>
-          <ListItemText primary='Workspace overview' primaryTypographyProps={{ variant: "h6" }}/>
+          <ListItemText primary='Overview' primaryTypographyProps={{ variant: "subtitle2" }}/>
         </ListItem>
         <ListItem key='My destinations'>
           <ListItemIcon><PlayForWorkIcon /></ListItemIcon>
-          <ListItemText primary='Destinations' primaryTypographyProps={{ variant: "h6" }}/>
+          <ListItemText primary='My Destinations' primaryTypographyProps={{ variant: "subtitle2" }}/>
         </ListItem>
 
         {
