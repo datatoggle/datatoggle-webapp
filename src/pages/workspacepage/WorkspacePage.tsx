@@ -10,12 +10,12 @@ import DestinationPanel from './DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
 import {Box} from '@mui/material'
 
-enum PanelType {
+export enum PanelType {
   WorkspaceOverview,
   Destination
 }
 
-interface Panel {
+export interface Panel {
   type: PanelType
   currentDestinationUri: string | null
 }
@@ -79,6 +79,7 @@ const WorkspacePage: FunctionComponent = () => {
     return (<>
       <MyAppBar/>
       <MenuDrawer
+        activePanel={panel}
         workspaceName={workspace.name}
         myDestinations={myDests}
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}

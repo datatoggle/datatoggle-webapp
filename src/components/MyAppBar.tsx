@@ -1,13 +1,10 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
-import {AppBar, Box, IconButton, Link, Menu, MenuItem, Toolbar} from '@mui/material'
-import logo from '../images/logo.png'
+import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar} from '@mui/material'
 import {AccountCircle} from '@mui/icons-material'
-import {HOME_URL} from '../service/urls'
 import {UserContext} from '../service/UserContext'
 import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
 import {drawerWidth} from '../pages/workspacepage/MenuDrawer'
-import Typography from '@mui/material/Typography'
 
 interface OwnProps {
 }
@@ -45,7 +42,7 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           size="large"
-          sx={{height: '48px'}}
+          sx={{height: '48px', paddingRight: '36px'}}
         >
           <AccountCircle />
         </IconButton>
