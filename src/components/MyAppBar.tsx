@@ -1,10 +1,11 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
-import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar} from '@mui/material'
-import {AccountCircle} from '@mui/icons-material'
+import {AppBar, Box, Divider, IconButton, Menu, MenuItem, Toolbar} from '@mui/material'
+import {AccountCircle, Help, HelpCenter} from '@mui/icons-material'
 import {UserContext} from '../service/UserContext'
 import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
 import {drawerWidth} from '../pages/workspacepage/MenuDrawer'
+import Button from '@mui/material/Button'
 
 interface OwnProps {
 }
@@ -35,6 +36,8 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
     <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: drawerWidth, paddingRight:'16px' }}>
       <Toolbar>
         <Box sx={{flexGrow: 1}} />
+        <Button href={"https://docs.datatoggle.com/"} target="_blank" variant={'outlined'} size={"small"}>Docs</Button>
+        <Box paddingLeft="16px"/>
         <IconButton
           aria-controls="login-menu"
           edge="end"
