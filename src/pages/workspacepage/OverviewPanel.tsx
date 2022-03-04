@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@mui/material/Typography'
-import {Box, Card, Link, Menu, MenuItem} from '@mui/material'
+import {Alert, Box, Card, Chip, Link, Menu, MenuItem, Snackbar} from '@mui/material'
 import Button from '@mui/material/Button'
 import {DestinationDef, Workspace} from '../../service/restapi/data'
 import {MyDestination} from './WorkspacePage'
@@ -8,6 +8,8 @@ import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
 import datatoggle from '@datatoggle/datatoggle-sdk'
+import WorkspaceIntro from './WorkspaceIntro'
+import {CopyAll} from '@mui/icons-material'
 
 interface OwnProps {
   workspace: Workspace,
@@ -24,8 +26,8 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
   const workspace = props.workspace
   const ctx: UserContext = useContext(userContext)
 
-
   const [destinationMenuAnchorEl, setDestinationMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [apiKeyCopiedAlertOpen, setApiKeyCopiedAlertOpen] = useState<boolean>(false);
 
   const handleNewDestinationClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDestinationMenuAnchorEl(event.currentTarget);
@@ -58,21 +60,30 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
 
   return (     <Box sx={{      display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'}}>
+    alignItems: 'left'}}>
 
-    <Box sx={{      width: '512px',
-      display: 'flex',
-      paddingTop: '64px',
-      paddingBottom: '16px',}}>
-      <Typography variant="h5" component="h2">
-        Your API key
-      </Typography>
-    </Box>
+    <WorkspaceIntro></WorkspaceIntro>
 
-    <Typography variant="body1" component="h2">
-      {workspace.apiKey}
+    <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
+      My API key
     </Typography>
 
+    <Typography  paddingBottom="16px">
+      This API key is used to initialize the DataToggle API on your website.
+    </Typography>
+
+    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={apiKeyCopiedAlertOpen} autoHideDuration={6000} onClose={() => {setApiKeyCopiedAlertOpen(false)}}>
+      <Alert onClose={() => {setApiKeyCopiedAlertOpen(false)}} severity="success">
+        Api key was copied to the clipboard
+      </Alert>
+    </Snackbar>
+    <div>
+    <Chip icon={<CopyAll />} label={workspace.apiKey} variant="outlined" onClick={() => {navigator.clipboard.writeText(workspace.apiKey).then(() => {setApiKeyCopiedAlertOpen(true)})}} ></Chip>
+    </div>
+
+    <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
+      My destinations
+    </Typography>
 
     <Box sx={{      width: '512px',
       display: 'flex',

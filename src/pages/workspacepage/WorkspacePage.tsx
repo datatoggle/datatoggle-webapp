@@ -99,7 +99,8 @@ const WorkspacePage: FunctionComponent = () => {
         <Box paddingTop='36px' paddingLeft='64px' paddingRight='40px'>
         <Typography variant={'h6'}>{toPanelLabel(panel, destinationDefs)}</Typography>
         <Divider sx={{paddingTop: '8px'}}/>
-        {
+          <Box paddingTop="32px"/>
+          {
           panelComp
         }
         </Box>
