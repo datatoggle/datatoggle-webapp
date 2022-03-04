@@ -2,14 +2,14 @@ import React, {FunctionComponent, useContext, useState} from 'react'
 import Typography from '@mui/material/Typography'
 import {Alert, Box, Card, Chip, Link, Menu, MenuItem, Snackbar} from '@mui/material'
 import Button from '@mui/material/Button'
-import {DestinationDef, Workspace} from '../../service/restapi/data'
-import {MyDestination} from './WorkspacePage'
-import {UserContext} from '../../service/UserContext'
-import {userContext} from '../../components/AuthCheck'
-import {PostDestinationConfigReply} from '../../service/restapi/RestApi'
-import datatoggle from '@datatoggle/datatoggle-sdk'
+import {DestinationDef, Workspace} from '../../../service/restapi/data'
+import {MyDestination} from '../WorkspacePage'
+import {UserContext} from '../../../service/UserContext'
+import {userContext} from '../../../components/AuthCheck'
+import {PostDestinationConfigReply} from '../../../service/restapi/RestApi'
 import WorkspaceIntro from './WorkspaceIntro'
 import {CopyAll} from '@mui/icons-material'
+import datatoggle from '@datatoggle/datatoggle-sdk'
 
 interface OwnProps {
   workspace: Workspace,
@@ -62,7 +62,7 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     flexDirection: 'column',
     alignItems: 'left'}}>
 
-    <WorkspaceIntro></WorkspaceIntro>
+    <WorkspaceIntro/>
 
     <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
       My API key
@@ -78,7 +78,11 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
       </Alert>
     </Snackbar>
     <div>
-    <Chip icon={<CopyAll />} label={workspace.apiKey} variant="outlined" onClick={() => {navigator.clipboard.writeText(workspace.apiKey).then(() => {setApiKeyCopiedAlertOpen(true)})}} ></Chip>
+    <Chip icon={<CopyAll/>} label={workspace.apiKey} variant="outlined" onClick={() => {
+  navigator.clipboard.writeText(workspace.apiKey).then(() => {
+    setApiKeyCopiedAlertOpen(true)
+  })
+}} />
     </div>
 
     <Typography variant="h6" paddingTop="48px" paddingBottom="16px">

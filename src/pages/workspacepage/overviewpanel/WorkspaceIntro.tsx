@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import {Card, Paper} from '@mui/material'
+import {Card} from '@mui/material'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
-import {messageBackgroundColor, primaryColor, secondaryColor} from '../../DesignConstants'
+import {messageBackgroundColor} from '../../../DesignConstants'
 import Button from '@mui/material/Button'
 
 interface OwnProps {}
