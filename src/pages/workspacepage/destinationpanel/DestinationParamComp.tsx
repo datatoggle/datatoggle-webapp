@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
 import {Box, Checkbox, FormControlLabel, TextField} from '@mui/material'
-import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../service/restapi/data'
+import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../../service/restapi/data'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import DestinationParamDictEntry from './DestinationParamDictEntry'

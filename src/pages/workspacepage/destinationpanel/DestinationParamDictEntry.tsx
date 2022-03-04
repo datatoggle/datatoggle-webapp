@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react'
 import {TextField} from '@mui/material'
 import Button from '@mui/material/Button'
-import {AtomicType} from '../../service/restapi/data'
+import {AtomicType} from '../../../service/restapi/data'
 
 interface OwnProps {
   entryKey: string

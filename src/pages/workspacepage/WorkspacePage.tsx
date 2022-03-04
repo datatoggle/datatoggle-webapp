@@ -6,7 +6,7 @@ import {DestinationConfigWithInfo, DestinationDef, Workspace} from '../../servic
 import {useParams} from 'react-router-dom'
 import OverviewPanel from './overviewpanel/OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
-import DestinationPanel from './DestinationPanel'
+import DestinationPanel from './destinationpanel/DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
 import {Box, Divider} from '@mui/material'
 import Typography from '@mui/material/Typography'
