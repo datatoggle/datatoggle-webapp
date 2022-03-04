@@ -10,6 +10,7 @@ import firebase from 'firebase/app';
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {Options} from '@datatoggle/datatoggle-sdk/'
 import Routes from './routes'
+import {primaryColor, secondaryColor} from './DesignConstants'
 
 const firebaseConfig = {
   apiKey: "AIzaSyD33FHNwomuZ43VUBgtOW4dJ3ePUIRAcps",
@@ -33,10 +34,10 @@ with complementary color
 const theme: Theme = createTheme({
   palette: {
     primary: {
-      main: '#4E12C5',
+      main: primaryColor,
     },
     secondary: {
-      main: '#89c512',
+      main: secondaryColor,
     },
   },
 });
