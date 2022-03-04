@@ -32,7 +32,7 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: drawerWidth }}>
+    <AppBar position="static" sx={{background: 'transparent', boxShadow: 'none', paddingLeft: drawerWidth, paddingRight:'16px' }}>
       <Toolbar>
         <Box sx={{flexGrow: 1}} />
         <IconButton
@@ -42,7 +42,7 @@ const MyAppBar: FunctionComponent<Props> = (props) => {
           aria-haspopup="true"
           onClick={handleClick}
           size="large"
-          sx={{height: '48px', paddingRight: '36px'}}
+          sx={{height: '48px'}}
         >
           <AccountCircle />
         </IconButton>
