@@ -16,7 +16,7 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-export const drawerWidth = '240px';
+export const drawerWidth = '280px';
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {
 
