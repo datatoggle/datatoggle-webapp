@@ -1,8 +1,8 @@
 
 import React, {useState} from 'react'
-import Typography from '@mui/material/Typography'
 import {Alert, Chip, Snackbar} from '@mui/material'
 import {CopyAll} from '@mui/icons-material'
+import {PanelSection} from './PanelSection'
 
 type Props = {
   apiKey: string
@@ -13,15 +13,8 @@ export const ApiKeySection = (props: Props) => {
   const [apiKeyCopiedAlertOpen, setApiKeyCopiedAlertOpen] = useState<boolean>(false);
 
   return (
-    <>
-      <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
-        My API key
-      </Typography>
 
-      <Typography  paddingBottom="16px">
-        This API key is used to initialize the DataToggle API on your website.
-      </Typography>
-
+    <PanelSection title="My API key" subtitle="This API key is used to initialize the DataToggle API on your website.">
       <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={apiKeyCopiedAlertOpen} autoHideDuration={6000} onClose={() => {setApiKeyCopiedAlertOpen(false)}}>
         <Alert onClose={() => {setApiKeyCopiedAlertOpen(false)}} severity="success">
           Api key was copied to the clipboard
@@ -34,6 +27,6 @@ export const ApiKeySection = (props: Props) => {
           })
         }} />
       </div>
-    </>
+    </PanelSection>
   )
 }
