@@ -7,9 +7,10 @@ import {MyDestination} from '../WorkspacePage'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
 import {PostDestinationConfigReply} from '../../../service/restapi/RestApi'
-import WorkspaceIntro from './WorkspaceIntro'
+import IntroSection from './IntroSection'
 import {CopyAll} from '@mui/icons-material'
 import datatoggle from '@datatoggle/datatoggle-sdk'
+import {ApiKeySection} from './ApiKeySection'
 
 interface OwnProps {
   workspace: Workspace,
@@ -27,7 +28,6 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
   const ctx: UserContext = useContext(userContext)
 
   const [destinationMenuAnchorEl, setDestinationMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const [apiKeyCopiedAlertOpen, setApiKeyCopiedAlertOpen] = useState<boolean>(false);
 
   const handleNewDestinationClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setDestinationMenuAnchorEl(event.currentTarget);
@@ -57,33 +57,12 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
     }
   }
 
-
   return (     <Box sx={{      display: 'flex',
     flexDirection: 'column',
     alignItems: 'left'}}>
 
-    <WorkspaceIntro/>
-
-    <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
-      My API key
-    </Typography>
-
-    <Typography  paddingBottom="16px">
-      This API key is used to initialize the DataToggle API on your website.
-    </Typography>
-
-    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={apiKeyCopiedAlertOpen} autoHideDuration={6000} onClose={() => {setApiKeyCopiedAlertOpen(false)}}>
-      <Alert onClose={() => {setApiKeyCopiedAlertOpen(false)}} severity="success">
-        Api key was copied to the clipboard
-      </Alert>
-    </Snackbar>
-    <div>
-    <Chip icon={<CopyAll/>} label={workspace.apiKey} variant="outlined" onClick={() => {
-  navigator.clipboard.writeText(workspace.apiKey).then(() => {
-    setApiKeyCopiedAlertOpen(true)
-  })
-}} />
-    </div>
+    <IntroSection/>
+    <ApiKeySection apiKey={props.workspace.apiKey}/>
 
     <Typography variant="h6" paddingTop="48px" paddingBottom="16px">
       My destinations

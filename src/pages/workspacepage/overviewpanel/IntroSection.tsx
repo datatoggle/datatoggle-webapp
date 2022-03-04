@@ -9,7 +9,7 @@ interface OwnProps {}
 
 type Props = OwnProps;
 
-const WorkspaceIntro: FunctionComponent<Props> = (props) => {
+const IntroSection: FunctionComponent<Props> = (props) => {
 
   return <Card  sx={{backgroundColor:messageBackgroundColor, borderRadius:'8px'}}>
     <CardContent>
@@ -24,4 +24,4 @@ const WorkspaceIntro: FunctionComponent<Props> = (props) => {
   </Card>;
 };
 
-export default WorkspaceIntro;
+export default IntroSection;
