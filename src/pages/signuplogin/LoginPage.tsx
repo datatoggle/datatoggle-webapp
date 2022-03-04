@@ -54,9 +54,7 @@ const LoginPage: FunctionComponent<{  }> = (props) => {
       title='Log Into My Account'
       buttonText='Log In'
       underButtonLeft={
-        <Link href={SIGNUP_URL} underline={'none'}>
-          <Button variant="text" size="small">Create an account</Button>
-        </Link>
+          <Button href={SIGNUP_URL} variant="text" size="small">Create an account</Button>
       }
       underButtonRight={
         <Button

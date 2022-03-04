@@ -55,9 +55,7 @@ const SignUpPage: FunctionComponent<{  }> = (props) => {
         <div/>
       }
       underButtonRight={
-        <Link href={LOGIN_URL} underline={'none'}>
-          <Button variant="text" size="small">Already have an account?</Button>
-        </Link>
+          <Button href={LOGIN_URL} variant="text" size="small">Already have an account?</Button>
       }
       bottomMessage={        <Typography variant="caption">
         By Signing up, you agree to <a href='https://google.com'>Datatoggle's Terms of Service</a>
