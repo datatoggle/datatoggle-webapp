@@ -8,11 +8,21 @@ import OverviewPanel from './OverviewPanel'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
 import DestinationPanel from './DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
-import {Box} from '@mui/material'
+import {Box, Divider} from '@mui/material'
+import Typography from '@mui/material/Typography'
 
 export enum PanelType {
   WorkspaceOverview,
   Destination
+}
+
+function toPanelLabel(panel: Panel, destinationDefs: DestinationDef[]): string {
+  switch (panel.type) {
+    case PanelType.WorkspaceOverview:
+      return 'Overview'
+    case PanelType.Destination:
+      return `My Destinations -> ${destinationDefs.find(d => d.uri === panel.currentDestinationUri)!!.name}`
+  }
 }
 
 export interface Panel {
@@ -77,7 +87,7 @@ const WorkspacePage: FunctionComponent = () => {
   }
 
     return (<>
-      <MyAppBar/>
+      <MyAppBar />
       <MenuDrawer
         activePanel={panel}
         workspaceName={workspace.name}
@@ -85,10 +95,14 @@ const WorkspacePage: FunctionComponent = () => {
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
         onWorkspaceOverviewClick={() => setPanel({type: PanelType.WorkspaceOverview, currentDestinationUri: null})}
         />
-      <Box sx={{marginLeft: drawerWidth}}>
+      <Box paddingLeft={drawerWidth}>
+        <Box paddingTop='36px' paddingLeft='64px' paddingRight='32px'>
+        <Typography variant={'h6'}>{toPanelLabel(panel, destinationDefs)}</Typography>
+        <Divider sx={{paddingTop: '8px'}}/>
         {
           panelComp
         }
+        </Box>
       </Box>
     </>)
 };
