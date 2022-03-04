@@ -72,7 +72,7 @@ const WorkspacePage: FunctionComponent = () => {
         workspace={workspace}
         myDestinations={myDests}
         destinationDefs={destinationDefs}
-        onNewDestinationCreated={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
+        onNewDestinationCreated={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}
         onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}/>
       break;
     case PanelType.Destination:
@@ -80,7 +80,7 @@ const WorkspacePage: FunctionComponent = () => {
         workspaceUri={uri}
         myDestination={myDests.find((d) => d.definition.uri === panel.currentDestinationUri)!!}
         saved={false}
-        onDestinationModified={(uri: string) => setCountModifiedDestination(countModifiedDestination + 1)}
+        onDestinationModified={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}
       />
       break;
 
