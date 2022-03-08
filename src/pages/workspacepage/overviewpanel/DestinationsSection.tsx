@@ -6,7 +6,7 @@ import {
   Box,
   Chip,
   Menu,
-  MenuItem,
+  MenuItem, Paper,
   Table,
   TableBody,
   TableCell,
@@ -20,6 +20,7 @@ import {PostDestinationConfigReply} from '../../../service/restapi/RestApi'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
+import {backgroundTransparent} from '../../../DesignConstants'
 
 type Props = {
   workspace: Workspace
@@ -68,7 +69,7 @@ export const DestinationsSection = (props: Props) => {
   return (
     <PanelSection title="My Destinations">
       <Box display={'flex'} flexDirection={'column'}>
-        <TableContainer >
+        <TableContainer component={Paper}>
         <Table stickyHeader={true}>
           <TableHead>
             <TableRow>
@@ -78,9 +79,10 @@ export const DestinationsSection = (props: Props) => {
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>
+              <TableCell sx={{backgroundColor:backgroundTransparent}}>
                 <Button size='small' variant="outlined" color={'primary'} onClick={handleNewDestinationClick}>New destination</Button>
               </TableCell>
+              <TableCell sx={{backgroundColor: backgroundTransparent}}/>
             </TableRow>
             {
               props.myDestinations.map((d: MyDestination) => (
