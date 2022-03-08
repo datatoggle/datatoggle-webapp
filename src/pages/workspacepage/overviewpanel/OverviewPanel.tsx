@@ -18,9 +18,12 @@ type Props = OwnProps;
 
 const OverviewPanel: FunctionComponent<Props> = (props) => {
 
-  return (     <Box sx={{      display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'left'}}>
+  return (     <Box
+    display='flex'
+    flexDirection='column'
+    alignItems='left'
+    paddingBottom='64px'
+  >
 
     <IntroSection/>
     <ApiKeySection apiKey={props.workspace.apiKey}/>
