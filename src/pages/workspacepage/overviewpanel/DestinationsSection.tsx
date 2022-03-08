@@ -86,7 +86,7 @@ export const DestinationsSection = (props: Props) => {
             </TableRow>
             {
               props.myDestinations.map((d: MyDestination) => (
-                <TableRow>
+                <TableRow hover={true} onClick={() => props.onMyDestinationClick(d)}>
                   <TableCell>{d.definition.name}</TableCell>
                   <TableCell align="right">
                     {
