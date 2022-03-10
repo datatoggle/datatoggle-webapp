@@ -10,7 +10,6 @@ interface OwnProps {
   workspace: Workspace,
   myDestinations: MyDestination[],
   destinationDefs: DestinationDef[],
-  onMyDestinationClick: (myDestination: MyDestination) => void
   onNewDestinationCreated: (destinationUri: string) => void
 }
 
@@ -31,7 +30,6 @@ const OverviewPanel: FunctionComponent<Props> = (props) => {
   workspace={props.workspace}
   myDestinations={props.myDestinations}
   destinationDefs={props.destinationDefs}
-  onMyDestinationClick={props.onMyDestinationClick}
   onNewDestinationCreated={props.onNewDestinationCreated}
   />
   </Box>);

@@ -1,34 +1,11 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
-import MyAppBar from '../../components/MyAppBar'
 import {UserContext} from '../../service/UserContext'
 import {userContext} from '../../components/AuthCheck'
 import {DestinationConfigWithInfo, DestinationDef, Workspace} from '../../service/restapi/data'
 import {useParams} from 'react-router-dom'
-import OverviewPanel from './overviewpanel/OverviewPanel'
-import MenuDrawer, {drawerWidth} from './MenuDrawer'
-import DestinationPanel from './destinationpanel/DestinationPanel'
 import LoadingProgress from '../../components/LoadingProgress'
-import {Box, Divider} from '@mui/material'
-import Typography from '@mui/material/Typography'
+import WorkspacePageContent from './WorkspacePageContent'
 
-export enum PanelType {
-  WorkspaceOverview,
-  Destination
-}
-
-function toPanelLabel(panel: Panel, destinationDefs: DestinationDef[]): string {
-  switch (panel.type) {
-    case PanelType.WorkspaceOverview:
-      return 'Overview'
-    case PanelType.Destination:
-      return `My Destinations -> ${destinationDefs.find(d => d.uri === panel.currentDestinationUri)!!.name}`
-  }
-}
-
-export interface Panel {
-  type: PanelType
-  currentDestinationUri: string | null
-}
 
 export type MyDestination = {
   definition: DestinationDef
@@ -37,18 +14,18 @@ export type MyDestination = {
 
 const WorkspacePage: FunctionComponent = () => {
 
-  let { uri } = useParams<{uri: string}>();
+  let { workspace_uri } = useParams<{workspace_uri: string}>();
   const ctx: UserContext = useContext(userContext)
   const [workspace, setWorkspace] = useState<Workspace | null>(null)
   const [countModifiedDestination, setCountModifiedDestination] = useState<number>(0)
   const [destinationDefs, setDestinationDefs] = useState<DestinationDef[] | null>(null)
-  const [panel, setPanel] = useState<Panel>({type: PanelType.WorkspaceOverview, currentDestinationUri: null})
 
+  // load workspace and destinationDefs
   useEffect(() => {
-    ctx.api.getWorkspace(uri).then((result: Workspace) => {
+    ctx.api.getWorkspace(workspace_uri).then((result: Workspace) => {
       setWorkspace(result)
     })
-  }, [ctx, uri, countModifiedDestination])
+  }, [ctx, workspace_uri, countModifiedDestination])
 
   useEffect(() => {
     ctx.api.getDestinationDefs().then((destinationDefs: DestinationDef[]) => {
@@ -60,52 +37,14 @@ const WorkspacePage: FunctionComponent = () => {
     return <LoadingProgress/>
   }
 
-  const myDests: MyDestination[] = workspace.destinations.map(c => { return  {
-    definition: destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
-    configWithInfo: c
-  }})
+  return (
+    <WorkspacePageContent
+      workspace={workspace}
+      destinationDefs={destinationDefs}
+      onNewDestinationCreated={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}
+      onDestinationModified={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}/>
+  )
 
-  let panelComp;
-  switch (panel.type) {
-    case PanelType.WorkspaceOverview:
-      panelComp = <OverviewPanel
-        workspace={workspace}
-        myDestinations={myDests}
-        destinationDefs={destinationDefs}
-        onNewDestinationCreated={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}
-        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}/>
-      break;
-    case PanelType.Destination:
-      panelComp = <DestinationPanel
-        workspaceUri={uri}
-        myDestination={myDests.find((d) => d.definition.uri === panel.currentDestinationUri)!!}
-        saved={false}
-        onDestinationModified={(_: string) => setCountModifiedDestination(countModifiedDestination + 1)}
-      />
-      break;
-
-  }
-
-    return (<>
-      <MyAppBar />
-      <MenuDrawer
-        activePanel={panel}
-        workspaceName={workspace.name}
-        myDestinations={myDests}
-        onMyDestinationClick={(d: MyDestination) => setPanel({type: PanelType.Destination, currentDestinationUri: d.definition.uri})}
-        onWorkspaceOverviewClick={() => setPanel({type: PanelType.WorkspaceOverview, currentDestinationUri: null})}
-        />
-      <Box paddingLeft={drawerWidth}>
-        <Box paddingTop='36px' paddingLeft='64px' paddingRight='40px'>
-        <Typography variant={'h6'}>{toPanelLabel(panel, destinationDefs)}</Typography>
-        <Divider sx={{paddingTop: '8px'}}/>
-          <Box paddingTop="32px"/>
-          {
-          panelComp
-        }
-        </Box>
-      </Box>
-    </>)
 };
 
 export default WorkspacePage

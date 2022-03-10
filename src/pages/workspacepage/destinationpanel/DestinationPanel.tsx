@@ -10,10 +10,11 @@ import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
 import {MyDestination} from '../WorkspacePage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
+import {useParams} from 'react-router-dom'
 
 interface OwnProps {
   workspaceUri: string
-  myDestination: MyDestination
+  myDests: MyDestination[]
   saved: boolean | null // null if displayed from workspace and not after post destination request
   onDestinationModified: (destinationUri: string) => void
 }
@@ -23,14 +24,17 @@ type Props = OwnProps;
 const DestinationPanel: FunctionComponent<Props> = (props) => {
 
   const ctx: UserContext = useContext(userContext)
+  let { destination_def_uri } = useParams<{destination_def_uri: string}>();
 
-  const paramDefs = props.myDestination.definition.paramDefs
+  const myDestination:MyDestination = props.myDests.find(d => d.definition.uri == destination_def_uri)!!
 
-  const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(props.myDestination.configWithInfo.config)
+  const paramDefs = myDestination.definition.paramDefs
+
+  const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(myDestination.configWithInfo.config)
   // init modifiedConfig with the passed in props
   useEffect(() => {
-    setModifiedConfig(props.myDestination.configWithInfo.config)
-  }, [props.myDestination.configWithInfo.config])
+    setModifiedConfig(myDestination.configWithInfo.config)
+  }, [myDestination.configWithInfo.config])
 
   return (
     <Box sx={{
@@ -52,7 +56,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         <CardContent sx={{padding: '0'}}>
           <Box sx={{display: 'flex'}}>
             <Typography variant="h5" component="h2">
-              {props.myDestination.definition.name}
+              {myDestination.definition.name}
             </Typography>
             <Box flexGrow={1}/>
           <FormControlLabel
@@ -78,7 +82,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           paramDefs.map((paramDef: DestinationParamDef) => (
             <DestinationParamComp
               paramDef={paramDef}
-              initialValue={props.myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
+              initialValue={myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
               onValueChanged={(value: DestinationParam) => {
                 let newSpecificConfig = {
                   ...modifiedConfig.destinationSpecificConfig
@@ -100,17 +104,17 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         <Button
           variant="contained"
           color="primary"
-          disabled={props.myDestination.configWithInfo.config === modifiedConfig}
+          disabled={myDestination.configWithInfo.config === modifiedConfig}
           onClick={async () => {
           const reply = await ctx.api.postDestinationConfig(props.workspaceUri, modifiedConfig)
           if (reply.saved){
-            props.onDestinationModified(props.myDestination.definition.uri)
+            props.onDestinationModified(myDestination.definition.uri)
             datatoggle.track("save_destination_config", {
               workspace_uri: props.workspaceUri,
-              destination_uri: props.myDestination.definition.uri
+              destination_uri: myDestination.definition.uri
             })
           }
-        }}>{props.myDestination.configWithInfo.config === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
+        }}>{myDestination.configWithInfo.config === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
         </CardActions>
       </Card>
     </Box>

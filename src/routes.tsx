@@ -7,7 +7,7 @@ import NewWorkspacePage from './pages/NewWorkspacePage'
 import WorkspaceListPage from './pages/WorkspaceListPage'
 import WorkspacePage from './pages/workspacepage/WorkspacePage'
 import AuthCheck from './components/AuthCheck'
-import {HOME_URL, LOGIN_URL, NEW_WORKSPACE_URL, SIGNUP_URL} from './service/urls'
+import {HOME_URL, LOGIN_URL, NEW_WORKSPACE_URL, SIGNUP_URL, WORKSPACE_PATH} from './service/urls'
 import {useEffect} from 'react'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import SignupPage from './pages/signuplogin/SignupPage'
@@ -27,7 +27,7 @@ function Routes() {
             <NewWorkspacePage />
           </AuthCheck>
         </Route>
-        <Route exact path="/workspace/:uri">
+        <Route path={WORKSPACE_PATH}>
           <AuthCheck>
             <WorkspacePage />
           </AuthCheck>

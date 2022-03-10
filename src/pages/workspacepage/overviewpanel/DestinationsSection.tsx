@@ -21,12 +21,13 @@ import datatoggle from '@datatoggle/datatoggle-sdk'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
 import {backgroundTransparent} from '../../../DesignConstants'
+import {useHistory} from 'react-router-dom'
+import {destinationUrl} from '../../../service/urls'
 
 type Props = {
   workspace: Workspace
   myDestinations: MyDestination[]
   destinationDefs: DestinationDef[]
-  onMyDestinationClick: (myDestination: MyDestination) => void
   onNewDestinationCreated: (destinationUri: string) => void
 };
 
@@ -34,6 +35,7 @@ export const DestinationsSection = (props: Props) => {
 
   const workspace = props.workspace
   const ctx: UserContext = useContext(userContext)
+  let history = useHistory();
 
   const [destinationMenuAnchorEl, setDestinationMenuAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -46,9 +48,10 @@ export const DestinationsSection = (props: Props) => {
   };
 
   const onCreateNewDestination = async (destinationDef: DestinationDef) => {
+
     const myDest = props.myDestinations.find(m => m.definition.uri === destinationDef.uri)
     if (myDest) {
-      props.onMyDestinationClick(myDest)
+      history.push(destinationUrl(workspace.uri, myDest.definition.uri))
     } else {
       const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(workspace.uri, {
         destinationUri: destinationDef.uri,
@@ -59,7 +62,7 @@ export const DestinationsSection = (props: Props) => {
         props.onNewDestinationCreated(destinationDef.uri)
         datatoggle.track("create_destination", {
           workspace_uri: props.workspace.uri,
-          destination_uri: destinationDef.uri
+          destination_def_uri: destinationDef.uri
         })
       }
     }
@@ -86,7 +89,7 @@ export const DestinationsSection = (props: Props) => {
             </TableRow>
             {
               props.myDestinations.map((d: MyDestination) => (
-                <TableRow hover={true} onClick={() => props.onMyDestinationClick(d)}>
+                <TableRow hover={true} key={d.definition.uri} onClick={() => history.push(destinationUrl(props.workspace.uri, d.definition.uri))}>
                   <TableCell>{d.definition.name}</TableCell>
                   <TableCell align="right">
                     {

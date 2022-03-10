@@ -3,14 +3,16 @@ import {Box, Drawer, List, ListItem, ListItemIcon, ListItemText} from '@mui/mate
 import icon from '../../images/icon.png'
 import HomeIcon from '@mui/icons-material/Home'
 import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
-import {MyDestination, Panel, PanelType} from './WorkspacePage'
+import {MyDestination} from './WorkspacePage'
+import {destinationUrl, workspaceUrl} from '../../service/urls'
+import {useHistory} from 'react-router-dom'
+import {Panel} from './WorkspacePageContent'
 
 interface OwnProps {
-  activePanel: Panel
+  workspaceUri: string
   workspaceName: string
-  myDestinations: MyDestination[],
-  onMyDestinationClick: (dest: MyDestination) => void
-  onWorkspaceOverviewClick: () => void
+  myDestinations: MyDestination[]
+  activePanel: Panel
 }
 
 
@@ -19,6 +21,8 @@ type Props = OwnProps;
 export const drawerWidth = '280px';
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {
+
+  let history = useHistory();
 
   return (
   <Drawer
@@ -46,9 +50,9 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
       <List dense={true} sx={{paddingLeft: '36px'}}>
 
-        <ListItem button key='workspace_overview' onClick={props.onWorkspaceOverviewClick}>
-          <ListItemIcon><HomeIcon color={props.activePanel.type === PanelType.WorkspaceOverview ? 'primary' : undefined}/></ListItemIcon>
-          <ListItemText primary='Overview' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === PanelType.WorkspaceOverview ? 'primary' : undefined }}/>
+        <ListItem button key='workspace_overview' onClick={() => history.push(workspaceUrl(props.workspaceUri))}>
+          <ListItemIcon><HomeIcon color={props.activePanel.type === "Workspace" ? 'primary': undefined}/></ListItemIcon>
+          <ListItemText primary='Overview' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === "Workspace" ? 'primary': undefined }}/>
         </ListItem>
         <ListItem key='My destinations'>
           <ListItemIcon><PlayForWorkIcon /></ListItemIcon>
@@ -57,12 +61,12 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
         {
           props.myDestinations.map((d: MyDestination) => (
-            <ListItem button key={d.definition.uri} onClick={() => props.onMyDestinationClick(d)}>
+            <ListItem button key={d.definition.uri} onClick={() => history.push(destinationUrl(props.workspaceUri, d.definition.uri))}>
               <ListItemText
                 inset
                 primary={d.definition.name}
                 primaryTypographyProps={{ variant: "subtitle2",
-                  color: props.activePanel.type === PanelType.Destination && props.activePanel.currentDestinationUri === d.definition.uri ? 'primary' : undefined }}
+                  color: props.activePanel.type === "Destination" && props.activePanel.currentDestinationUri === d.definition.uri ? 'primary': undefined }}
               />
             </ListItem>
           ))
