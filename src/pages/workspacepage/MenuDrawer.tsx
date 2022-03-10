@@ -4,7 +4,7 @@ import icon from '../../images/icon.png'
 import HomeIcon from '@mui/icons-material/Home'
 import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
 import {MyDestination} from './WorkspacePage'
-import {destinationUrl, workspaceUrl} from '../../service/urls'
+import {destinationUrl, myDestinationsUrl, workspaceUrl} from '../../service/urls'
 import {useHistory} from 'react-router-dom'
 import {Panel} from './WorkspacePageContent'
 
@@ -54,9 +54,9 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
           <ListItemIcon><HomeIcon color={props.activePanel.type === "Workspace" ? 'primary': undefined}/></ListItemIcon>
           <ListItemText primary='Overview' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === "Workspace" ? 'primary': undefined }}/>
         </ListItem>
-        <ListItem key='My destinations'>
-          <ListItemIcon><PlayForWorkIcon /></ListItemIcon>
-          <ListItemText primary='My Destinations' primaryTypographyProps={{ variant: "h6" }}/>
+        <ListItem button key='My destinations' onClick={() => history.push(myDestinationsUrl(props.workspaceUri))}>
+          <ListItemIcon><PlayForWorkIcon color={props.activePanel.type === "MyDestinations" ? 'primary': undefined} /></ListItemIcon>
+          <ListItemText primary='My Destinations' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === "MyDestinations" ? 'primary': undefined }}/>
         </ListItem>
 
         {
