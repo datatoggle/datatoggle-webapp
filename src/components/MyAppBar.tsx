@@ -1,10 +1,10 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
-import {AppBar, Box, Divider, IconButton, Menu, MenuItem, Toolbar} from '@mui/material'
-import {AccountCircle, Help, HelpCenter} from '@mui/icons-material'
+import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar} from '@mui/material'
+import {AccountCircle} from '@mui/icons-material'
 import {UserContext} from '../service/UserContext'
 import {userContext} from './AuthCheck'
 import firebase from 'firebase/app'
-import {drawerWidth} from '../pages/workspacepage/MenuDrawer'
+import {drawerWidth} from '../pages/workspace/MenuDrawer'
 import Button from '@mui/material/Button'
 
 interface OwnProps {

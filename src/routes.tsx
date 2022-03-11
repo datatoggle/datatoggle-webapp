@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import NewWorkspacePage from './pages/NewWorkspacePage'
 import WorkspaceListPage from './pages/WorkspaceListPage'
-import WorkspacePage from './pages/workspacepage/WorkspacePage'
+import WorkspacePage from './pages/workspace/WorkspacePage'
 import AuthCheck from './components/AuthCheck'
 import {HOME_URL, LOGIN_URL, NEW_WORKSPACE_URL, SIGNUP_URL, WORKSPACE_PATH} from './service/urls'
 import {useEffect} from 'react'

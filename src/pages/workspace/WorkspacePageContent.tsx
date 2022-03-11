@@ -32,7 +32,7 @@ function getActivePanel(
     let destUri: string = matchIfDestUrl.params.destination_def_uri
     return {
       type: 'Destination',
-      label: `My Destinations -> ${destinationDefs.find(d => d.uri === destUri)!!.name}`,
+      label: `My Destinations / ${destinationDefs.find(d => d.uri === destUri)!!.name}`,
       currentDestinationUri: destUri
     }
   } else {
