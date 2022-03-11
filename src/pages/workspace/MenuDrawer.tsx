@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react'
-import {Box, Drawer, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
+import {Box, Drawer, List} from '@mui/material'
 import icon from '../../images/icon.png'
 import HomeIcon from '@mui/icons-material/Home'
 import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
@@ -7,6 +7,8 @@ import {MyDestination} from './WorkspacePage'
 import {destinationUrl, myDestinationsUrl, workspaceUrl} from '../../service/urls'
 import {useHistory} from 'react-router-dom'
 import {Panel} from './WorkspacePageContent'
+import MenuPrimaryLink from './MenuPrimaryLink'
+import MenuSecondaryLink from './MenuSecondaryLink'
 
 interface OwnProps {
   workspaceUri: string
@@ -50,25 +52,15 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
       <List dense={true} sx={{paddingLeft: '36px'}}>
 
-        <ListItem button key='workspace_overview' onClick={() => history.push(workspaceUrl(props.workspaceUri))}>
-          <ListItemIcon><HomeIcon color={props.activePanel.type === "Workspace" ? 'primary': undefined}/></ListItemIcon>
-          <ListItemText primary='Overview' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === "Workspace" ? 'primary': undefined }}/>
-        </ListItem>
-        <ListItem button key='My destinations' onClick={() => history.push(myDestinationsUrl(props.workspaceUri))}>
-          <ListItemIcon><PlayForWorkIcon color={props.activePanel.type === "MyDestinations" ? 'primary': undefined} /></ListItemIcon>
-          <ListItemText primary='My Destinations' primaryTypographyProps={{ variant: "h6", color: props.activePanel.type === "MyDestinations" ? 'primary': undefined }}/>
-        </ListItem>
+        <MenuPrimaryLink icon={HomeIcon} isActive={props.activePanel.type === "Workspace"} label='Overview' url={workspaceUrl(props.workspaceUri)}/>
+        <MenuPrimaryLink icon={PlayForWorkIcon} isActive={props.activePanel.type === "MyDestinations"} label='My destinations' url={myDestinationsUrl(props.workspaceUri)}/>
 
         {
           props.myDestinations.map((d: MyDestination) => (
-            <ListItem button key={d.definition.uri} onClick={() => history.push(destinationUrl(props.workspaceUri, d.definition.uri))}>
-              <ListItemText
-                inset
-                primary={d.definition.name}
-                primaryTypographyProps={{ variant: "subtitle2",
-                  color: props.activePanel.type === "Destination" && props.activePanel.currentDestinationUri === d.definition.uri ? 'primary': undefined }}
-              />
-            </ListItem>
+            <MenuSecondaryLink
+              label={d.definition.name}
+              url={destinationUrl(props.workspaceUri, d.definition.uri)}
+              isActive={props.activePanel.type === "Destination" && props.activePanel.currentDestinationUri === d.definition.uri}/>
           ))
         }
       </List>
