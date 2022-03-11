@@ -15,7 +15,7 @@ import {
 import {backgroundTransparent} from '../../../DesignConstants'
 import Button from '@mui/material/Button'
 import {MyDestination} from '../WorkspacePage'
-import {destinationUrl} from '../../../service/urls'
+import {workspaceDestinationUrl} from '../../../service/urls'
 import {DestinationDef, Workspace} from '../../../service/restapi/data'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
@@ -52,7 +52,7 @@ const DestinationsTable: FunctionComponent<Props> = (props) => {
 
     const myDest = props.myDestinations.find(m => m.definition.uri === destinationDef.uri)
     if (myDest) {
-      history.push(destinationUrl(workspace.uri, myDest.definition.uri))
+      history.push(workspaceDestinationUrl(workspace.uri, myDest.definition.uri))
     } else {
       const result: PostDestinationConfigReply = await ctx.api.postDestinationConfig(workspace.uri, {
         destinationUri: destinationDef.uri,
@@ -90,7 +90,7 @@ const DestinationsTable: FunctionComponent<Props> = (props) => {
               </TableRow>
               {
                 props.myDestinations.map((d: MyDestination) => (
-                  <TableRow hover={true} key={d.definition.uri} onClick={() => history.push(destinationUrl(props.workspace.uri, d.definition.uri))}>
+                  <TableRow hover={true} key={d.definition.uri} onClick={() => history.push(workspaceDestinationUrl(props.workspace.uri, d.definition.uri))}>
                     <TableCell>{d.definition.name}</TableCell>
                     <TableCell align="right">
                       {

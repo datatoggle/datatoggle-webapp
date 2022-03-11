@@ -3,43 +3,89 @@ import MyAppBar from '../../components/MyAppBar'
 import MenuDrawer, {drawerWidth} from './MenuDrawer'
 import {Box, Divider} from '@mui/material'
 import Typography from '@mui/material/Typography'
-import {match, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {match, Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import OverviewPanel from './overviewpanel/OverviewPanel'
 import DestinationPanel from './destinationpanel/DestinationPanel'
 import {DestinationDef, Workspace} from '../../service/restapi/data'
 import {MyDestination} from './WorkspacePage'
-import {DESTINATION_PATH, MY_DESTINATIONS_PATH, WORKSPACE_PATH} from '../../service/urls'
 import MyDestinationsPanel from './mydestinationspanel/MyDestinationsPanel'
+import {
+  CATALOG_PANEL_URI, DESTINATION_PANEL_PATH, DESTINATIONS_PANEL_URI,
+  OVERVIEW_PANEL_URI,
+  WORKSPACE_PANEL_PATH,
+  workspacePanelUrl, workspaceSpecificPanelPath
+} from '../../service/urls'
+import {SvgIconComponent} from '@mui/icons-material'
+import HomeIcon from '@mui/icons-material/Home'
+import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
+import AppsIcon from '@mui/icons-material/Apps'
 
-export interface Panel {
-  type: 'Workspace' | 'MyDestinations' | 'Destination'
-  label: string
-  currentDestinationUri?: string
+export enum PanelType {
+  fixed,
+  destination
 }
 
-function getActivePanel(
-  matchIfMyDestsUrl: match<{}> | null,
-  matchIfDestUrl: match<{destination_def_uri: string}> | null,
-  destinationDefs: DestinationDef[]): Panel {
+export interface Panel {
+  panelType: PanelType
+  uri: string
+  label: string,
+  icon?: SvgIconComponent,
+  secondary: boolean
+}
 
-  if (matchIfMyDestsUrl){
-    return {
-      type: 'MyDestinations',
-      label: `My Destinations`
-    }
+const overviewPanel: Panel = {
+  panelType: PanelType.fixed,
+  uri: OVERVIEW_PANEL_URI,
+  label: 'Overview',
+  icon: HomeIcon,
+  secondary: false
+}
+
+const catalogPanel: Panel = {
+  panelType: PanelType.fixed,
+  uri: CATALOG_PANEL_URI,
+  label: 'Catalog',
+  icon: AppsIcon,
+  secondary: false
+}
+
+const destinationsPanel: Panel = {
+  panelType: PanelType.fixed,
+  uri: DESTINATIONS_PANEL_URI,
+  label: 'My Destinations',
+  icon: PlayForWorkIcon,
+  secondary: false
+}
+
+export const fixedPanels: Panel[] = [
+  overviewPanel,
+  catalogPanel,
+  destinationsPanel
+]
+
+
+function getActivePanel(
+  matchIfPanelUrl: match<{panel_uri: string}> | null,
+  matchIfDestUrl: match<{destination_def_uri: string}> | null,
+  myDests: MyDestination[]): Panel | undefined {
+
+  if (matchIfPanelUrl){
+    return fixedPanels.find(d => d.uri === matchIfPanelUrl.params.panel_uri)
   }
   else if (matchIfDestUrl){
-    let destUri: string = matchIfDestUrl.params.destination_def_uri
-    return {
-      type: 'Destination',
-      label: `My Destinations / ${destinationDefs.find(d => d.uri === destUri)!!.name}`,
-      currentDestinationUri: destUri
+    const dest: MyDestination | undefined = myDests.find(d => d.definition.uri === matchIfDestUrl.params.destination_def_uri)
+    if (dest){
+      return {
+        uri: dest.definition.uri,
+        label: dest.definition.name,
+        secondary: true,
+        panelType: PanelType.destination,
+      }
+    } else {
+      return undefined
     }
   } else {
-    return {
-      type: 'Workspace',
-      label: 'Overview'
-    }
+    return undefined
   }
 }
 
@@ -54,17 +100,22 @@ type Props = OwnProps;
 
 const WorkspacePageContent: FunctionComponent<Props> = (props) => {
 
-  let matchIfMyDestsUrl: match<{}> | null =  useRouteMatch({path: MY_DESTINATIONS_PATH, exact: true})
-  let matchIfDestUrl: match<{destination_def_uri: string}> | null =  useRouteMatch({path: DESTINATION_PATH, exact: true})
+  let matchIfPanelUrl: match<{panel_uri: string}> | null =  useRouteMatch({path: WORKSPACE_PANEL_PATH, exact: true})
+  let matchIfDestUrl: match<{destination_def_uri: string}> | null =  useRouteMatch({path: DESTINATION_PANEL_PATH, exact: true})
+  let match = useRouteMatch()
 
-  const activePanel: Panel = getActivePanel(matchIfMyDestsUrl, matchIfDestUrl, props.destinationDefs)
 
   const myDests: MyDestination[] = props.workspace.destinations.map(c => { return  {
     definition: props.destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
     configWithInfo: c
   }})
 
-    return (<>
+  const activePanel: Panel | undefined = getActivePanel(matchIfPanelUrl, matchIfDestUrl, myDests)
+  if (!activePanel){
+    return <Redirect to={workspacePanelUrl(props.workspace.uri, overviewPanel.uri)}/>
+  }
+
+  return (<>
     <MyAppBar />
     <MenuDrawer
       workspaceName={props.workspace.name}
@@ -78,7 +129,7 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
         <Divider sx={{paddingTop: '8px'}}/>
         <Box paddingTop="32px"/>
         <Switch>
-          <Route exact path={WORKSPACE_PATH}>
+          <Route exact path={workspaceSpecificPanelPath(overviewPanel.uri)}>
             <OverviewPanel
               workspace={props.workspace}
               myDestinations={myDests}
@@ -86,7 +137,7 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
               onNewDestinationCreated={props.onNewDestinationCreated}
             />
           </Route>
-          <Route exact path={DESTINATION_PATH}>
+          <Route exact path={DESTINATION_PANEL_PATH}>
             <DestinationPanel
               workspaceUri={props.workspace.uri}
               myDests={myDests}
@@ -94,7 +145,7 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
               onDestinationModified={props.onDestinationModified}
             />
           </Route>
-          <Route exact path={MY_DESTINATIONS_PATH}>
+          <Route exact path={workspaceSpecificPanelPath(destinationsPanel.uri)}>
             <MyDestinationsPanel
               workspace={props.workspace}
               myDestinations={myDests}

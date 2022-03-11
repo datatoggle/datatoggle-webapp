@@ -1,12 +1,11 @@
 import React, {FunctionComponent} from 'react'
 import {ListItem, ListItemIcon, ListItemText} from '@mui/material'
 import {useHistory} from 'react-router-dom'
-import {SvgIconTypeMap} from '@mui/material/SvgIcon/SvgIcon'
-import {OverridableComponent} from '@mui/material/OverridableComponent'
+import {SvgIconComponent} from '@mui/icons-material'
 
 interface OwnProps {
   label: string
-  icon: OverridableComponent<SvgIconTypeMap> // type of mui icons
+  icon: SvgIconComponent // type of mui icons
   url: string
   isActive: boolean
 }

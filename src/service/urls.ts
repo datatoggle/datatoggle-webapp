@@ -4,10 +4,15 @@ export const HOME_URL = "/"
 export const LOGIN_URL = "/login"
 export const SIGNUP_URL = "/signup"
 
-export const WORKSPACE_PATH = "/workspace/:workspace_uri"
-export const MY_DESTINATIONS_PATH = `${WORKSPACE_PATH}/destinations`
-export const DESTINATION_PATH = `${MY_DESTINATIONS_PATH}/:destination_def_uri`
+export const WORKSPACE_PATH = `/workspace/:workspace_uri`
+export const WORKSPACE_PANEL_PATH = `${WORKSPACE_PATH}/:panel_uri`
+export const workspaceSpecificPanelPath = (panelUri: string) => `${WORKSPACE_PATH}/${panelUri}`
+
+export const OVERVIEW_PANEL_URI = 'overview'
+export const CATALOG_PANEL_URI = 'catalog'
+export const DESTINATIONS_PANEL_URI = 'destinations'
+export const DESTINATION_PANEL_PATH = `${workspaceSpecificPanelPath(DESTINATIONS_PANEL_URI)}/:destination_def_uri`
 
 export const workspaceUrl = (workspaceUri: string) => `/workspace/${workspaceUri}`
-export const myDestinationsUrl = (workspaceUri: string) => `${workspaceUrl(workspaceUri)}/destinations`
-export const destinationUrl = (workspaceUri: string, destinationDefUri: string) => `${myDestinationsUrl(workspaceUri)}/${destinationDefUri}`
+export const workspacePanelUrl = (worksaceUri: string, panelUri: string) => `${workspaceUrl(worksaceUri)}/${panelUri}`
+export const workspaceDestinationUrl = (workspaceUri: string, destinationDefUri: string) => `${workspacePanelUrl(workspaceUri, DESTINATIONS_PANEL_URI)}/${destinationDefUri}`

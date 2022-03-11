@@ -1,12 +1,12 @@
 import React, {FunctionComponent} from 'react'
 import {Box, Drawer, List} from '@mui/material'
 import icon from '../../images/icon.png'
-import HomeIcon from '@mui/icons-material/Home'
-import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
 import {MyDestination} from './WorkspacePage'
-import {destinationUrl, myDestinationsUrl, workspaceUrl} from '../../service/urls'
-import {useHistory} from 'react-router-dom'
-import {Panel} from './WorkspacePageContent'
+import {
+  workspaceDestinationUrl,
+  workspacePanelUrl
+} from '../../service/urls'
+import {fixedPanels, Panel, PanelType} from './WorkspacePageContent'
 import MenuPrimaryLink from './MenuPrimaryLink'
 import MenuSecondaryLink from './MenuSecondaryLink'
 
@@ -17,14 +17,11 @@ interface OwnProps {
   activePanel: Panel
 }
 
-
 type Props = OwnProps;
 
 export const drawerWidth = '280px';
 
 const MenuDrawer: FunctionComponent<Props> = (props) => {
-
-  let history = useHistory();
 
   return (
   <Drawer
@@ -52,15 +49,18 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
       <List dense={true} sx={{paddingLeft: '36px'}}>
 
-        <MenuPrimaryLink icon={HomeIcon} isActive={props.activePanel.type === "Workspace"} label='Overview' url={workspaceUrl(props.workspaceUri)}/>
-        <MenuPrimaryLink icon={PlayForWorkIcon} isActive={props.activePanel.type === "MyDestinations"} label='My destinations' url={myDestinationsUrl(props.workspaceUri)}/>
+        {
+          fixedPanels.map( p =>
+            <MenuPrimaryLink icon={p.icon!!} isActive={p === props.activePanel} label={p.label} url={workspacePanelUrl(props.workspaceUri, p.uri)}/>
+          )
+        }
 
         {
           props.myDestinations.map((d: MyDestination) => (
             <MenuSecondaryLink
               label={d.definition.name}
-              url={destinationUrl(props.workspaceUri, d.definition.uri)}
-              isActive={props.activePanel.type === "Destination" && props.activePanel.currentDestinationUri === d.definition.uri}/>
+              url={workspaceDestinationUrl(props.workspaceUri, d.definition.uri)}
+              isActive={props.activePanel.panelType === PanelType.destination && props.activePanel.uri === d.definition.uri}/>
           ))
         }
       </List>
