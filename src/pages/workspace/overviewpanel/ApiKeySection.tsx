@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import {Alert, Chip, Snackbar} from '@mui/material'
 import {CopyAll} from '@mui/icons-material'
-import {PanelSection} from './PanelSection'
+import {PanelSection} from '../PanelSection'
 
 type Props = {
   apiKey: string

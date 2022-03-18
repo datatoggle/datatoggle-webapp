@@ -19,6 +19,7 @@ import {SvgIconComponent} from '@mui/icons-material'
 import HomeIcon from '@mui/icons-material/Home'
 import PlayForWorkIcon from '@mui/icons-material/PlayForWork'
 import AppsIcon from '@mui/icons-material/Apps'
+import DestinationsCatalogPanel from './destinationscatalog/DestinationsCatalogPanel'
 
 export enum PanelType {
   fixed,
@@ -29,32 +30,28 @@ export interface Panel {
   panelType: PanelType
   uri: string
   label: string,
-  icon?: SvgIconComponent,
-  secondary: boolean
+  icon?: SvgIconComponent
 }
 
 const overviewPanel: Panel = {
   panelType: PanelType.fixed,
   uri: OVERVIEW_PANEL_URI,
   label: 'Overview',
-  icon: HomeIcon,
-  secondary: false
+  icon: HomeIcon
 }
 
 const catalogPanel: Panel = {
   panelType: PanelType.fixed,
   uri: CATALOG_PANEL_URI,
   label: 'Catalog',
-  icon: AppsIcon,
-  secondary: false
+  icon: AppsIcon
 }
 
 const destinationsPanel: Panel = {
   panelType: PanelType.fixed,
   uri: DESTINATIONS_PANEL_URI,
   label: 'My Destinations',
-  icon: PlayForWorkIcon,
-  secondary: false
+  icon: PlayForWorkIcon
 }
 
 export const fixedPanels: Panel[] = [
@@ -78,7 +75,6 @@ function getActivePanel(
       return {
         uri: dest.definition.uri,
         label: dest.definition.name,
-        secondary: true,
         panelType: PanelType.destination,
       }
     } else {
@@ -102,8 +98,6 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
 
   let matchIfPanelUrl: match<{panel_uri: string}> | null =  useRouteMatch({path: WORKSPACE_PANEL_PATH, exact: true})
   let matchIfDestUrl: match<{destination_def_uri: string}> | null =  useRouteMatch({path: DESTINATION_PANEL_PATH, exact: true})
-  let match = useRouteMatch()
-
 
   const myDests: MyDestination[] = props.workspace.destinations.map(c => { return  {
     definition: props.destinationDefs.find(d => d.uri === c.config.destinationUri)!!,
@@ -127,7 +121,7 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
       <Box paddingTop='36px' paddingLeft='64px' paddingRight='40px'>
         <Typography variant={'h6'}>{activePanel.label}</Typography>
         <Divider sx={{paddingTop: '8px'}}/>
-        <Box paddingTop="32px"/>
+        <Box paddingTop="8px"/>
         <Switch>
           <Route exact path={workspaceSpecificPanelPath(overviewPanel.uri)}>
             <OverviewPanel
@@ -135,6 +129,11 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
               myDestinations={myDests}
               destinationDefs={props.destinationDefs}
               onNewDestinationCreated={props.onNewDestinationCreated}
+            />
+          </Route>
+          <Route exact path={workspaceSpecificPanelPath(catalogPanel.uri)}>
+            <DestinationsCatalogPanel
+              destinationDefs={props.destinationDefs}
             />
           </Route>
           <Route exact path={DESTINATION_PANEL_PATH}>

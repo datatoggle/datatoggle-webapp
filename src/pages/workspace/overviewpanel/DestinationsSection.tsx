@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {PanelSection} from './PanelSection'
+import {PanelSection} from '../PanelSection'
 import {MyDestination} from '../WorkspacePage'
 import {DestinationDef, Workspace} from '../../../service/restapi/data'
 import DestinationsTable from './DestinationsTable'

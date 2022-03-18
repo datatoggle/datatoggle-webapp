@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import {Card} from '@mui/material'
+import {Box, Card} from '@mui/material'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import {messageBackgroundColor} from '../../../DesignConstants'
@@ -11,7 +11,9 @@ type Props = OwnProps;
 
 const IntroSection: FunctionComponent<Props> = (props) => {
 
-  return <Card  sx={{backgroundColor:messageBackgroundColor, borderRadius:'8px'}}>
+  return (
+  <Box paddingTop="24px" paddingBottom="24px">
+  <Card  sx={{backgroundColor:messageBackgroundColor, borderRadius:'8px'}}>
     <CardContent>
     <Typography gutterBottom variant="h6" component="div" paddingBottom='8px'>
       Welcome to DataToggle!
@@ -21,7 +23,8 @@ const IntroSection: FunctionComponent<Props> = (props) => {
     </Typography>
       <Button variant="contained" href="https://docs.datatoggle.com/quick-start"  target="_blank" >Get Started</Button>
     </CardContent>
-  </Card>;
+  </Card>
+  </Box>)
 };
 
 export default IntroSection;
