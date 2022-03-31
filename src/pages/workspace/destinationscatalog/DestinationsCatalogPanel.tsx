@@ -2,9 +2,9 @@ import React, { FunctionComponent } from 'react';
 import {DestinationDef} from '../../../service/restapi/data'
 import {Box, Paper} from '@mui/material'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import UpvotyWidget from '../../../components/react-upvoty/UpvotyWidget'
 import {PanelSection} from '../PanelSection'
+import Typography from '@mui/material/Typography'
+import {backgroundTransparent} from '../../../DesignConstants'
 
 interface OwnProps {
   destinationDefs: DestinationDef[]
@@ -16,28 +16,35 @@ const DestinationsCatalogPanel: FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <PanelSection title={'Destinations Catalog'} subtitle={'Select the destinations you want to add'}>
+      <PanelSection title={'Destinations Catalog'} subtitle={'Select the destinations you want to add to DataToggle'}>
       <Box display='flex' flexDirection='row' flexWrap={'wrap'}>
         {
           props.destinationDefs.map(d => (
-            <Box marginRight={'24px'} marginBottom={'24px'}>
+            <Box marginRight={'24px'} marginBottom={'24px'}  key={d.uri}>
             <Button>
-            <Paper elevation={0} variant={'outlined'} key={d.uri}>
+            <Paper elevation={0} variant={'outlined'} sx={{borderRadius:'8px'}}>
               <Box padding={'24px'} display='flex' flexDirection='column' alignItems={'center'} >
                 <img  src={`${process.env.PUBLIC_URL}/destinations/${d.uri}-logo.svg`}  alt={d.name} height={'128px'} width={'128px'}/>
               </Box>
             </Paper>
             </Button>
             </Box>
-
           ))
         }
+        <Box marginRight={'24px'} marginBottom={'24px'}>
+          <Button sx={{textTransform:'none'}}>
+            <Paper elevation={0} variant={'outlined'}  sx={{backgroundColor:backgroundTransparent, borderRadius:'8px'}}>
+              <Box padding={'24px'} display='flex' flexDirection='column' alignItems={'center'} >
+                <Box height={'128px'} width={'128px'} display='flex' alignItems={'center'} >
+                  <Typography variant="body1" color={'primary'} >Request a new destination</Typography>
+                </Box>
+              </Box>
+            </Paper>
+          </Button>
+        </Box>
       </Box>
       </PanelSection>
 
-      <PanelSection title={'Destinations Requests'} subtitle={'Vote for the destinations you need'}>
-      <UpvotyWidget baseUrl={'datatoggle.upvoty.com'} boardHash='63d2b57f23ba902496a1038c262b687a3591c069b9385ece5f8f4596d3300981'/>
-      </PanelSection>
     </>)
 };
 
