@@ -133,7 +133,10 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
           </Route>
           <Route exact path={workspaceSpecificPanelPath(catalogPanel.uri)}>
             <DestinationsCatalogPanel
+              workspaceUri={props.workspace.uri}
               destinationDefs={props.destinationDefs}
+              myDestinations={myDests}
+              onNewDestinationCreated={props.onNewDestinationCreated}
             />
           </Route>
           <Route exact path={DESTINATION_PANEL_PATH}>
