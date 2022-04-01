@@ -51,13 +51,14 @@ const MenuDrawer: FunctionComponent<Props> = (props) => {
 
         {
           fixedPanels.map( p =>
-            <MenuPrimaryLink icon={p.icon!!} isActive={p === props.activePanel} label={p.label} url={workspacePanelUrl(props.workspaceUri, p.uri)}/>
+            <MenuPrimaryLink key={p.uri} icon={p.icon!!} isActive={p === props.activePanel} label={p.label} url={workspacePanelUrl(props.workspaceUri, p.uri)}/>
           )
         }
 
         {
           props.myDestinations.map((d: MyDestination) => (
             <MenuSecondaryLink
+              key={d.definition.uri}
               label={d.definition.name}
               url={workspaceDestinationUrl(props.workspaceUri, d.definition.uri)}
               isActive={props.activePanel.panelType === PanelType.destination && props.activePanel.uri === d.definition.uri}/>

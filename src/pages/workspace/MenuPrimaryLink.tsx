@@ -17,7 +17,7 @@ const MenuPrimaryLink: FunctionComponent<Props> = (props) => {
   const history = useHistory()
 
   return (
-    <ListItem button key={props.url} onClick={() => history.push(props.url)}>
+    <ListItem button onClick={() => history.push(props.url)}>
       <ListItemIcon><props.icon color={props.isActive ? 'primary': undefined}/></ListItemIcon>
       <ListItemText primary={props.label} primaryTypographyProps={{ variant: "h6", color: props.isActive ? 'primary': undefined }}/>
     </ListItem>
