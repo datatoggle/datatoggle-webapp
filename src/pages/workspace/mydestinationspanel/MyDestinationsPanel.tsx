@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import {Box} from '@mui/material'
 import {DestinationDef, Workspace} from '../../../service/restapi/data'
 import {MyDestination} from '../WorkspacePage'
 import DestinationsTable from '../overviewpanel/DestinationsTable'
+import {PanelSection} from '../PanelSection'
 
 interface OwnProps {
   workspace: Workspace,
@@ -15,19 +15,14 @@ type Props = OwnProps;
 
 const MyDestinationsPanel: FunctionComponent<Props> = (props) => {
 
-  return (     <Box
-    display='flex'
-    flexDirection='column'
-    alignItems='left'
-    paddingBottom='64px'
-  >
+  return (     <PanelSection>
     <DestinationsTable
       workspace={props.workspace}
       myDestinations={props.myDestinations}
       destinationDefs={props.destinationDefs}
       onNewDestinationCreated={props.onNewDestinationCreated}
     />
-  </Box>);
+  </PanelSection>);
 };
 
 export default MyDestinationsPanel;
