@@ -26,7 +26,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
   const ctx: UserContext = useContext(userContext)
   let { destination_def_uri } = useParams<{destination_def_uri: string}>();
 
-  const myDestination:MyDestination = props.myDests.find(d => d.definition.uri == destination_def_uri)!!
+  const myDestination:MyDestination = props.myDests.find(d => d.definition.uri === destination_def_uri)!!
 
   const paramDefs = myDestination.definition.paramDefs
 

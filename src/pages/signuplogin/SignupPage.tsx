@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 import {HOME_URL, LOGIN_URL} from '../../service/urls'
 import {UserContext} from '../../service/UserContext'
 import {maybeUserContext} from '../../components/AuthCheck'
-import {Button, Link} from '@mui/material'
+import {Button} from '@mui/material'
 
 const SignUpPage: FunctionComponent<{  }> = (props) => {
 
