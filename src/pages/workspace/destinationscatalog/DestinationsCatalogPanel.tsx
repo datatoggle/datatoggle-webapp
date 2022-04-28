@@ -1,6 +1,6 @@
-import React, {FunctionComponent, useContext} from 'react'
+import React, {FunctionComponent, useContext, useState} from 'react'
 import {DestinationDef} from '../../../service/restapi/data'
-import {Box, Paper} from '@mui/material'
+import {Box, Dialog, DialogActions, DialogTitle, Paper} from '@mui/material'
 import Button from '@mui/material/Button'
 import {PanelSection} from '../PanelSection'
 import Typography from '@mui/material/Typography'
@@ -12,6 +12,7 @@ import {MyDestination} from '../WorkspacePage'
 import {useHistory} from 'react-router-dom'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
+import DestinationRequestDialog from './DestinationRequestDialog'
 
 interface OwnProps {
   workspaceUri: string
@@ -26,6 +27,7 @@ const DestinationsCatalogPanel: FunctionComponent<Props> = (props) => {
 
   const ctx: UserContext = useContext(userContext)
   let history = useHistory();
+  const [dialogDestRequestOpen, setDialogDestRequestOpen] = useState<boolean>(false)
 
   const onCreateNewDestination = async (destinationDef: DestinationDef) => {
 
@@ -66,7 +68,7 @@ const DestinationsCatalogPanel: FunctionComponent<Props> = (props) => {
           ))
         }
         <Box marginRight={'24px'} marginBottom={'24px'}>
-          <Button sx={{textTransform:'none'}}>
+          <Button sx={{textTransform:'none'}} onClick={() => setDialogDestRequestOpen(true)}>
             <Paper elevation={0} variant={'outlined'}  sx={{backgroundColor:backgroundTransparent, borderRadius:'8px'}}>
               <Box padding={'24px'} display='flex' flexDirection='column' alignItems={'center'} >
                 <Box height={'128px'} width={'128px'} display='flex' alignItems={'center'} >
@@ -78,8 +80,8 @@ const DestinationsCatalogPanel: FunctionComponent<Props> = (props) => {
         </Box>
       </Box>
       </PanelSection>
-
-    </>)
+      <DestinationRequestDialog open={dialogDestRequestOpen} onSaved={() => setDialogDestRequestOpen(false)} onDiscard={() => setDialogDestRequestOpen(false)}></DestinationRequestDialog>
+      </>)
 };
 
 export default DestinationsCatalogPanel;

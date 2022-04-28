@@ -30,6 +30,11 @@ export type PostDestinationConfigReply = {
   configWithInfo: DestinationConfigWithInfo
 }
 
+export type PostEventArgs = {
+  eventName: string
+  data: { }
+}
+
 
 export class RestApi {
 
@@ -98,6 +103,14 @@ export class RestApi {
       config: config,
     }
     return await this.doPostRequest('api/customer/destination-configs', body)
+  }
+
+  async postEvent(eventName: string, data: {}): Promise<{}>{
+    const body: PostEventArgs = {
+      eventName,
+      data
+    }
+    return await this.doPostRequest('api/customer/event', body)
   }
 
 }
