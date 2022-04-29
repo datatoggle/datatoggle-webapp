@@ -108,8 +108,8 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
 
   return (
     <Box sx={{
-      paddingTop: 1,
-      paddingBottom: 1}}>
+      paddingTop: 0,
+      paddingBottom: '24px'}}>
       {
         paramValueComp
       }
