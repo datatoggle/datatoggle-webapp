@@ -16,12 +16,12 @@ export const PanelSection = (props: Props) => {
         {props.title}
       </Typography>
       }
-        {props.subtitle &&
-        <Typography  paddingBottom="16px">
-          {props.subtitle}
-        </Typography>
-        }
-        {props.children}
+      {props.subtitle &&
+      <Typography  paddingBottom="16px">
+        {props.subtitle}
+      </Typography>
+      }
+      {props.children}
     </Box>
   )
 }
