@@ -74,7 +74,7 @@ function getActivePanel(
     if (dest){
       return {
         uri: dest.definition.uri,
-        label: dest.definition.name,
+        label: "My Destinations / " + dest.definition.name,
         panelType: PanelType.destination,
       }
     } else {
