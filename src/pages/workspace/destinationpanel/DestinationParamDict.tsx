@@ -16,11 +16,13 @@ import {Add, Delete} from '@mui/icons-material'
 import {
   textBoxBorderColor,
   textBoxBorderRadius,
-  textBoxLeftPadding, textBoxColor,
+  textBoxHorizontalPadding, textBoxColor,
   textBoxVerticalPadding
 } from '../../../DesignConstants'
+import DocLink from '../../../components/DocLink'
 
 interface OwnProps {
+  docLink: string
   paramDef: DestinationParamDef
   value: [string,AtomicType][]
   onValueChanged: (value: [string,AtomicType][]) => void
@@ -54,10 +56,15 @@ const DestinationParamDict: FunctionComponent<Props> = (props) => {
 
   return (<>
       <Box sx={{border: 1, borderRadius: textBoxBorderRadius, borderColor:textBoxBorderColor}}>
-        <Box paddingLeft={textBoxLeftPadding} paddingTop={textBoxVerticalPadding} paddingBottom={textBoxVerticalPadding}>
-        <Typography variant="subtitle1" color={textBoxColor}>
-          {props.paramDef.name}
-        </Typography>
+        <Box display={'flex'} justifyContent={'space-between'} >
+          <Box paddingLeft={textBoxHorizontalPadding} paddingTop={textBoxVerticalPadding} paddingBottom={textBoxVerticalPadding}>
+              <Typography variant="subtitle1" color={textBoxColor}>
+                {props.paramDef.name}
+              </Typography>
+          </Box>
+          <Box paddingRight={textBoxHorizontalPadding} paddingTop={'12px'} >
+              <DocLink docLink={props.docLink}/>
+          </Box>
         </Box>
         <Box padding={'24px'} paddingTop={'8px'}>
         <TableContainer>

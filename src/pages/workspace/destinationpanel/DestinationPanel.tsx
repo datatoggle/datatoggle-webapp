@@ -75,6 +75,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         {
           paramDefs.map((paramDef: DestinationParamDef) => (
             <DestinationParamComp
+              destinationUri={myDestination.definition.uri}
               paramDef={paramDef}
               initialValue={myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
               onValueChanged={(value: DestinationParam) => {

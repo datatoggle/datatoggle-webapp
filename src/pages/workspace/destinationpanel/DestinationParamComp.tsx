@@ -1,9 +1,17 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import {Box, Checkbox, FormControlLabel, TextField} from '@mui/material'
+import {Box, Checkbox, FormControlLabel, Switch, TextField} from '@mui/material'
 import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../../service/restapi/data'
 import DestinationParamDict from './DestinationParamDict'
+import DocLink from '../../../components/DocLink'
+import {
+  textBoxBorderColor,
+  textBoxBorderRadius,
+  textBoxHorizontalPadding,
+  textBoxVerticalPadding
+} from '../../../DesignConstants'
 
 interface OwnProps {
+  destinationUri: string
   paramDef: DestinationParamDef
   initialValue: DestinationParam
   onValueChanged: (value: DestinationParam) => void
@@ -33,33 +41,50 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
   const [modifiedParam, setModifiedParam] = useState<ModifiableParamValue>(getInitialModified(props.initialValue, props.paramDef))
   useEffect(() => setModifiedParam(getInitialModified(props.initialValue, props.paramDef)), [props.initialValue, props.paramDef])
 
+  const docLink = `https://docs.datatoggle.com/destinations/${props.destinationUri}#${props.paramDef.uri}`
+
   let paramValueComp
   switch (props.paramDef.type) {
     case ParamType.Boolean:
-      paramValueComp = <FormControlLabel
+      paramValueComp = <Box
+        display={'flex'} justifyContent={'space-between'}
+        paddingLeft={textBoxHorizontalPadding}
+        paddingRight={textBoxHorizontalPadding}
+        paddingTop={'7px'} // to get same height as TexBox
+        paddingBottom={'7px'}
+        sx={{border: 1, borderRadius: textBoxBorderRadius, borderColor:textBoxBorderColor}}
+      >
+        <FormControlLabel
         control={
-          <Checkbox
-            color="primary"
+          <Switch
             checked={modifiedParam as boolean}
-            onClick={() => updateNoDictValue(!modifiedParam)}
+            onChange={(event, checked) => updateNoDictValue(checked)}
+            name={props.paramDef.name}
+            color="primary"
           />
         }
         style={{marginLeft: 0}}
         labelPlacement="start"
         label={props.paramDef.name}
       />
+        <DocLink docLink={docLink}/>
+      </Box>
       break;
     case ParamType.String:
       paramValueComp = <TextField
-        variant={'outlined'}
-        fullWidth id={props.paramDef.uri}
-        label={props.paramDef.name}
-        value={modifiedParam as string}
-        onChange={(event) => updateNoDictValue(event.target.value)}
-      />
+          variant={'outlined'}
+          fullWidth id={props.paramDef.uri}
+          label={props.paramDef.name}
+          value={modifiedParam as string}
+          onChange={(event) => updateNoDictValue(event.target.value)}
+          InputProps={{
+            endAdornment:(
+              <DocLink docLink={docLink}/>)}}
+        />
       break;
     case ParamType.Dict:
       paramValueComp = <DestinationParamDict
+          docLink={docLink}
           paramDef={props.paramDef}
           value={modifiedParam as [string,AtomicType][]}
           onValueChanged={(value) => onDictChanged(value)}
