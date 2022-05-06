@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react'
 import {AtomicType, DestinationParamDef} from '../../../service/restapi/data'
 import Typography from '@mui/material/Typography'
 import {
@@ -40,6 +40,17 @@ const DestinationParamDict: FunctionComponent<Props> = (props) => {
     }
   }
 
+  function addRow() {
+    let modifiedDict = props.value as [String, AtomicType][]
+    modifiedDict.push(["", ""])
+    props.onValueChanged(props.value)
+    setFocusOnLastKey(true)
+  }
+
+  const [focusOnLastKey, setFocusOnLastKey] = useState<boolean>(false)
+  useEffect(() => {
+    setFocusOnLastKey(false)
+  }, [focusOnLastKey])
 
   return (<>
       <Box sx={{border: 1, borderRadius: textBoxBorderRadius, borderColor:textBoxBorderColor}}>
@@ -62,8 +73,11 @@ const DestinationParamDict: FunctionComponent<Props> = (props) => {
               {
                 props.value.map( ([dictKey, dictValue]: [string,AtomicType], idx: number) =>
                   <TableRow key={idx}>
-                <TableCell  style={{ borderBottom:"none", width: 256 }} >
-                  <TextField value={dictKey} onChange={(event) => {
+                <TableCell  style={{ borderBottom:"none", width: 256 }}>
+                  <TextField
+                    value={dictKey}
+                    inputRef={input => focusOnLastKey && idx === props.value.length - 1 && input && input.focus()}
+                    onChange={(event) => {
                     props.value[idx] = [event.target.value, dictValue]
                     props.onValueChanged(props.value)
                   }}/>
@@ -86,19 +100,27 @@ const DestinationParamDict: FunctionComponent<Props> = (props) => {
                 </TableCell>
                 </TableRow>)
               }
+
               <TableRow >
-                <TableCell align="left" style={{ borderBottom:"none"}}>
-                  <IconButton color="primary" aria-label="upload picture" component="span"
-                              onClick={ () => {
-                                let modifiedDict = props.value as [String,AtomicType][]
-                                modifiedDict.push(["", ""])
-                                props.onValueChanged(props.value)
-                              }
-                              }>
-                    <Add />
-                  </IconButton>
+                <TableCell align="left" style={{ borderBottom:"none", width: 256}}>
+                  <TextField
+                    style={{width: 195}} // width to get same width as above rows, it offsets adornment
+                    disabled
+                    onClick={addRow}
+                    value=""
+                             InputProps={{
+                               startAdornment:(
+                                 <IconButton aria-label="upload picture" component="span">
+                                   <Add />
+                                 </IconButton>)}}/>
                 </TableCell>
-                <TableCell style={{ borderBottom:"none"}}></TableCell>
+                <TableCell style={{ borderBottom:"none"}}>
+                  <TextField
+                    onClick={addRow}
+                    fullWidth
+                    disabled
+                    value=""/>
+                </TableCell>
                 <TableCell style={{ borderBottom:"none"}}></TableCell>
               </TableRow>
             </TableBody>

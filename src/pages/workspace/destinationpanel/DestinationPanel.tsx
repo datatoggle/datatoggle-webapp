@@ -9,8 +9,7 @@ import {MyDestination} from '../WorkspacePage'
 import datatoggle from '@datatoggle/datatoggle-sdk'
 import {useParams} from 'react-router-dom'
 import {PanelSection} from '../PanelSection'
-import {backgroundTransparent, messageBackgroundColor} from '../../../DesignConstants'
-import CardContent from '@mui/material/CardContent'
+import {backgroundTransparent} from '../../../DesignConstants'
 
 interface OwnProps {
   workspaceUri: string
