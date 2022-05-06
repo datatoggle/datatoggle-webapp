@@ -1,13 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react'
-import {Box, Checkbox, FormControlLabel, Switch, TextField} from '@mui/material'
+import {Box, FormControlLabel, Switch, TextField} from '@mui/material'
 import {AtomicType, DestinationParam, DestinationParamDef, ParamDict, ParamType} from '../../../service/restapi/data'
 import DestinationParamDict from './DestinationParamDict'
 import DocLink from '../../../components/DocLink'
 import {
   textBoxBorderColor,
   textBoxBorderRadius,
-  textBoxHorizontalPadding,
-  textBoxVerticalPadding
+  textBoxHorizontalPadding
 } from '../../../DesignConstants'
 
 interface OwnProps {
