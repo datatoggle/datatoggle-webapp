@@ -1,8 +1,12 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
-import {Box, Card, FormControlLabel, Switch} from '@mui/material'
+import {Box, Card, FormControlLabel, Switch, Tooltip} from '@mui/material'
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@mui/material/Button'
-import {DestinationConfig, DestinationParam, DestinationParamDef} from '../../../service/restapi/data'
+import {
+  DestinationConfig,
+  DestinationParam,
+  DestinationParamDef
+} from '../../../service/restapi/data'
 import {UserContext} from '../../../service/UserContext'
 import {userContext} from '../../../components/AuthCheck'
 import {MyDestination} from '../WorkspacePage'
@@ -10,6 +14,7 @@ import datatoggle from '@datatoggle/datatoggle-sdk'
 import {useParams} from 'react-router-dom'
 import {PanelSection} from '../PanelSection'
 import {backgroundTransparent} from '../../../DesignConstants'
+import {isDestinationEnablable} from './destinationCheck'
 
 interface OwnProps {
   workspaceUri: string
@@ -27,14 +32,18 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
 
   const myDestination:MyDestination = props.myDests.find(d => d.definition.uri === destination_def_uri)!!
 
-  const paramDefs = myDestination.definition.paramDefs
+  const paramDefs: DestinationParamDef[] = myDestination.definition.paramDefs
 
   const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(myDestination.configWithInfo.config)
+
   // init modifiedConfig with the passed in props
   useEffect(() => {
     setModifiedConfig(myDestination.configWithInfo.config)
   }, [myDestination.configWithInfo.config])
 
+  const enablable = isDestinationEnablable(modifiedConfig, myDestination.definition)
+
+  // NB: Box under tooltip is here because tooltip does not work around disabled components
   return (
     <>
       <PanelSection>
@@ -42,14 +51,19 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
       <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
         <FormControlLabel
           control={
-            <Switch
-              checked={modifiedConfig.isEnabled}
-              onChange={(event, checked) => setModifiedConfig(prevState => {
-                return {...prevState, isEnabled: checked}
-              })}
-              name="checkedB"
-              color="primary"
-            />
+            <Tooltip title={enablable ? "" : "All mandatory fields (*) must be filled to enable destination"}>
+              <Box>
+                <Switch
+                  disabled={!enablable && !modifiedConfig.isEnabled}
+                  checked={modifiedConfig.isEnabled}
+                  onChange={(event, checked) => setModifiedConfig(prevState => {
+                    return {...prevState, isEnabled: checked}
+                  })}
+                  name="checkedB"
+                  color="primary"
+                />
+              </Box>
+            </Tooltip>
           }
           style={ {marginRight: 0, alignSelf: 'flex-end'}}
           label="Enabled"
@@ -93,7 +107,9 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         }
     </PanelSection>
   </>
-  ) // SAVE BUTTON UPDATE PARAMS
+  )
+
+
 };
 
 export default DestinationPanel;

@@ -52,7 +52,8 @@ export type DestinationParamDef = {
   uri: string
   name: string,
   type: ParamType,
-  defaultValue: DestinationParam
+  defaultValue: DestinationParam,
+  isMandatory: boolean
 }
 
 

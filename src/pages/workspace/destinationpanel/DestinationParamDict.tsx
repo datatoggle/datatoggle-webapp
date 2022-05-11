@@ -59,7 +59,7 @@ const DestinationParamDict: FunctionComponent<Props> = (props) => {
         <Box display={'flex'} justifyContent={'space-between'} >
           <Box paddingLeft={textBoxHorizontalPadding} paddingTop={textBoxVerticalPadding} paddingBottom={textBoxVerticalPadding}>
               <Typography variant="subtitle1" color={textBoxColor}>
-                {props.paramDef.name}
+                {props.paramDef.name + (props.paramDef.isMandatory ? " *" : "")}
               </Typography>
           </Box>
           <Box paddingRight={textBoxHorizontalPadding} paddingTop={'12px'} >

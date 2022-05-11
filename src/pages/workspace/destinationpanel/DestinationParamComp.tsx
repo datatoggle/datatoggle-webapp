@@ -64,7 +64,7 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
         }
         style={{marginLeft: 0}}
         labelPlacement="start"
-        label={props.paramDef.name}
+        label={props.paramDef.name + (props.paramDef.isMandatory ? null : " *")}
       />
         <DocLink docLink={docLink}/>
       </Box>
@@ -73,7 +73,7 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
       paramValueComp = <TextField
           variant={'outlined'}
           fullWidth id={props.paramDef.uri}
-          label={props.paramDef.name}
+          label={props.paramDef.name + (props.paramDef.isMandatory ? " *" : "")}
           value={modifiedParam as string}
           onChange={(event) => updateNoDictValue(event.target.value)}
           InputProps={{
