@@ -19,7 +19,11 @@ export type DestinationConfig = {
 
 export type DestinationConfigWithInfo = {
   config: DestinationConfig,
-  paramErrors: Object, // it's a map, need to be converted with new Map(Object.entries(paramErrors))
+  paramErrors: ParamErrors,
+}
+
+export type ParamErrors = {
+  [key: string]: string
 }
 
 export type DestinationDef = {

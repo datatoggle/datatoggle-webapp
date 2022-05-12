@@ -90,3 +90,5 @@ test('isDestinationEnablable valid boolean false param return true', () => {
   let result = isDestinationEnablable(config, def)
   expect(result).toBeTruthy()
 });
+
+

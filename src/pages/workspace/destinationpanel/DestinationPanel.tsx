@@ -91,6 +91,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
             <DestinationParamComp
               destinationUri={myDestination.definition.uri}
               paramDef={paramDef}
+              errorMessage={myDestination.configWithInfo.paramErrors[paramDef.uri]}
               initialValue={myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
               onValueChanged={(value: DestinationParam) => {
                 let newSpecificConfig = {
