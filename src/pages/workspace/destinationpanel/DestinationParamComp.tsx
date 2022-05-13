@@ -66,7 +66,7 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
         }
         style={{marginLeft: 0}}
         labelPlacement="start"
-        label={props.paramDef.name + (props.paramDef.isMandatory ? null : " *")}
+        label={props.paramDef.name + (props.paramDef.isMandatory ? " *" : "")}
       />
         <DocLink docLink={docLink}/>
       </Box>
