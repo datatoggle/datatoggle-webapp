@@ -3,7 +3,7 @@ import {Box, Card, FormControlLabel, Switch, Tooltip} from '@mui/material'
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@mui/material/Button'
 import {
-  DestinationConfig,
+  DestinationConfigWithInfo,
   DestinationParam,
   DestinationParamDef
 } from '../../../service/restapi/data'
@@ -19,7 +19,6 @@ import {isDestinationEnablable} from './destinationCheck'
 interface OwnProps {
   workspaceUri: string
   myDests: MyDestination[]
-  saved: boolean | null // null if displayed from workspace and not after post destination request
   onDestinationModified: (destinationUri: string) => void
 }
 
@@ -34,14 +33,16 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
 
   const paramDefs: DestinationParamDef[] = myDestination.definition.paramDefs
 
-  const [modifiedConfig, setModifiedConfig] = useState<DestinationConfig>(myDestination.configWithInfo.config)
+  const [modifiedConfig, setModifiedConfig] = useState<DestinationConfigWithInfo>(myDestination.configWithInfo)
+  const [lastSaveFailed, setLastSaveFailed] = useState<boolean>(false)
 
   // init modifiedConfig with the passed in props
   useEffect(() => {
-    setModifiedConfig(myDestination.configWithInfo.config)
-  }, [myDestination.configWithInfo.config])
+    setModifiedConfig(myDestination.configWithInfo)
+    setLastSaveFailed(false)
+  }, [myDestination.configWithInfo])
 
-  const enablable = isDestinationEnablable(modifiedConfig, myDestination.definition)
+  const enablable = isDestinationEnablable(modifiedConfig.config, myDestination.definition)
 
   // NB: Box under tooltip is here because tooltip does not work around disabled components
   return (
@@ -54,10 +55,16 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
             <Tooltip title={enablable ? "" : "All mandatory fields (*) must be filled to enable destination"}>
               <Box>
                 <Switch
-                  disabled={!enablable && !modifiedConfig.isEnabled}
-                  checked={modifiedConfig.isEnabled}
+                  disabled={!enablable && !modifiedConfig.config.isEnabled}
+                  checked={modifiedConfig.config.isEnabled}
                   onChange={(event, checked) => setModifiedConfig(prevState => {
-                    return {...prevState, isEnabled: checked}
+                    return {
+                      ...prevState,
+                      config: {
+                        ...prevState.config,
+                        isEnabled: checked
+                      }
+                    }
                   })}
                   name="checkedB"
                   color="primary"
@@ -71,17 +78,9 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
       <Button
         variant="contained"
         color="primary"
-        disabled={myDestination.configWithInfo.config === modifiedConfig}
-        onClick={async () => {
-          const reply = await ctx.api.postDestinationConfig(props.workspaceUri, modifiedConfig)
-          if (reply.saved){
-            props.onDestinationModified(myDestination.definition.uri)
-            datatoggle.track("save_destination_config", {
-              workspace_uri: props.workspaceUri,
-              destination_uri: myDestination.definition.uri
-            })
-          }
-        }}>{myDestination.configWithInfo.config === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
+        disabled={myDestination.configWithInfo === modifiedConfig}
+        onClick={onSaveClick}>
+        {myDestination.configWithInfo === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
       </Box>
         </Card>
       </PanelSection>
@@ -91,16 +90,20 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
             <DestinationParamComp
               destinationUri={myDestination.definition.uri}
               paramDef={paramDef}
-              errorMessage={myDestination.configWithInfo.paramErrors[paramDef.uri]}
+              saveFailed={lastSaveFailed}
+              errorMessage={modifiedConfig.paramErrors[paramDef.uri]}
               initialValue={myDestination.configWithInfo.config.destinationSpecificConfig[paramDef.uri] || paramDef.defaultValue}
               onValueChanged={(value: DestinationParam) => {
                 let newSpecificConfig = {
-                  ...modifiedConfig.destinationSpecificConfig
+                  ...modifiedConfig.config.destinationSpecificConfig
                 }
                 newSpecificConfig[paramDef.uri] = value
-                setModifiedConfig((prevState: DestinationConfig) => { return {
+                setModifiedConfig((prevState: DestinationConfigWithInfo) => { return {
                   ...prevState,
-                  destinationSpecificConfig: newSpecificConfig
+                  config: {
+                    ...prevState.config,
+                    destinationSpecificConfig: newSpecificConfig
+                  }
                 }})
               }}
               key={paramDef.uri}/>
@@ -109,6 +112,26 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
     </PanelSection>
   </>
   )
+
+  async function onSaveClick() {
+    const reply = await ctx.api.postDestinationConfig(props.workspaceUri, modifiedConfig.config)
+    if (reply.saved) {
+      props.onDestinationModified(myDestination.definition.uri)
+      datatoggle.track("save_destination_config", {
+        workspace_uri: props.workspaceUri,
+        destination_uri: myDestination.definition.uri
+      })
+    } else {
+      let paramErrors = reply.configWithInfo.paramErrors
+      setModifiedConfig(prevState => ({
+        ...prevState,
+        paramErrors
+      }))
+      setLastSaveFailed(!reply.saved)
+    }
+
+
+  }
 
 
 };

@@ -14,7 +14,7 @@ interface OwnProps {
   paramDef: DestinationParamDef
   initialValue: DestinationParam
   errorMessage: string | null
-  // saveFailed: boolean
+  saveFailed: boolean
   onValueChanged: (value: DestinationParam) => void
 }
 
@@ -73,7 +73,7 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
       break;
     case ParamType.String:
       paramValueComp = <TextField
-          error={props.errorMessage != null}
+          error={props.saveFailed && props.errorMessage != null}
           helperText={props.errorMessage || null}
           variant={'outlined'}
           fullWidth id={props.paramDef.uri}
