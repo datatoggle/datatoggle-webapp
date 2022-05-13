@@ -12,7 +12,7 @@ export function isDestinationEnablable(config: DestinationConfig, def: Destinati
             if (!paramValue) return false;
             break
           case ParamType.Dict:
-            if (Object.getOwnPropertyNames(paramValue).length == 0) return false
+            if (Object.getOwnPropertyNames(paramValue).length === 0) return false
             break
         }
       } else {

@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useContext, useState} from 'react'
 import {DestinationDef} from '../../../service/restapi/data'
-import {Box, Dialog, DialogActions, DialogTitle, Paper} from '@mui/material'
+import {Box, Paper} from '@mui/material'
 import Button from '@mui/material/Button'
 import {PanelSection} from '../PanelSection'
 import Typography from '@mui/material/Typography'
