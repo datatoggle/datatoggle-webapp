@@ -47,6 +47,7 @@ const DestinationParamComp: FunctionComponent<Props> = (props) => {
   let paramValueComp
   switch (props.paramDef.type) {
     case ParamType.Boolean:
+      // NB: Error message not managed for boolean and Dict for now (not needed by current destinations)
       paramValueComp = <Box
         display={'flex'} justifyContent={'space-between'}
         paddingLeft={textBoxHorizontalPadding}
