@@ -143,7 +143,6 @@ const WorkspacePageContent: FunctionComponent<Props> = (props) => {
             <DestinationPanel
               workspaceUri={props.workspace.uri}
               myDests={myDests}
-              saved={false}
               onDestinationModified={props.onDestinationModified}
             />
           </Route>
