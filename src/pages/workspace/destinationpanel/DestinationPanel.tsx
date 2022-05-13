@@ -2,6 +2,7 @@ import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import {Box, Card, FormControlLabel, Switch, Tooltip} from '@mui/material'
 import DestinationParamComp from './DestinationParamComp'
 import Button from '@mui/material/Button'
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   DestinationConfigWithInfo,
   DestinationParam,
@@ -35,11 +36,13 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
 
   const [modifiedConfig, setModifiedConfig] = useState<DestinationConfigWithInfo>(myDestination.configWithInfo)
   const [lastSaveFailed, setLastSaveFailed] = useState<boolean>(false)
+  const [waitingForSaveCallback, setWaitingForSaveCallback] = useState<boolean>(false)
 
   // init modifiedConfig with the passed in props
   useEffect(() => {
     setModifiedConfig(myDestination.configWithInfo)
     setLastSaveFailed(false)
+    setWaitingForSaveCallback(false)
   }, [myDestination.configWithInfo])
 
   const enablable = isDestinationEnablable(modifiedConfig.config, myDestination.definition)
@@ -75,12 +78,13 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
           style={ {marginRight: 0, alignSelf: 'flex-end'}}
           label="Enabled"
         />
-      <Button
+      <LoadingButton
         variant="contained"
         color="primary"
+        loading={waitingForSaveCallback}
         disabled={myDestination.configWithInfo === modifiedConfig}
         onClick={onSaveClick}>
-        {myDestination.configWithInfo === modifiedConfig ? "Setting saved" : "Save settings"}</Button>
+        {myDestination.configWithInfo === modifiedConfig ? "Setting saved" : "Save settings"}</LoadingButton>
       </Box>
         </Card>
       </PanelSection>
@@ -114,6 +118,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
   )
 
   async function onSaveClick() {
+    setWaitingForSaveCallback(true)
     const reply = await ctx.api.postDestinationConfig(props.workspaceUri, modifiedConfig.config)
     if (reply.saved) {
       props.onDestinationModified(myDestination.definition.uri)
@@ -128,6 +133,7 @@ const DestinationPanel: FunctionComponent<Props> = (props) => {
         paramErrors
       }))
       setLastSaveFailed(!reply.saved)
+      setWaitingForSaveCallback(false)
     }
 
 
