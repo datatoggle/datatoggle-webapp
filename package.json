@@ -31,7 +31,8 @@
     "start": "dotenv -e .env.dev react-scripts start",
     "start-prod": "dotenv -e .env.proddevtrack react-scripts start",
     "build": "dotenv -e .env.prod react-scripts build",
-    "test": "react-scripts test",
+    "test": "dotenv -e .env.test react-scripts test",
+    "test-ci": "dotenv -e .env.ci react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/**/*.{tsx,ts}",
     "chrome": "open -n -a /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security"
