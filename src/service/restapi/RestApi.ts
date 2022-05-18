@@ -45,7 +45,7 @@ export class RestApi {
   }
 
 
-// https://create-react-app.dev/docs/adding-custom-environment-variables/
+  // https://create-react-app.dev/docs/adding-custom-environment-variables/
   async doGetRequest(pathAndParams: string): Promise<any> {
     const token = await this.user!!.getIdToken()
     const response = await fetch(`${process.env.REACT_APP_API_URL}/${pathAndParams}`, {
