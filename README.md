@@ -1,7 +1,8 @@
 
 # Pour deployer en prod:
 
-`firebase deploy`
+* `npm run build`
+* `firebase deploy`
 
 ## setup
 
