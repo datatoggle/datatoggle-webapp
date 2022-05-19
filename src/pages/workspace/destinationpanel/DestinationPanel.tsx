@@ -1,7 +1,6 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react'
 import {Box, Card, FormControlLabel, Switch, Tooltip} from '@mui/material'
 import DestinationParamComp from './DestinationParamComp'
-import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   DestinationConfigWithInfo,
