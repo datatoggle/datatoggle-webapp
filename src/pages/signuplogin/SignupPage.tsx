@@ -8,7 +8,7 @@ import {UserContext} from '../../service/UserContext'
 import {maybeUserContext} from '../../components/AuthCheck'
 import {Button} from '@mui/material'
 
-const SignUpPage: FunctionComponent<{  }> = (props) => {
+const SignUpPage: FunctionComponent = () => {
 
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
@@ -22,8 +22,9 @@ const SignUpPage: FunctionComponent<{  }> = (props) => {
         return
       }
       await firebase.auth().createUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      switch (error.code) {
+    } catch (error: any) {
+      const errorCode: string = error.code
+      switch (errorCode) {
         // see error codes in createUserWithEmailAndPassword comments
         case 'auth/invalid-email':
           setEmailError('Invalid email')

@@ -22,8 +22,9 @@ const LoginPage: FunctionComponent<{  }> = (props) => {
         return
       }
       await firebase.auth().signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      switch (error.code) {
+    } catch (error: any) {
+      const errorCode: string = error.code
+      switch (errorCode) {
         // see error codes in signInWithEmailAndPassword comments
         case 'auth/invalid-email':
           setEmailError('Invalid email')
